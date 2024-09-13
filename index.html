@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv = "X-UA-Compatible" content = "IE = edge">
+    <meta name = "viewport" content = "width = device-width, initial-scale = 1.0">
+    <!-- create a title to the webpage-->
+    <title>Eric's Portfolio</title>
+    <!-- add in a favicon -->
+    <link rel="icon" type="image/x-icon" href="images/logo.png">
+    <!-- links the html file to your style.css file-->
+    <link rel="stylesheet" href="style.css">
+    <!--link the script from font awesome.com-->
+    <script src="https://kit.fontawesome.com/3389520756.js" crossorigin="anonymous"></script>
+</head>
+<body>
+<div id="header">
+    <div class="container">
+        <!-- use <nav> to navigate through the homepage-->
+        <nav>
+            <img src = "images/logo.png" class = "logo" alt = "">
+            <ul id="sidemenu">
+                <!-- use <a> for a clickable link, <li> for a list in the homepage-->
+                <li><a href="#header">Home</a> </li>
+                <li><a href="#about">About</a> </li>
+                <li><a href="#Research">Research & Projects</a> </li>
+                <li><a href="#header">Publications</a> </li>
+                <li><a href="#art">Art Portfolio</a> </li>
+                <li><a href="#contact">Contact</a> </li>
+                <i class="fa-solid fa-xmark" onclick = "closemenu()"></i>
+            </ul>
+            <i class="fa-solid fa-bars" onclick = "openmenu()"></i>
+        </nav>
+        <div class = "header-text">
+            <!-- Text for your header-->
+            <p>Bioinformatician and Health Data Scientist.</p>
+            <h1>This is <span> Eric Yang </span> from Los Angeles.</h1>
+        </div>
+    </div>
+</div>
+<!-- create the about page -->
+<div id = "about">
+    <div class = "container">
+        <div class = "row">
+            <div class = "about-col-1">
+                <img src = "images/aboutme.jpg" alt = "" >
+            </div>
+            <div class = "about-col-2">
+                <h1 class = "sub-title">About Me.</h1>
+                <p>Hi! I'm a current master's student at UCSF Health Data Science. I conduct, build, calibrate, and
+                    standardize health datasets from brain signals, protein structure, disease transmission populations,
+                    and clinical trials using R, python, MATLAB, and C++. I formulate mathematical models in predicting
+                    disease transmission and MRI imaging. I am currently researching on machine
+                    incorporation in precision healthcare from Large Language Models and Natural Language Processing. I hope
+                    following my work into academia to maximize my potential at the biggest stage. I also make UI/UX interfaces
+                    with Japanese Illustration and graphic Design.</p>
+                <div class = "tab-titles">
+                    <p class = "tab-links active-link" onclick = "opentab('Skills')"> SKILLS</p>
+                    <p class = "tab-links" onclick = "opentab('Experiences')"> EXPERIENCES</p>
+                    <p class = "tab-links" onclick = "opentab('Education')"> EDUCATION</p>
+                </div>
+                <div class = "tab-contents active-tab" id = "Skills">
+                    <ul>
+                        <li><span>Programming</span><br>
+                            C++, MATLAB, Python, R, and Java with 4 years of experience.
+                        </li>
+                        <li><span>Machine Learning & AI</span><br>
+                            Python: TensorFlow, NumPy, Scikit-Learn, PyTorch, NVIDIA RAPID & Cuda, parallel computing. <br>
+                            R: Tidyverse, XGBoost, Dplyr, e1071.
+                        </li>
+                        <li><span>Statistical Learning in Biology and Clinical Research</span><br>
+                            Supervised and Unsupervised Learning in Cross Validation sampling and Model Stacking.<br>
+                            Dimensionality Reduction and Artificial Neural Networks in clinical EHR data. <br>
+                            Clinical Analyses from survival models, confusion matrix, and the ROC.
+                        </li>
+                        <li><span>Graphic Design in UI/UX & Digital Illustration</span><br>
+                            HTML, JavaScript and CSS in Webapp Interfaces with 2 years of experience.<br>
+                            Adobe Suite(Illustrator, Lightroom, Photoshop, Premiere Pro) and Procreate with 4 years of experience.
+                        </li>
+                    </ul>
+                </div>
+                <div class = "tab-contents" id = "Experiences">
+                    <ul>
+                        <li><span>Research Labs & Internships</span><br>
+                            Clinical Design & Analysis Assistant at Suthana Lab @ UCLA<br>
+                            Data Analysis Assistant at Institute of Neuro Innovation<br>
+                            Research Assistant at Arisaka Lab @ UCLA
+                        </li>
+                        <li><span>Work Experience in STEM</span><br>
+                            Chief Technology Officer at PITTAN Inc <br>
+                            Medical Scribe at Yo San University of Traditional Chinese Medicine
+                        </li>
+                        <li><span>Work Experience in Arts</span><br>
+                            Cover Illustrator at KADOKAWA Corporation <br>
+                            Assistant Illustrations Editor at UCLA Student Media <br>
+                            Copy Editor at Tong Li Publishing
+                        </li>
+                    </ul>
+                </div>
+                <div class = "tab-contents" id = "Education">
+                    <ul>
+                        <li><span>University of California, Los Angeles</span><br>
+                                  2020 - 2024 <br>
+                                  Computational and Systems Biology B.S., Departmental Honors<br>
+                                  Concentration: Biological Data Science
+                        </li>
+                        <li><span>University of California, San Francisco</span><br>
+                                  2024 - 2026 <br>
+                                  Health Data Science M.S.
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!--Research and Projects-->
+<div id = "Research">
+    <div class="container">
+        <h1 class = "sub-title">Research & Projects.</h1>
+        <div class ="project-list">
+            <!--Display as a grid-->
+            <div>
+                <i class="fa-solid fa-brain"></i>
+                <h2>MRI Signal Imaging in Primates</h2>
+                <p> Using brain imaging to study active brain differences in primates and humans. Work done in Arisaka Lab.</p>
+                <a href="https://home.physics.ucla.edu/~arisaka/home/Biophysics/Neurophysics/"> Learn More</a>
+            </div>
+            <div>
+                <i class="fa-solid fa-vr-cardboard"></i>
+                <h2>VR Audio Therapy on Depression</h2>
+                <p>Designing clinical trials of 500 people with depression in Santa Monica to find whether visual and audio
+                immersion can be a successful therapy. Work done in Institute of Neuro Innovation.</p>
+                <a href="https://www.neurovella.com/"> Learn More</a>
+            </div>
+            <div>
+                <i class="fa-solid fa-code"></i>
+                <h2>EEG Signal Processing in ADHD</h2>
+                <p>Analyze neuro signals in ADHD patients and visualizing into graphs. Work done in Suthana Lab.</p>
+                <a href="https://suthanalab.com/ptsd/"> Learn More</a>
+            </div>
+            <div>
+                <i class="fa-solid fa-flask-vial"></i>
+                <h2>Skin Analyses Using Sweat Amino Acid</h2>
+                <p>Creating a new pipeline for skin health diagnoses using amino acid content from sweat collection.
+                    Work done in PITTAN Inc.</p>
+                <a href="https://www.linkedin.com/in/eyangucsf/details/projects/"> Learn More</a>
+            </div>
+            <div>
+                <i class="fa-solid fa-lungs"></i>
+                <h2>SARS-CoV-2 Patient Lung Imaging</h2>
+                <p> Independent Research. Attempt to use Artificial Neural Networks to analyze images from normal people
+                to patients with a SARS-CoV-2 history. Work done in David Geffen School of Medicine.</p>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- create an art portfolio section-->
+<div id = "art">
+    <div class = "container">
+        <h1 class = "sub-title">Art Portfolio.</h1>
+        <div class = "work-list">
+            <div class = "work">
+                <img src = "images/pro.png">
+                <div class="layer">
+                    <h3>Ninomae Ina'Nis Fan Art</h3>
+                    <p> Drawn using Procreate, Edited with Adobe Illustrator. Learn more in PIXIV</p>
+                    <a href = "https://www.pixiv.net/artworks/118752283"><i class="fa-solid fa-up-right-from-square"></i></a>
+                </div>
+            </div>
+            <div class = "work">
+                <img src = "images/miku2.png">
+                <div class="layer">
+                    <h3>Hatsune Miku Fan Art</h3>
+                    <p> Drawn using Ibix PaintX, Edited with Adobe Illustrator. Learn more in PIXIV</p>
+                    <a href = "https://www.pixiv.net/artworks/116375366"><i class="fa-solid fa-up-right-from-square"></i></a>
+                </div>
+            </div>
+            <div class = "work">
+                <img src = "images/elect.png">
+                <div class="layer">
+                    <h3>Lost</h3>
+                    <p> Drawn using Ibix PaintX, Edited with Adobe Illustrator and Photshop. Learn more in PIXIV</p>
+                    <a href = "https://www.pixiv.net/artworks/118752145"><i class="fa-solid fa-up-right-from-square"></i></a>
+                </div>
+            </div>
+            <div class = "work">
+                <img src = "images/earth.png">
+                <div class="layer">
+                    <h3>Travel to the Future</h3>
+                    <p> Drawn using Procreate, Edited with Adobe Illustrator. Learn more in PIXIV</p>
+                    <a href = "https://www.pixiv.net/artworks/118752021"><i class="fa-solid fa-up-right-from-square"></i></a>
+                </div>
+            </div>
+        </div>
+        <a href = "https://www.pixiv.net/users/63676153" class = "btn">See More.</a>
+    </div>
+</div>
+<!-- Contact Information-->
+<div id="contact">
+    <div class="container">
+        <div class="row">
+            <div class="contact-left">
+                <h1 class="sub-title">Contacts.</h1>
+                <p><i class="fa-solid fa-envelope"></i> ericyang2@ucsf.edu</p>
+                <p><i class="fa-solid fa-phone"></i> +1(310)-461-5746</p>
+                <div class = "social-icons">
+                    <a href="https://www.linkedin.com/in/eyangucsf/"><i class="fa-brands fa-linkedin"></i></a>
+                    <a href="https://github.com/yangpings"><i class="fa-brands fa-github"></i></a>
+                    <a href="https://www.instagram.com/be_yang_pings_like_sqrl/"><i class="fa-brands fa-instagram"></i></a>
+                    <a href="https://www.pixiv.net/users/63676153"><i class="fa-brands fa-pixiv"></i></a>
+                </div>
+                <a href="/images/Eric_Yang_Resume.pdf" download class="btn btn2">Resume/CV</a>
+            </div>
+            <div class = "contact-right">
+                <form name="submit-to-google-sheet">
+                    <input type = "text" name = "Name" placeholder = "Your Name" required>
+                    <input type = "email" name = "Email" placeholder = "Your Email" required>
+                    <textarea name = "Message" rows = 6 placeholder = "Your Message" required></textarea>
+                    <button type="Submit" class="btn btn2">Submit</button>
+                </form>
+                <span id = "msg"></span>
+            </div>
+        </div>
+    </div>
+    <div class = "copyright">
+        <p><i class="fa-solid fa-music"></i> Copyright© 2024 Eric Yang. Made Using HTML, CSS, JS. I also <i class="fa-solid fa-heart"></i> rhythm games <i class="fa-solid fa-music"></i></p>
+    </div>
+</div>
+<script>
+    var tablinks = document.getElementsByClassName("tab-links");
+    var tabcontents = document.getElementsByClassName("tab-contents");
+    function opentab(tabname){
+        for(tablink of tablinks){
+            tablink.classList.remove("active-link");
+        }
+        for(tabcontent of tabcontents){
+            tabcontent.classList.remove("active-tab");
+        }
+        event.currentTarget.classList.add("active-link");
+        document.getElementById(tabname).classList.add("active-tab");
+    }
+</script>
+<script>
+    var sidemenu1 = document.getElementById("sidemenu")
+    function openmenu(){
+        sidemenu1.style.right = "0";
+    }
+    function closemenu(){
+        sidemenu1.style.right = "-200px"
+    }
+</script>
+<script>
+  const scriptURL = 'https://script.google.com/macros/s/AKfycbx-vR3dtZC2I2sTzZ-n6Rz-OwyJe_42jsQQSN9iENbq8h36gZIbth7F46joLu7jGLaU_Q/exec'
+  const form = document.forms['submit-to-google-sheet']
+  const msg = document.getElementById("msg")
+
+  form.addEventListener('submit', e => {
+    e.preventDefault()
+    fetch(scriptURL, { method: 'POST', body: new FormData(form)})
+      .then(response => {
+          msg.innerHTML = "Message has been sent successfully!"
+          setTimeout(function(){
+              msg.innerHTML = ""
+          },2000)
+          form.reset()
+      })
+      .catch(error => console.error('Error!', error.message))
+  })
+</script>
+</body>
+</html>
