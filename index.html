@@ -59,16 +59,26 @@
 
         <div class="playground-controls">
           <div class="playground-control-row">
+            <label for="modeSelect">Motion</label>
+            <select id="modeSelect">
+              <option value="ring">Ring</option>
+              <option value="torus">3D Torus</option>
+              <option value="swarm">Swarm</option>
+            </select>
+          </div>
+
+          <div class="playground-control-row">
             <label for="countRange">Particles</label>
             <input
               type="range"
               id="countRange"
               min="30"
-              max="200"
-              value="90"
+              max="240"
+              value="120"
             />
-            <span id="countVal">90</span>
+            <span id="countVal">120</span>
           </div>
+
           <div class="playground-control-row">
             <label for="speedRange">Speed</label>
             <input
@@ -77,20 +87,35 @@
               min="0.2"
               max="2.0"
               step="0.1"
-              value="0.9"
+              value="1.0"
             />
-            <span id="speedVal">0.9</span>
+            <span id="speedVal">1.0</span>
           </div>
-        </div>
 
+          <div class="playground-control-row">
+            <label for="chaosRange">Chaos</label>
+            <input
+              type="range"
+              id="chaosRange"
+              min="0"
+              max="1"
+              step="0.05"
+              value="0.4"
+            />
+            <span id="chaosVal">0.40</span>
+          </div>
+        </div> <!-- end .playground-controls -->
+
+        <!-- ✅ this is the missing space for particles -->
         <div class="playground-canvas-wrap">
           <canvas id="playgroundCanvas"></canvas>
         </div>
-      </div>
+
+      </div> <!-- end first .playground-card -->
 
       <!-- Runnable code snippet -->
       <div class="playground-card">
-        <h2>Tiny Code Sketch (JavaScript)</h2>
+        <h2>Tiny Code Sample (JavaScript)</h2>
         <p>
         The output shows the particle’s exact position on the circle at the current moment, using its updated angle.</p>
         <div class="playground-code-wrapper">
@@ -123,10 +148,12 @@ particle.angle += settings.drift;
             Output will appear here.
           </div>
         </div>
-      </div>
-    </div>
-  </div>
+      </div> <!-- end second .playground-card -->
+    </div> <!-- end .playground-split -->
+  </div> <!-- end .container -->
 </section>
+
+
 
 <!-- create the about page -->
 <div id = "about">
@@ -339,134 +366,285 @@ particle.angle += settings.drift;
     }
 </script>
 <script>
-    var sidemenu1 = document.getElementById("sidemenu")
-    function openmenu(){
-        sidemenu1.style.right = "0";
-    }
-    function closemenu(){
-        sidemenu1.style.right = "-200px"
-    }
-</script>
-<script>
-  const scriptURL = 'https://script.google.com/macros/s/AKfycbx-vR3dtZC2I2sTzZ-n6Rz-OwyJe_42jsQQSN9iENbq8h36gZIbth7F46joLu7jGLaU_Q/exec'
-  const form = document.forms['submit-to-google-sheet']
-  const msg = document.getElementById("msg")
+// ===== Playground: multi-mode particle system (ring, torus, swarm) =====
 
-  form.addEventListener('submit', e => {
-    e.preventDefault()
-    fetch(scriptURL, { method: 'POST', body: new FormData(form)})
-      .then(response => {
-          msg.innerHTML = "Message has been sent successfully!"
-          setTimeout(function(){
-              msg.innerHTML = ""
-          },2000)
-          form.reset()
-      })
-      .catch(error => console.error('Error!', error.message))
-  })
-</script>
-<script>
-// ===== Playground: particle ring animation + controls =====
+const pgCanvas    = document.getElementById("playgroundCanvas");
+const pgCtx       = pgCanvas.getContext("2d");
 
-const pgCanvas = document.getElementById("playgroundCanvas");
-const pgCtx = pgCanvas.getContext("2d");
-const countRange = document.getElementById("countRange");
-const speedRange = document.getElementById("speedRange");
-const countVal = document.getElementById("countVal");
-const speedVal = document.getElementById("speedVal");
+const countRange  = document.getElementById("countRange");
+const speedRange  = document.getElementById("speedRange");
+const chaosRange  = document.getElementById("chaosRange");
+const modeSelect  = document.getElementById("modeSelect");
+
+const countVal    = document.getElementById("countVal");
+const speedVal    = document.getElementById("speedVal");
+const chaosVal    = document.getElementById("chaosVal");
 
 let pgParticles = [];
 let pgSettings = {
-  count: parseInt(countRange.value, 10),
-  speed: parseFloat(speedRange.value),
+  count: countRange ? parseInt(countRange.value, 10) : 100,
+  speed: speedRange ? parseFloat(speedRange.value) : 1.0,
+  chaos: chaosRange ? parseFloat(chaosRange.value) : 0.4,
 };
 
+let pgMode = modeSelect ? modeSelect.value : "ring";
+let lastTs = 0;
+
+// ---------- canvas sizing ----------
 function resizePgCanvas() {
   const rect = pgCanvas.getBoundingClientRect();
-  pgCanvas.width = rect.width * window.devicePixelRatio;
-  pgCanvas.height = rect.height * window.devicePixelRatio;
-  pgCtx.setTransform(window.devicePixelRatio, 0, 0, window.devicePixelRatio, 0, 0);
-  initPgParticles();
+  const dpr  = window.devicePixelRatio || 1;
+
+  pgCanvas.width  = rect.width * dpr;
+  pgCanvas.height = rect.height * dpr;
+
+  pgCtx.setTransform(dpr, 0, 0, dpr, 0, 0);
+  initPgSystem();
 }
 
-function initPgParticles() {
+// ---------- init particles per mode ----------
+function initPgSystem() {
   pgParticles = [];
-  const w = pgCanvas.width / window.devicePixelRatio;
-  const h = pgCanvas.height / window.devicePixelRatio;
+
+  const w  = pgCanvas.width  / (window.devicePixelRatio || 1);
+  const h  = pgCanvas.height / (window.devicePixelRatio || 1);
   const cx = w / 2;
   const cy = h / 2;
   const count = pgSettings.count;
 
-  for (let i = 0; i < count; i++) {
-    const angle = (Math.PI * 2 * i) / count;
-    const radius = 45 + Math.random() * 45;
-    pgParticles.push({
-      angle,
-      baseRadius: radius,
-      hue: 180 + (i / count) * 120,
-    });
+  if (pgMode === "ring") {
+    // ring: orbiting particles with radial pulse
+    for (let i = 0; i < count; i++) {
+      const angle  = (Math.PI * 2 * i) / count;
+      const radius = 45 + Math.random() * 60;
+      pgParticles.push({
+        mode: "ring",
+        angle,
+        baseRadius: radius,
+        hue: 180 + (i / count) * 120,
+      });
+    }
+
+  } else if (pgMode === "torus") {
+    // fake 3D torus (donut)
+    const R     = 80;
+    const rBase = 26;
+
+    for (let i = 0; i < count; i++) {
+      const aMajor = (Math.PI * 2 * i) / count;
+      const aMinor = Math.random() * Math.PI * 2;
+      const jitter = (Math.random() - 0.5) * pgSettings.chaos * 20;
+
+      pgParticles.push({
+        mode: "torus",
+        aMajor,
+        aMinor,
+        R: R + jitter,
+        r: rBase + (Math.random() - 0.5) * 8,
+        hue: 190 + (i / count) * 150,
+      });
+    }
+
+  } else if (pgMode === "swarm") {
+    // swirl + gravity swarm
+    for (let i = 0; i < count; i++) {
+      pgParticles.push({
+        mode: "swarm",
+        x: cx + (Math.random() - 0.5) * 140,
+        y: cy + (Math.random() - 0.5) * 140,
+        vx: (Math.random() - 0.5) * 0.4,
+        vy: (Math.random() - 0.5) * 0.4,
+        hue: 180 + (i / count) * 120,
+      });
+    }
   }
 }
 
-function drawPgParticles(ts) {
-  const w = pgCanvas.width / window.devicePixelRatio;
-  const h = pgCanvas.height / window.devicePixelRatio;
+// ---------- per-frame draw ----------
+function drawPgFrame(ts) {
+  const w  = pgCanvas.width  / (window.devicePixelRatio || 1);
+  const h  = pgCanvas.height / (window.devicePixelRatio || 1);
   const cx = w / 2;
   const cy = h / 2;
 
-  pgCtx.clearRect(0, 0, w, h);
-  pgCtx.fillStyle = "#020308";
-  pgCtx.fillRect(0, 0, w, h);
+  const dt = lastTs ? (ts - lastTs) * 0.001 : 0.016;
+  lastTs = ts;
 
-  for (const p of pgParticles) {
-    p.angle += 0.0015 * pgSettings.speed * 16;
-    const pulse = Math.sin(ts * 0.001 + p.angle * 3) * 8;
-    const r = p.baseRadius + pulse;
-
-    const x = cx + Math.cos(p.angle) * r;
-    const y = cy + Math.sin(p.angle) * r;
-
-    pgCtx.beginPath();
-    pgCtx.fillStyle = `hsla(${p.hue}, 85%, 70%, 0.9)`;
-    pgCtx.arc(x, y, 3, 0, Math.PI * 2);
-    pgCtx.fill();
+  // background / trail strategy by mode
+  if (pgMode === "swarm") {
+    pgCtx.fillStyle = "rgba(2, 3, 8, 0.22)";
+    pgCtx.fillRect(0, 0, w, h);
+  } else {
+    pgCtx.fillStyle = "#020308";
+    pgCtx.fillRect(0, 0, w, h);
   }
 
-  requestAnimationFrame(drawPgParticles);
+  if (pgMode === "ring") {
+    const speedFactor = 1.8 * pgSettings.speed;
+
+    for (const p of pgParticles) {
+      p.angle += speedFactor * dt;
+
+      const pulse = Math.sin(ts * 0.002 + p.angle * 3) *
+                    (6 + pgSettings.chaos * 10);
+      const r = p.baseRadius + pulse;
+
+      const x = cx + Math.cos(p.angle) * r;
+      const y = cy + Math.sin(p.angle) * r;
+
+      pgCtx.beginPath();
+      pgCtx.fillStyle = `hsla(${p.hue}, 85%, 70%, 0.9)`;
+      pgCtx.arc(x, y, 3, 0, Math.PI * 2);
+      pgCtx.fill();
+    }
+
+  } else if (pgMode === "torus") {
+    const rotSpeed = 0.8 * pgSettings.speed;
+    const tilt     = ts * 0.00025;
+    const cosTilt  = Math.cos(tilt);
+    const sinTilt  = Math.sin(tilt);
+
+    const projected = [];
+
+    for (const p of pgParticles) {
+      p.aMajor += rotSpeed * dt;
+      p.aMinor += (0.2 + pgSettings.chaos * 0.8) * dt;
+
+      const cosA = Math.cos(p.aMajor);
+      const sinA = Math.sin(p.aMajor);
+      const cosB = Math.cos(p.aMinor);
+      const sinB = Math.sin(p.aMinor);
+
+      const x3 = (p.R + p.r * cosB) * cosA;
+      const y3 =  p.r * sinB;
+      const z3 = (p.R + p.r * cosB) * sinA;
+
+      const y4 = y3 * cosTilt - z3 * sinTilt;
+      const z4 = y3 * sinTilt + z3 * cosTilt;
+
+      const depth = z4 + 260;
+      const scale = 170 / (depth + 220);
+
+      const sx     = cx + x3 * scale;
+      const sy     = cy + y4 * scale;
+      const radius = 3.2 * scale * (1 + pgSettings.chaos * 0.5);
+      const alpha  = 0.3 + 0.7 * (scale * 1.4);
+
+      projected.push({ sx, sy, radius, alpha, hue: p.hue, depth });
+    }
+
+    projected.sort((a, b) => a.depth - b.depth);
+
+    for (const q of projected) {
+      pgCtx.beginPath();
+      pgCtx.fillStyle = `hsla(${q.hue}, 85%, 72%, ${Math.min(q.alpha, 1)})`;
+      pgCtx.arc(q.sx, q.sy, q.radius, 0, Math.PI * 2);
+      pgCtx.fill();
+    }
+
+  } else if (pgMode === "swarm") {
+    const centerPull = 10 + pgSettings.speed * 15;
+    const chaos      = pgSettings.chaos;
+    const maxSpeed   = 40 + pgSettings.speed * 35;
+
+    for (const p of pgParticles) {
+      let ax = 0;
+      let ay = 0;
+
+      // gravity toward center
+      const dx = cx - p.x;
+      const dy = cy - p.y;
+      ax += dx * centerPull * 0.0004;
+      ay += dy * centerPull * 0.0004;
+
+      // swirl force
+      const swirl = 0.7 + chaos * 1.6;
+      ax += -dy * swirl * 0.0005;
+      ay +=  dx * swirl * 0.0005;
+
+      // noise kicks
+      ax += (Math.random() - 0.5) * chaos * 0.08;
+      ay += (Math.random() - 0.5) * chaos * 0.08;
+
+      p.vx += ax * dt;
+      p.vy += ay * dt;
+
+      const vMag = Math.hypot(p.vx, p.vy);
+      const maxV = maxSpeed * 0.01;
+      if (vMag > maxV) {
+        p.vx = (p.vx / vMag) * maxV;
+        p.vy = (p.vy / vMag) * maxV;
+      }
+
+      p.x += p.vx * (dt * 60);
+      p.y += p.vy * (dt * 60);
+
+      // wrap around edges
+      const margin = 40;
+      if (p.x < -margin) p.x = w + margin;
+      if (p.x > w + margin) p.x = -margin;
+      if (p.y < -margin) p.y = h + margin;
+      if (p.y > h + margin) p.y = -margin;
+
+      const speedHue = 30 * vMag + chaos * 80;
+      const radius   = 2.0 + vMag * 1.5;
+
+      pgCtx.beginPath();
+      pgCtx.fillStyle =
+        `hsla(${p.hue + speedHue}, 85%, 70%, 0.9)`;
+      pgCtx.arc(p.x, p.y, radius, 0, Math.PI * 2);
+      pgCtx.fill();
+    }
+  }
+
+  requestAnimationFrame(drawPgFrame);
 }
 
-// init on load
+// ---------- init + events ----------
 resizePgCanvas();
-requestAnimationFrame(drawPgParticles);
+requestAnimationFrame(drawPgFrame);
 window.addEventListener("resize", resizePgCanvas);
 
-// slider events
-countRange.addEventListener("input", () => {
-  pgSettings.count = parseInt(countRange.value, 10);
-  countVal.textContent = countRange.value;
-  initPgParticles();
-});
+if (countRange && countVal) {
+  countRange.addEventListener("input", () => {
+    pgSettings.count = parseInt(countRange.value, 10);
+    countVal.textContent = countRange.value;
+    initPgSystem();
+  });
+}
 
-speedRange.addEventListener("input", () => {
-  pgSettings.speed = parseFloat(speedRange.value);
-  speedVal.textContent = speedRange.value;
-});
+if (speedRange && speedVal) {
+  speedRange.addEventListener("input", () => {
+    pgSettings.speed = parseFloat(speedRange.value);
+    speedVal.textContent = speedRange.value;
+  });
+}
 
+if (chaosRange && chaosVal) {
+  chaosRange.addEventListener("input", () => {
+    pgSettings.chaos = parseFloat(chaosRange.value);
+    chaosVal.textContent = pgSettings.chaos.toFixed(2);
+  });
+}
 
-const runBtn     = document.getElementById("runSnippetBtn");
-const jsOutput   = document.getElementById("jsOutput");
+if (modeSelect) {
+  modeSelect.addEventListener("change", () => {
+    pgMode = modeSelect.value;
+    initPgSystem();
+  });
+}
+
+// ===== JS snippet runner (unchanged) =====
+
+const runBtn      = document.getElementById("runSnippetBtn");
+const jsOutput    = document.getElementById("jsOutput");
 const jsCodeBlock = document.getElementById("jsCodeBlock");
 
 if (runBtn && jsOutput && jsCodeBlock) {
   runBtn.addEventListener("click", () => {
     try {
-      // Take the text inside the <pre> block as plain JS
       const codeToRun = jsCodeBlock.innerText;
-
-      // Evaluate the snippet
       const result = eval(codeToRun);
-
-      // Show the returned value (last expression in your snippet)
       jsOutput.textContent =
         result !== undefined ? String(result) : "Snippet executed.";
     } catch (err) {
@@ -474,8 +652,6 @@ if (runBtn && jsOutput && jsCodeBlock) {
     }
   });
 }
-
-
 </script>
 </body>
 </html>
