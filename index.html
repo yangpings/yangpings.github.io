@@ -24,7 +24,7 @@
                 <!-- use <a> for a clickable link, <li> for a list in the homepage-->
                 <li><a href="#header">Home</a> </li>
                 <li><a href="#about">About</a> </li>
-                <li><a href="#Research">Research & Projects</a> </li>
+                <li><a href="#Research">Research Projects</a> </li>
                 <li><a href="#header">Publications</a> </li>
                 <li><a href="#art">Art Portfolio</a> </li>
                 <li><a href="#contact">Contacts</a> </li>
@@ -48,11 +48,12 @@
             </div>
             <div class = "about-col-2">
                 <h1 class = "sub-title">About Me.</h1>
-                <p>Hi! I'm a master's student at the UCSF Health Data Science Program. I build, calibrate and find trends from brain signals, protein structure,
-                    and clinical trials using R, Python, and C++. I use statistical analyses and machine learning methods to find
-                    correlations from clinical designs. My current interest focuses on precision health from large language models and
-                    natural language processing following topic analyses and VADER Sentiment for finding unknown symptoms from drugs and healthcare products.
-                    I hope to advance my work into academia to maximize my potential at the biggest stage. I also involve in Japanese illustration and web graphic design as a hobby posting artworks on PIXIV.</p>
+                <p>I am a data scientist and researcher with a background in biological data science, neuroimaging, and
+                    clinical analytics. My current work focuses on multimodal machine learning ranging from imaging
+                    to NLP systems that analyze real-world health signals. Alongside my research,
+                    I am active as a 2D digital artist, which informs my interest in visual representation,
+                    UI/UX design, and the interpretability of scientific communication. Currently, I am pursuing a Master's degree
+                    in health data science at UCSF while taking a lead position at BOLERO Inc., a full stack music management company, as a data scientist and developer. </p>
                 <div class = "tab-titles">
                     <p class = "tab-links active-link" onclick = "opentab('Skills')"> SKILLS</p>
                     <p class = "tab-links" onclick = "opentab('Experiences')"> EXPERIENCES</p>
@@ -60,38 +61,52 @@
                 </div>
                 <div class = "tab-contents active-tab" id = "Skills">
                     <ul>
-                        <li><span>Programming Languages</span><br>
-                            C++, MATLAB, Python, R, and JavaScript with 4+ years of experience.
+                        <li>
+                            <span>Programming Languages</span><br>
+                            Python, C++, R, MATLAB, and JavaScript - 4+ years of experience across scientific computing,
+                            machine learning pipelines, data engineering, and full-stack development.
                         </li>
-                        <li><span>Machine Learning & AI</span><br>
-                            Python: TensorFlow, Scikit-Learn, PyTorch, NVIDIA RAPID & Cuda, VADER sentiment, LDA<br>
-                            R: Tidyverse, XGBoost, Dplyr, e1071, factoextra.
+
+                        <li>
+                            <span>Machine Learning & AI</span><br>
+                            <strong>Python:</strong> PyTorch, TensorFlow, Scikit-Learn, SciPy, TorchVision, HuggingFace, NVIDIA RAPIDS & CUDA, Gensim, Matplotlib<br>
+                            <strong>Audio & Signal Processing:</strong> Librosa, Essentia, Torchaudio (tempo detection, spectral analysis)<br>
+                            <strong>Computer Vision:</strong> OpenCV, PyTorch/TorchVision, timm, ViT fine-tuning, data augmentation<br>
+                            Experience with supervised/unsupervised learning, deep learning, model stacking, embeddings, NLP, and GPU-accelerated ML workflows.
                         </li>
-                        <li><span>Statistical Learning in Clinical Research</span><br>
-                            Supervised and Unsupervised Learning in cross validation sampling and Model Stacking.<br>
-                            Dimensionality Reduction and Artificial Neural Networks in clinical EHR data. <br>
-                            Statistical tests from clinical analyses.
+
+                        <li>
+                             <span>Statistical Learning & Clinical Modeling</span><br>
+                            Machine learning for clinical and biomedical datasets (EHR, longitudinal data).<br>
+                            Cross-validation sampling, ensemble modelling, and bias evaluation.<br>
+                            Dimensionality reduction and neural networks for clinical prediction tasks.<br>
+                            Statistical hypothesis testing, regression modeling, survival analysis, and feature importance evaluation.
                         </li>
-                        <li><span>UI/UX Media & Digital Illustration</span><br>
-                            HTML, JavaScript and CSS in Webapp Interfaces with 3 years of experience.<br>
-                            Adobe Suite(Illustrator, Lightroom, Photoshop, Premiere Pro) and Procreate with 4 years of experience.
+
+                        <li>
+                        <span>UI/UX Media & Digital Illustration</span><br>
+                        HTML, CSS, and JavaScript for interactive web applications (3 years).<br>
+                        Adobe Illustrator, Lightroom, Photoshop, Premiere Pro, and Procreate (4 years) for digital illustration,
+                        design mockups, and media storytelling.
                         </li>
                     </ul>
                 </div>
                 <div class = "tab-contents" id = "Experiences">
                     <ul>
                         <li><span>Research Labs & Internships</span><br>
-                            Research Assistant @ Hswen Lab (Present)<br>
+                            Data Science Specialist @ UCSF Dept. of Medicine (Present) <br>
+                            Graduate Student Researcher @ Hswen Lab (Present)<br>
                             Clinical Analysis Assistant @ Suthana Lab (2023-2024)<br>
                             Data Analysis Assistant @ Institute of Neuro Innovation (2022-2023) <br>
                             Research Assistant @ Arisaka Lab (2021-2022)
                         </li>
                         <li><span>Work Experience in STEM</span><br>
+                            Lead Data Scientist @ BOLERO Inc. (Present)<br>
                             Chief Technology Officer @ PITTAN Inc (2023)
                         </li>
                         <li><span>Work Experience in the Arts</span><br>
                             Cover Illustrator @ KADOKAWA Corporation (2024)<br>
-                            Assistant Illustrations Editor @ UCLA Student Media(2022-2024) <br>
+                            Assistant Illustrations Editor @ UCLA Student Media (2023-2024) <br>
                             Copy Editor @ Tong Li Publishing (2020-2024)
                         </li>
                     </ul>
@@ -116,35 +131,36 @@
 <!--Research and Projects-->
 <div id = "Research">
     <div class="container">
-        <h1 class = "sub-title">Research Projects & Publications.</h1>
+        <h1 class = "sub-title">Research Projects.</h1>
         <div class ="project-list">
             <!--Display as a grid-->
             <div>
-                <i class="fa-solid fa-vr-cardboard"></i>
-                <h2>VR Audio Therapy on Depression</h2>
-                <p>Designing clinical trials of 500 people with depression in Santa Monica to find whether visual and audio
-                immersion can be a successful therapy. Work done in Institute of Neuro Innovation.</p>
-                <a href="https://www.neurovella.com/"> Learn More</a>
-            </div>
-            <div>
-                <i class="fa-solid fa-code"></i>
-                <h2>EEG Signal Processing in ADHD</h2>
-                <p>Analyze neuro signals in ADHD patients and visualizing into graphs. Work done in Suthana Lab.</p>
-                <a href="https://suthanalab.com/ptsd/"> Learn More</a>
-            </div>
-            <div>
                 <i class="fa-solid fa-flask-vial"></i>
-                <h2>Skin Analyses Using Sweat Amino Acid</h2>
+                <h2>Skin Analyses Using Amino Acid in Sweat Content</h2>
                 <p>Creating a new pipeline for skin health diagnoses using amino acid content from sweat collection.
                     Work done in PITTAN Inc.</p>
                 <a href="/images/sweat.png"> Learn More</a>
             </div>
             <div>
-                <i class="fa-solid fa-chart-simple"></i>
-                <h2>Use case analysis on nicotine pouches</h2>
-                <p>Collected over 15000 comments from reddit posts on nicotine pouches to discover underlying use cases
-                    and symptoms using NLP, VADER sentiment, and Topic Analysis.
-                    Work ongoing in Hswen Lab.</p>
+                <i class="fa-solid fa-eye"></i>
+                <h2>ODIR-5K Retinal Image Analysis</h2>
+                <p>A unified training and evaluation framework comparing multiple deep learning architectures on ODIR-5K
+                    to build a robust baseline for retinal disease detection and ADRD-related biomarker studies.</p>
+                <a href="https://github.com/yangpings/ODIR-5K"> Learn More</a>
+            </div>
+            <div>
+                <i class="fa-brands fa-reddit"></i>
+                <h2>Nicotine Pouch Reddit Data Mining & NLP Analysis</h2>
+                <p>A full Reddit data workflow combining scraping, NLP preprocessing, VADER sentiment scoring, LDA topic modeling, and keyword-based dataset filtering.</p>
+                <a href="https://github.com/yangpings/Reddit-Nicotine-Sentiment"> Learn More</a>
+            </div>
+            <div>
+                <i class="fa-solid fa-brain"></i>
+                <h2>TIME AD: RETFound-Based Multimodal Imaging Prediction of Alzheimer’s Disease</h2>
+                <p>A multimodal AI framework using the RETFound vision transformer and UK Biobank eye biomarkers
+                    to predict Alzheimer’s Disease and Related Dementias from fundus images
+                    , biometrics, and clinical diagnoses. Current work in progress.</p>
+                <a href="https://www.time-ad.org/leadership-1"> Learn More</a>
             </div>
         </div>
     </div>
@@ -171,11 +187,11 @@
                 </div>
             </div>
             <div class = "work">
-                <img src = "images/elect.png">
+                <img src = "images/minami.png">
                 <div class="layer">
-                    <h3>Lost</h3>
-                    <p> Drawn using Ibix PaintX, Edited with Adobe Illustrator and Photshop. Learn more on PIXIV</p>
-                    <a href = "https://www.pixiv.net/artworks/118752145"><i class="fa-solid fa-up-right-from-square"></i></a>
+                    <h3>Concept Code 01: Minami</h3>
+                    <p> Drawn with Procreate. Learn more on PIXIV</p>
+                    <a href = "https://www.pixiv.net/artworks/118904947"><i class="fa-solid fa-up-right-from-square"></i></a>
                 </div>
             </div>
             <div class = "work">
@@ -201,10 +217,10 @@
                 <div class = "social-icons">
                     <a href="https://www.linkedin.com/in/eyangucsf/"><i class="fa-brands fa-linkedin"></i></a>
                     <a href="https://github.com/yangpings"><i class="fa-brands fa-github"></i></a>
-                    <a href="https://www.instagram.com/be_yplike_sqrl/"><i class="fa-brands fa-instagram"></i></a>
+                    <a href="https://www.instagram.com/byplikesqrl/"><i class="fa-brands fa-instagram"></i></a>
                     <a href="https://www.pixiv.net/users/63676153"><i class="fa-brands fa-pixiv"></i></a>
                 </div>
-                <a href="/images/Eric_Yang_Resume.pdf" download class="btn btn2">Resume/CV</a>
+                <a href="/images/eric_cv.pdf" download class="btn btn2">Resume/CV</a>
             </div>
             <div class = "contact-right">
                 <form name="submit-to-google-sheet">
