@@ -132,6 +132,25 @@ nav ul li a:hover::after{
     color: bisque;
     font-size: 24px;
 }
+
+/* Make only the SKILLS list into a responsive 2-column grid */
+#Skills ul {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 24px;
+}
+
+/* Tighter spacing inside each skill item */
+#Skills ul li {
+    margin: 0;                 /* grid gap now handles spacing */
+    line-height: 1.5;
+}
+
+#Skills ul li:nth-child(1) span {
+    font-size: 24px;   /* tweak to whatever looks best */
+}
+
+
 .tab-contents{
     display: none;
 }
@@ -382,7 +401,7 @@ nav .fa-solid{
     padding:20px 30px;
     color: aliceblue;
     font-size: 22px;
-    background-image: url("images/background.png");
+    background: black;
     background-size: cover;
     background-position: center;
 }
@@ -424,4 +443,229 @@ nav .fa-solid{
     color: bisque;
     margin-top: -40px;
     display: block;
+}
+
+
+/* ===== INTERACTIVE PLAYGROUND ===== */
+
+#playground {
+    padding: 60px 3% 40px;
+    background: #050608; /* adjust or remove if your site already has a global bg */
+}
+
+#playground .playground-sub {
+    color: #b0b0b0;
+    font-size: 0.95rem;
+    max-width: 650px;
+    margin-top: 8px;
+}
+
+.playground-split {
+    display: grid;
+    grid-template-columns: minmax(0, 1.1fr) minmax(0, 1.1fr);
+    gap: 1.8rem;
+    margin-top: 2.2rem;
+    align-items: flex-start;
+}
+
+.playground-card {
+    background: #121212;
+    border-radius: 16px;
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    box-shadow: 0 18px 45px rgba(0, 0, 0, 0.85);
+    padding: 1.1rem 1.2rem 1.2rem;
+}
+
+.playground-card h2 {
+    font-size: 1.1rem;
+    margin-bottom: 0.3rem;
+}
+
+.playground-card p {
+    font-size: 0.9rem;
+    color: #d0d0d0;
+    margin-bottom: 0.8rem;
+}
+
+/* controls */
+
+.playground-controls {
+    display: flex;
+    flex-direction: column;
+    gap: 0.7rem;
+    margin-bottom: 0.7rem;
+}
+
+.playground-control-row {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    font-size: 0.85rem;
+}
+
+.playground-control-row label {
+    min-width: 90px;
+    color: #c0c0c0;
+}
+
+.playground-control-row span {
+    min-width: 2.3rem;
+    text-align: right;
+    font-family: "SF Mono", Menlo, monospace;
+    color: #7fe4ff;
+}
+
+.playground-control-row input[type="range"] {
+    -webkit-appearance: none;
+    appearance: none;
+    flex: 1;
+    height: 4px;
+    border-radius: 999px;
+    background: #1e1e1e;
+    outline: none;
+    cursor: pointer;
+}
+
+.playground-control-row input[type="range"]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #4fd1ff, #ff7ee5);
+    border: 1px solid #050608;
+    box-shadow: 0 0 10px rgba(79, 209, 255, 0.7);
+}
+
+/* canvas */
+
+.playground-canvas-wrap {
+    border-radius: 14px;
+    overflow: hidden;
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    background: radial-gradient(circle at 10% 0%, #1f2933, #020308);
+}
+
+#playgroundCanvas {
+    display: block;
+    width: 100%;
+    height: 240px;
+    background: transparent;
+}
+
+/* code block */
+
+.playground-code-block {
+    background:
+        linear-gradient(135deg, #020617, #020617) padding-box,
+        linear-gradient(135deg, rgba(79, 209, 255, 0.85),
+                             rgba(255, 126, 229, 0.7),
+                             rgba(255, 230, 109, 0.85)) border-box;
+    border-radius: 12px;
+    border: 1px solid transparent;
+    padding: 0.8rem 0.9rem;
+    font-family: "SF Mono", Menlo, Monaco, Consolas, "Courier New", monospace;
+    font-size: 0.78rem;
+    line-height: 1.6;
+    color: #e5e7eb;
+    white-space: pre;
+    overflow-x: auto;
+}
+.playground-code-block,
+.playground-code-block code,
+.playground-code-block * {font-family: "SF Mono", Menlo, Monaco, Consolas, "Courier New", monospace !important;
+}
+/* syntax colors for the playground code */
+.playground-code-block .kw {
+    color: #f97316;          /* keywords: function, const, return */
+}
+
+.playground-code-block .fn {
+    color: #4fd1ff;          /* function / object names: Math, lerp */
+}
+
+.playground-code-block .num {
+    color: #facc15;          /* numbers */
+}
+
+.playground-code-block .str {
+    color: #a3e635;          /* template string / strings */
+}
+
+.playground-code-block .cm {
+    color: #9ca3af;          /* comments */
+    font-style: italic;
+}
+
+/* scrollbar for code block */
+
+.playground-code-block::-webkit-scrollbar {
+    height: 6px;
+}
+.playground-code-block::-webkit-scrollbar-track {
+    background: #020617;
+}
+.playground-code-block::-webkit-scrollbar-thumb {
+    background: linear-gradient(90deg, #4fd1ff, #ff7ee5);
+    border-radius: 999px;
+}
+
+/* run panel */
+
+.playground-run-panel {
+    margin-top: 0.8rem;
+    border-radius: 10px;
+    background: #020308;
+    border: 1px solid rgba(255, 255, 255, 0.14);
+    overflow: hidden;
+}
+
+.playground-run-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.55rem 0.8rem;
+    font-size: 0.8rem;
+    color: #b0b0b0;
+    background: #060818;
+}
+
+.playground-run-header button {
+    font-size: 0.75rem;
+    padding: 0.25rem 0.75rem;
+    border-radius: 999px;
+    border: 1px solid rgba(148, 163, 184, 0.7);
+    background: radial-gradient(circle at top left, #111827, #020617);
+    color: #f9fafb;
+    cursor: pointer;
+}
+
+.playground-run-header button:hover {
+    border-color: #4fd1ff;
+}
+
+.playground-output {
+    padding: 0.6rem 0.8rem 0.7rem;
+    font-family: "SF Mono", Menlo, Consolas, monospace;
+    font-size: 0.8rem;
+    min-height: 2.2rem;
+    color: #e5e7eb;
+    background: #020308;
+    border-top: 1px solid #111827;
+    white-space: pre-wrap;
+}
+
+
+/* make the wrapper look seamless */
+.playground-code-wrapper {
+    border-radius: 12px;
+    overflow: hidden;
+    border: 1px solid rgba(255,255,255,0.15);
+}
+
+/* responsive */
+
+@media (max-width: 800px) {
+    .playground-split {
+        grid-template-columns: minmax(0, 1fr);
+    }
 }

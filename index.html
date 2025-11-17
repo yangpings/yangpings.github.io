@@ -15,6 +15,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Spectral:wght@400;700&display=swap" rel="stylesheet">
 </head>
 <body>
+
 <div id="header">
     <div class="container">
         <!-- use <nav> to navigate through the homepage-->
@@ -39,6 +40,94 @@
         </div>
     </div>
 </div>
+
+<!-- create a playground -->
+<section id="playground">
+  <div class="container">
+    <h1 class="sub-title">Where Data Meets Art.</h1>
+    <p class="playground-sub">
+      Change parameters and watch the animation respond.
+    </p>
+
+    <div class="playground-split">
+      <!-- Canvas playground -->
+      <div class="playground-card">
+        <h2>Particle Ring Motion System</h2>
+        <p>
+          Use the sliders to control how many particles you see and how quickly they drift.
+        </p>
+
+        <div class="playground-controls">
+          <div class="playground-control-row">
+            <label for="countRange">Particles</label>
+            <input
+              type="range"
+              id="countRange"
+              min="30"
+              max="200"
+              value="90"
+            />
+            <span id="countVal">90</span>
+          </div>
+          <div class="playground-control-row">
+            <label for="speedRange">Speed</label>
+            <input
+              type="range"
+              id="speedRange"
+              min="0.2"
+              max="2.0"
+              step="0.1"
+              value="0.9"
+            />
+            <span id="speedVal">0.9</span>
+          </div>
+        </div>
+
+        <div class="playground-canvas-wrap">
+          <canvas id="playgroundCanvas"></canvas>
+        </div>
+      </div>
+
+      <!-- Runnable code snippet -->
+      <div class="playground-card">
+        <h2>Tiny Code Sketch (JavaScript)</h2>
+        <p>
+        The output shows the particle’s exact position on the circle at the current moment, using its updated angle.</p>
+        <div class="playground-code-wrapper">
+
+            <pre class="playground-code-block" id="jsCodeBlock">
+<code>
+<span class="cm">// click "Run snippet"</span>
+<span class="kw">function</span> <span class="fn">lerp</span>(a, b, t) {
+<span class="kw">return</span> a + (b - a) * t;
+}
+
+<span class="kw">const</span> particle = { radius: <span class="num">80</span>, angle: <span class="num">0</span> };
+<span class="kw">const</span> settings = { drift: <span class="num">0.015</span> };
+
+particle.angle += settings.drift;
+
+<span class="kw">const</span> x = <span class="fn">Math</span>.cos(particle.angle) * particle.radius;
+<span class="kw">const</span> y = <span class="fn">Math</span>.sin(particle.angle) * particle.radius;
+
+<span class="str">`particle at (${x.toFixed(2)}, ${y.toFixed(2)})`</span>;
+</code>
+            </pre>
+        </div>
+        <div class="playground-run-panel">
+          <div class="playground-run-header">
+            <span>Run this snippet in your browser</span>
+            <button type="button" id="runSnippetBtn">Run snippet</button>
+          </div>
+          <div id="jsOutput" class="playground-output">
+            Output will appear here.
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
 <!-- create the about page -->
 <div id = "about">
     <div class = "container">
@@ -53,7 +142,7 @@
                     to NLP systems that analyze real-world health signals. Alongside my research,
                     I am active as a 2D digital artist, which informs my interest in visual representation,
                     UI/UX design, and the interpretability of scientific communication. Currently, I am pursuing a Master's degree
-                    in health data science at UCSF while taking a lead position at BOLERO Inc., a full stack music management company, as a data scientist and developer. </p>
+                    in health data science at UCSF while taking a lead position at BOLERO Inc., a full stack music management company, as data scientist and developer. </p>
                 <div class = "tab-titles">
                     <p class = "tab-links active-link" onclick = "opentab('Skills')"> SKILLS</p>
                     <p class = "tab-links" onclick = "opentab('Experiences')"> EXPERIENCES</p>
@@ -61,31 +150,28 @@
                 </div>
                 <div class = "tab-contents active-tab" id = "Skills">
                     <ul>
-                        <li>
-                            <span>Programming Languages</span><br>
-                            Python, C++, R, MATLAB, and JavaScript - 4+ years of experience across scientific computing,
-                            machine learning pipelines, data engineering, and full-stack development.
-                        </li>
 
                         <li>
-                            <span>Machine Learning & AI</span><br>
-                            <strong>Python:</strong> PyTorch, TensorFlow, Scikit-Learn, SciPy, TorchVision, HuggingFace, NVIDIA RAPIDS & CUDA, Gensim, Matplotlib<br>
-                            <strong>Audio & Signal Processing:</strong> Librosa, Essentia, Torchaudio (tempo detection, spectral analysis)<br>
-                            <strong>Computer Vision:</strong> OpenCV, PyTorch/TorchVision, timm, ViT fine-tuning, data augmentation<br>
+                             <span><strong>Statistical Learning & Modelling</strong></span><br>
+                            Machine learning for clinical and biomedical datasets (EHR, longitudinal data).<br><br>
+                            Cross-Validation, ensemble modelling, and bias evaluation.<br><br>
+                            Dimensionality reduction and neural networks for clinical prediction tasks.<br><br>
+                            Statistical hypothesis testing, regression modeling, survival analysis, and feature extraction.
+                        </li>
+                        <li>
+                            <span><strong>Machine Learning & AI</strong></span><br>
+                            <strong>Python:</strong> PyTorch, TensorFlow, Scikit-Learn, SciPy, TorchVision, HuggingFace, NVIDIA RAPIDS & CUDA, Gensim, Matplotlib<br><br>
+                            <strong>Audio & Signal Processing:</strong> Librosa, Essentia, Torchaudio (tempo detection, spectral analysis)<br><br>
+                            <strong>Computer Vision:</strong> OpenCV, PyTorch/TorchVision, timm, ViT fine-tuning, data augmentation<br><br>
                             Experience with supervised/unsupervised learning, deep learning, model stacking, embeddings, NLP, and GPU-accelerated ML workflows.
                         </li>
-
                         <li>
-                             <span>Statistical Learning & Clinical Modeling</span><br>
-                            Machine learning for clinical and biomedical datasets (EHR, longitudinal data).<br>
-                            Cross-validation sampling, ensemble modelling, and bias evaluation.<br>
-                            Dimensionality reduction and neural networks for clinical prediction tasks.<br>
-                            Statistical hypothesis testing, regression modeling, survival analysis, and feature importance evaluation.
+                            <span><strong>Programming Languages</strong></span><br>
+                            <strong>Python, C++, R, MATLAB, JavaScript</strong> with 4+ years of experience across computing, data, ML, and full-stack.
                         </li>
-
                         <li>
-                        <span>UI/UX Media & Digital Illustration</span><br>
-                        HTML, CSS, and JavaScript for interactive web applications (3 years).<br>
+                        <span><strong>UI/UX Media & Digital Illustration</strong></span><br>
+                        HTML, CSS, and JavaScript for interactive web applications (3 years).<br><br>
                         Adobe Illustrator, Lightroom, Photoshop, Premiere Pro, and Procreate (4 years) for digital illustration,
                         design mockups, and media storytelling.
                         </li>
@@ -93,18 +179,18 @@
                 </div>
                 <div class = "tab-contents" id = "Experiences">
                     <ul>
-                        <li><span>Research Labs & Internships</span><br>
-                            Data Science Specialist @ UCSF Dept. of Medicine (Present) <br>
-                            Graduate Student Researcher @ Hswen Lab (Present)<br>
+                        <li><span><strong>Research Labs & Internships</strong></span><br>
+                            <strong>Data Science Specialist @ UCSF Dept. of Medicine (Present) </strong><br>
+                            <strong>Graduate Student Researcher @ Hswen Lab (Present)</strong><br>
                             Clinical Analysis Assistant @ Suthana Lab (2023-2024)<br>
                             Data Analysis Assistant @ Institute of Neuro Innovation (2022-2023) <br>
                             Research Assistant @ Arisaka Lab (2021-2022)
                         </li>
-                        <li><span>Work Experience in STEM</span><br>
-                            Lead Data Scientist @ BOLERO Inc. (Present)<br>
+                        <li><span><strong>Work Experience in STEM</strong></span><br>
+                            <strong>Lead Data Scientist @ BOLERO Inc. (Present)</strong><br>
                             Chief Technology Officer @ PITTAN Inc (2023)
                         </li>
-                        <li><span>Work Experience in the Arts</span><br>
+                        <li><span><strong>Work Experience in the Arts</strong></span><br>
                             Cover Illustrator @ KADOKAWA Corporation (2024)<br>
                             Assistant Illustrations Editor @ UCLA Student Media (2023-2024) <br>
                             Copy Editor @ Tong Li Publishing (2020-2024)
@@ -113,12 +199,12 @@
                 </div>
                 <div class = "tab-contents" id = "Education">
                     <ul>
-                        <li><span>University of California, Los Angeles</span><br>
+                        <li><span><strong>University of California, Los Angeles</strong></span><br>
                                   2020 - 2024 <br>
                                   Computational and Systems Biology B.S., Departmental Honors<br>
                                   Concentration: Biological Data Science
                         </li>
-                        <li><span>University of California, San Francisco</span><br>
+                        <li><span><strong>University of California, San Francisco</strong></span><br>
                                   2024 - 2026 <br>
                                   Health Data Science M.S.<br>
                         </li>
@@ -128,6 +214,7 @@
         </div>
     </div>
 </div>
+
 <!--Research and Projects-->
 <div id = "Research">
     <div class="container">
@@ -277,6 +364,118 @@
       })
       .catch(error => console.error('Error!', error.message))
   })
+</script>
+<script>
+// ===== Playground: particle ring animation + controls =====
+
+const pgCanvas = document.getElementById("playgroundCanvas");
+const pgCtx = pgCanvas.getContext("2d");
+const countRange = document.getElementById("countRange");
+const speedRange = document.getElementById("speedRange");
+const countVal = document.getElementById("countVal");
+const speedVal = document.getElementById("speedVal");
+
+let pgParticles = [];
+let pgSettings = {
+  count: parseInt(countRange.value, 10),
+  speed: parseFloat(speedRange.value),
+};
+
+function resizePgCanvas() {
+  const rect = pgCanvas.getBoundingClientRect();
+  pgCanvas.width = rect.width * window.devicePixelRatio;
+  pgCanvas.height = rect.height * window.devicePixelRatio;
+  pgCtx.setTransform(window.devicePixelRatio, 0, 0, window.devicePixelRatio, 0, 0);
+  initPgParticles();
+}
+
+function initPgParticles() {
+  pgParticles = [];
+  const w = pgCanvas.width / window.devicePixelRatio;
+  const h = pgCanvas.height / window.devicePixelRatio;
+  const cx = w / 2;
+  const cy = h / 2;
+  const count = pgSettings.count;
+
+  for (let i = 0; i < count; i++) {
+    const angle = (Math.PI * 2 * i) / count;
+    const radius = 45 + Math.random() * 45;
+    pgParticles.push({
+      angle,
+      baseRadius: radius,
+      hue: 180 + (i / count) * 120,
+    });
+  }
+}
+
+function drawPgParticles(ts) {
+  const w = pgCanvas.width / window.devicePixelRatio;
+  const h = pgCanvas.height / window.devicePixelRatio;
+  const cx = w / 2;
+  const cy = h / 2;
+
+  pgCtx.clearRect(0, 0, w, h);
+  pgCtx.fillStyle = "#020308";
+  pgCtx.fillRect(0, 0, w, h);
+
+  for (const p of pgParticles) {
+    p.angle += 0.0015 * pgSettings.speed * 16;
+    const pulse = Math.sin(ts * 0.001 + p.angle * 3) * 8;
+    const r = p.baseRadius + pulse;
+
+    const x = cx + Math.cos(p.angle) * r;
+    const y = cy + Math.sin(p.angle) * r;
+
+    pgCtx.beginPath();
+    pgCtx.fillStyle = `hsla(${p.hue}, 85%, 70%, 0.9)`;
+    pgCtx.arc(x, y, 3, 0, Math.PI * 2);
+    pgCtx.fill();
+  }
+
+  requestAnimationFrame(drawPgParticles);
+}
+
+// init on load
+resizePgCanvas();
+requestAnimationFrame(drawPgParticles);
+window.addEventListener("resize", resizePgCanvas);
+
+// slider events
+countRange.addEventListener("input", () => {
+  pgSettings.count = parseInt(countRange.value, 10);
+  countVal.textContent = countRange.value;
+  initPgParticles();
+});
+
+speedRange.addEventListener("input", () => {
+  pgSettings.speed = parseFloat(speedRange.value);
+  speedVal.textContent = speedRange.value;
+});
+
+
+const runBtn     = document.getElementById("runSnippetBtn");
+const jsOutput   = document.getElementById("jsOutput");
+const jsCodeBlock = document.getElementById("jsCodeBlock");
+
+if (runBtn && jsOutput && jsCodeBlock) {
+  runBtn.addEventListener("click", () => {
+    try {
+      // Take the text inside the <pre> block as plain JS
+      const codeToRun = jsCodeBlock.innerText;
+
+      // Evaluate the snippet
+      const result = eval(codeToRun);
+
+      // Show the returned value (last expression in your snippet)
+      jsOutput.textContent =
+        result !== undefined ? String(result) : "Snippet executed.";
+    } catch (err) {
+      jsOutput.textContent = "Error: " + err.message;
+    }
+  });
+}
+
+
 </script>
 </body>
 </html>
