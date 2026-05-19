@@ -35,12 +35,191 @@
         </nav>
         <div class = "header-text">
             <!-- Text for your header-->
+            <h1><span> Eric Yang </span></h1>
             <p><strong> Data Scientist</strong> & <strong>2D Artist</strong>.</p>
-            <h1><span> Eric Yang </span> from Los Angeles.</h1>
         </div>
     </div>
 </div>
 
+<!-- create the about page -->
+<div id = "about">
+    <div class = "container">
+        <div class = "row">
+            <div class = "about-col-1">
+                <img src = "images/aboutme.jpg" alt = "" >
+            </div>
+            <div class = "about-col-2">
+                <h1 class = "sub-title">About Me.</h1>
+                <p>I am a data scientist and machine learning researcher with a background in biological data science, imaging, and
+                    clinical analytics. My current work focuses on multimodal machine learning ranging from retinal imaging
+                    to NLP approaches that analyze real-world health signals. Alongside my research,
+                    I am active as a 2D digital artist, laying interest in visual representation,
+                    UI/UX design, and the interpretability of scientific communication. Currently, I am pursuing a Master's degree
+                    in health data science at UCSF while taking a leading position at BOLERO Inc., a full stack music management company, as data scientist and developer. </p>
+                <div class = "tab-titles">
+                    <p class = "tab-links active-link" onclick = "opentab('Skills')"> SKILLS</p>
+                    <p class = "tab-links" onclick = "opentab('Experiences')"> EXPERIENCES</p>
+                    <p class = "tab-links" onclick = "opentab('Education')"> EDUCATION</p>
+                </div>
+                <div class = "tab-contents active-tab" id = "Skills">
+                    <ul>
+                        <li>
+                             <span><strong>Statistical Learning & Modelling</strong></span><br>
+                            Machine learning for clinical and biomedical datasets (EHR, longitudinal data).<br><br>
+                            Cross-Validation, ensemble modelling, and bias evaluation.<br><br>
+                            Dimensionality reduction and neural networks for clinical prediction tasks.<br><br>
+                            Statistical hypothesis testing, regression modeling, survival analysis, and feature extraction.
+                        </li>
+                        <li>
+                            <span><strong>Machine Learning & AI</strong></span><br>
+                            <strong>Python:</strong> PyTorch, TensorFlow, Scikit-Learn, SciPy, TorchVision, HuggingFace, NVIDIA RAPIDS & CUDA, Gensim, Matplotlib<br><br>
+                            <strong>Audio & Signal Processing:</strong> Librosa, Essentia, Torchaudio (tempo detection, spectral analysis)<br><br>
+                            <strong>Computer Vision:</strong> OpenCV, PyTorch/TorchVision, timm, ViT fine-tuning, data augmentation<br><br>
+                            Experience with supervised/unsupervised learning, deep learning, model stacking, embeddings, NLP, and GPU-accelerated ML workflows.
+                        </li>
+                        <li>
+                            <span><strong>Programming Languages</strong></span><br>
+                            <strong>Python, C++, R, MATLAB, JavaScript</strong> with 4+ years of experience across computing, data, ML, and full-stack.
+                        </li>
+                        <li>
+                        <span><strong>UI/UX Media & Digital Illustration</strong></span><br>
+                        HTML, CSS, and JavaScript for interactive web applications (3 years).<br><br>
+                        Adobe Illustrator, Lightroom, Photoshop, Premiere Pro, and Procreate (4 years) for digital illustration,
+                        design mockups, and media storytelling.
+                        </li>
+                    </ul>
+                </div>
+                <div class = "tab-contents" id = "Experiences">
+                    <ul>
+                        <li><span><strong>Research Labs & Internships</strong></span><br>
+                            <strong>Data Science Specialist @ UCSF Dept. of Medicine (Present) </strong><br>
+                            <strong>Graduate Student Researcher @ Hswen Lab (Present)</strong><br>
+                            Clinical Analysis Assistant @ Suthana Lab (2023-2024)<br>
+                            Data Analysis Assistant @ Institute of Neuro Innovation (2022-2023) <br>
+                            Research Assistant @ Arisaka Lab (2021-2022)<br><br>
+                        </li>
+                        <li><span><strong>Work Experience in STEM</strong></span><br>
+                            <strong>Lead Data Scientist @ BOLERO Inc. (Present)</strong><br>
+                            Chief Technology Officer @ PITTAN Inc (2023)<br><br>
+                        </li>
+                        <li><span><strong>Work Experience in the Arts</strong></span><br>
+                            Cover Illustrator @ KADOKAWA Corporation (2024)<br>
+                            Assistant Illustrations Editor @ UCLA Student Media (2023-2024) <br>
+                            Copy Editor @ Tong Li Publishing (2020-2024)<br><br>
+                        </li>
+                    </ul>
+                </div>
+                <div class = "tab-contents" id = "Education">
+                    <ul>
+                        <li><span><strong>University of California, Los Angeles</strong></span><br>
+                                  2020 - 2024 <br>
+                                  Computational and Systems Biology B.S., Departmental Honors<br>
+                                  Concentration: Biological Data Science<br><br>
+                        </li>
+                        <li><span><strong>University of California, San Francisco</strong></span><br>
+                                  2024 - 2026 <br>
+                                  Health Data Science M.S.<br><br>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!--Research and Projects-->
+<div id = "Research">
+    <div class="container">
+        <h1 class = "sub-title">Research Projects.</h1>
+        <div class ="project-list">
+            <!--Display as a grid-->
+            <div>
+                <i class="fa-solid fa-flask-vial"></i>
+                <h2>Skin Analyses Using Amino Acid in Sweat Content</h2>
+                <p>Creating a new pipeline for skin health diagnoses using amino acid content from sweat collection.
+                    Work done in PITTAN Inc.</p>
+                <a href="https://www.pittan.life/lang/en">Website</a>
+                &nbsp;&nbsp;&nbsp;
+                <a href="/images/sweat.png">Poster</a>
+            </div>
+            <div>
+                <i class="fa-solid fa-eye"></i>
+                <h2>ODIR-5K Retinal Image Analysis</h2>
+                <p>A unified training and evaluation framework comparing multiple deep learning architectures on ODIR-5K
+                    to build a robust baseline for retinal disease detection and ADRD-related biomarker studies.</p>
+                <a href="https://github.com/yangpings/ODIR-5K"> Github</a>
+            </div>
+            <div>
+                <i class="fa-brands fa-reddit"></i>
+                <h2>Nicotine Pouch Reddit Data Mining & NLP Analysis</h2>
+                <p>A full Reddit data workflow combining scraping, NLP preprocessing, VADER sentiment scoring, LDA topic modeling, and keyword-based dataset filtering.</p>
+                <a href="https://github.com/yangpings/Reddit-Nicotine-Sentiment"> Github</a>
+            </div>
+            <div>
+                <i class="fa-solid fa-brain"></i>
+                <h2>TIME AD: RETFound-Based Multimodal Imaging Prediction of Alzheimer’s Disease</h2>
+                <p>A multimodal AI framework using the RETFound vision transformer and UK Biobank eye biomarkers
+                    to predict Alzheimer’s Disease and Related Dementias from fundus images
+                    , biometrics, and clinical diagnoses. <br>Current work in progress.</p>
+                <a href="https://www.time-ad.org/leadership-1"> Website</a>
+                &nbsp;&nbsp;&nbsp;
+                <a href="/images/limits.png"> Poster</a>
+                &nbsp;&nbsp;&nbsp;
+                <a href=""> Github</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!--Publications-->
+<div id = "Publications">
+    <div class="container">
+        <h1 class = "sub-title">Publications.</h1>
+        <p> currently in progress!</p>
+    </div>
+</div>
+
+<!-- create an art portfolio section-->
+<div id = "art">
+    <div class = "container">
+        <h1 class = "sub-title">Art Portfolio.</h1>
+        <div class = "work-list">
+            <div class = "work">
+                <img src = "images/pro.png">
+                <div class="layer">
+                    <h3>Concept Code 02: Flora</h3>
+                    <p> Drawn using Procreate, Edited with Adobe Illustrator. Learn more on PIXIV</p>
+                    <a href = "https://www.pixiv.net/artworks/128093526"><i class="fa-solid fa-up-right-from-square"></i></a>
+                </div>
+            </div>
+            <div class = "work">
+                <img src = "images/miku2.png">
+                <div class="layer">
+                    <h3>Hatsune Miku Fan Art</h3>
+                    <p> Drawn using Ibix PaintX, Edited with Adobe Illustrator. Learn more on PIXIV</p>
+                    <a href = "https://www.pixiv.net/artworks/116375366"><i class="fa-solid fa-up-right-from-square"></i></a>
+                </div>
+            </div>
+            <div class = "work">
+                <img src = "images/minami.png">
+                <div class="layer">
+                    <h3>Concept Code 01: Minami</h3>
+                    <p> Drawn with Procreate. Learn more on PIXIV</p>
+                    <a href = "https://www.pixiv.net/artworks/118904947"><i class="fa-solid fa-up-right-from-square"></i></a>
+                </div>
+            </div>
+            <div class = "work">
+                <img src = "images/earth.png">
+                <div class="layer">
+                    <h3>Travel to the Future</h3>
+                    <p> Drawn using Procreate, Edited with Adobe Illustrator. Learn more on PIXIV</p>
+                    <a href = "https://www.pixiv.net/artworks/118752021"><i class="fa-solid fa-up-right-from-square"></i></a>
+                </div>
+            </div>
+        </div>
+        <a href = "https://www.pixiv.net/users/63676153" class = "btn">More Artworks.</a>
+    </div>
+</div>
 <!-- create a playground -->
 <section id="playground">
   <div class="container">
@@ -152,174 +331,6 @@ particle.angle += settings.drift;
     </div> <!-- end .playground-split -->
   </div> <!-- end .container -->
 </section>
-
-
-
-<!-- create the about page -->
-<div id = "about">
-    <div class = "container">
-        <div class = "row">
-            <div class = "about-col-1">
-                <img src = "images/aboutme.jpg" alt = "" >
-            </div>
-            <div class = "about-col-2">
-                <h1 class = "sub-title">About Me.</h1>
-                <p>I am a data scientist and researcher with a background in biological data science, neuroimaging, and
-                    clinical analytics. My current work focuses on multimodal machine learning ranging from imaging
-                    to NLP systems that analyze real-world health signals. Alongside my research,
-                    I am active as a 2D digital artist, which informs my interest in visual representation,
-                    UI/UX design, and the interpretability of scientific communication. Currently, I am pursuing a Master's degree
-                    in health data science at UCSF while taking a lead position at BOLERO Inc., a full stack music management company, as data scientist and developer. </p>
-                <div class = "tab-titles">
-                    <p class = "tab-links active-link" onclick = "opentab('Skills')"> SKILLS</p>
-                    <p class = "tab-links" onclick = "opentab('Experiences')"> EXPERIENCES</p>
-                    <p class = "tab-links" onclick = "opentab('Education')"> EDUCATION</p>
-                </div>
-                <div class = "tab-contents active-tab" id = "Skills">
-                    <ul>
-
-                        <li>
-                             <span><strong>Statistical Learning & Modelling</strong></span><br>
-                            Machine learning for clinical and biomedical datasets (EHR, longitudinal data).<br><br>
-                            Cross-Validation, ensemble modelling, and bias evaluation.<br><br>
-                            Dimensionality reduction and neural networks for clinical prediction tasks.<br><br>
-                            Statistical hypothesis testing, regression modeling, survival analysis, and feature extraction.
-                        </li>
-                        <li>
-                            <span><strong>Machine Learning & AI</strong></span><br>
-                            <strong>Python:</strong> PyTorch, TensorFlow, Scikit-Learn, SciPy, TorchVision, HuggingFace, NVIDIA RAPIDS & CUDA, Gensim, Matplotlib<br><br>
-                            <strong>Audio & Signal Processing:</strong> Librosa, Essentia, Torchaudio (tempo detection, spectral analysis)<br><br>
-                            <strong>Computer Vision:</strong> OpenCV, PyTorch/TorchVision, timm, ViT fine-tuning, data augmentation<br><br>
-                            Experience with supervised/unsupervised learning, deep learning, model stacking, embeddings, NLP, and GPU-accelerated ML workflows.
-                        </li>
-                        <li>
-                            <span><strong>Programming Languages</strong></span><br>
-                            <strong>Python, C++, R, MATLAB, JavaScript</strong> with 4+ years of experience across computing, data, ML, and full-stack.
-                        </li>
-                        <li>
-                        <span><strong>UI/UX Media & Digital Illustration</strong></span><br>
-                        HTML, CSS, and JavaScript for interactive web applications (3 years).<br><br>
-                        Adobe Illustrator, Lightroom, Photoshop, Premiere Pro, and Procreate (4 years) for digital illustration,
-                        design mockups, and media storytelling.
-                        </li>
-                    </ul>
-                </div>
-                <div class = "tab-contents" id = "Experiences">
-                    <ul>
-                        <li><span><strong>Research Labs & Internships</strong></span><br>
-                            <strong>Data Science Specialist @ UCSF Dept. of Medicine (Present) </strong><br>
-                            <strong>Graduate Student Researcher @ Hswen Lab (Present)</strong><br>
-                            Clinical Analysis Assistant @ Suthana Lab (2023-2024)<br>
-                            Data Analysis Assistant @ Institute of Neuro Innovation (2022-2023) <br>
-                            Research Assistant @ Arisaka Lab (2021-2022)<br><br>
-                        </li>
-                        <li><span><strong>Work Experience in STEM</strong></span><br>
-                            <strong>Lead Data Scientist @ BOLERO Inc. (Present)</strong><br>
-                            Chief Technology Officer @ PITTAN Inc (2023)<br><br>
-                        </li>
-                        <li><span><strong>Work Experience in the Arts</strong></span><br>
-                            Cover Illustrator @ KADOKAWA Corporation (2024)<br>
-                            Assistant Illustrations Editor @ UCLA Student Media (2023-2024) <br>
-                            Copy Editor @ Tong Li Publishing (2020-2024)<br><br>
-                        </li>
-                    </ul>
-                </div>
-                <div class = "tab-contents" id = "Education">
-                    <ul>
-                        <li><span><strong>University of California, Los Angeles</strong></span><br>
-                                  2020 - 2024 <br>
-                                  Computational and Systems Biology B.S., Departmental Honors<br>
-                                  Concentration: Biological Data Science<br><br>
-                        </li>
-                        <li><span><strong>University of California, San Francisco</strong></span><br>
-                                  2024 - 2026 <br>
-                                  Health Data Science M.S.<br><br>
-                        </li>
-                    </ul>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-
-<!--Research and Projects-->
-<div id = "Research">
-    <div class="container">
-        <h1 class = "sub-title">Research Projects.</h1>
-        <div class ="project-list">
-            <!--Display as a grid-->
-            <div>
-                <i class="fa-solid fa-flask-vial"></i>
-                <h2>Skin Analyses Using Amino Acid in Sweat Content</h2>
-                <p>Creating a new pipeline for skin health diagnoses using amino acid content from sweat collection.
-                    Work done in PITTAN Inc.</p>
-                <a href="/images/sweat.png"> Learn More</a>
-            </div>
-            <div>
-                <i class="fa-solid fa-eye"></i>
-                <h2>ODIR-5K Retinal Image Analysis</h2>
-                <p>A unified training and evaluation framework comparing multiple deep learning architectures on ODIR-5K
-                    to build a robust baseline for retinal disease detection and ADRD-related biomarker studies.</p>
-                <a href="https://github.com/yangpings/ODIR-5K"> Learn More</a>
-            </div>
-            <div>
-                <i class="fa-brands fa-reddit"></i>
-                <h2>Nicotine Pouch Reddit Data Mining & NLP Analysis</h2>
-                <p>A full Reddit data workflow combining scraping, NLP preprocessing, VADER sentiment scoring, LDA topic modeling, and keyword-based dataset filtering.</p>
-                <a href="https://github.com/yangpings/Reddit-Nicotine-Sentiment"> Learn More</a>
-            </div>
-            <div>
-                <i class="fa-solid fa-brain"></i>
-                <h2>TIME AD: RETFound-Based Multimodal Imaging Prediction of Alzheimer’s Disease</h2>
-                <p>A multimodal AI framework using the RETFound vision transformer and UK Biobank eye biomarkers
-                    to predict Alzheimer’s Disease and Related Dementias from fundus images
-                    , biometrics, and clinical diagnoses. <br>Current work in progress.</p>
-                <a href="https://www.time-ad.org/leadership-1"> Learn More</a>
-            </div>
-        </div>
-    </div>
-</div>
-<!-- create an art portfolio section-->
-<div id = "art">
-    <div class = "container">
-        <h1 class = "sub-title">Art Portfolio.</h1>
-        <div class = "work-list">
-            <div class = "work">
-                <img src = "images/pro.png">
-                <div class="layer">
-                    <h3>Ninomae Ina'Nis Fan Art</h3>
-                    <p> Drawn using Procreate, Edited with Adobe Illustrator. Learn more on PIXIV</p>
-                    <a href = "https://www.pixiv.net/artworks/118752283"><i class="fa-solid fa-up-right-from-square"></i></a>
-                </div>
-            </div>
-            <div class = "work">
-                <img src = "images/miku2.png">
-                <div class="layer">
-                    <h3>Hatsune Miku Fan Art</h3>
-                    <p> Drawn using Ibix PaintX, Edited with Adobe Illustrator. Learn more on PIXIV</p>
-                    <a href = "https://www.pixiv.net/artworks/116375366"><i class="fa-solid fa-up-right-from-square"></i></a>
-                </div>
-            </div>
-            <div class = "work">
-                <img src = "images/minami.png">
-                <div class="layer">
-                    <h3>Concept Code 01: Minami</h3>
-                    <p> Drawn with Procreate. Learn more on PIXIV</p>
-                    <a href = "https://www.pixiv.net/artworks/118904947"><i class="fa-solid fa-up-right-from-square"></i></a>
-                </div>
-            </div>
-            <div class = "work">
-                <img src = "images/earth.png">
-                <div class="layer">
-                    <h3>Travel to the Future</h3>
-                    <p> Drawn using Procreate, Edited with Adobe Illustrator. Learn more on PIXIV</p>
-                    <a href = "https://www.pixiv.net/artworks/118752021"><i class="fa-solid fa-up-right-from-square"></i></a>
-                </div>
-            </div>
-        </div>
-        <a href = "https://www.pixiv.net/users/63676153" class = "btn">More Artworks.</a>
-    </div>
-</div>
 <!-- Contact Information-->
 <div id="contact">
     <div class="container">
@@ -348,7 +359,7 @@ particle.angle += settings.drift;
         </div>
     </div>
     <div class = "copyright">
-        <p><i class="fa-solid fa-music"></i> Copyright© 2024 Eric Yang. Made Using HTML, CSS, JS. I also <i class="fa-solid fa-heart"></i> rhythm games <i class="fa-solid fa-music"></i></p>
+        <p><i class="fa-solid fa-music"></i> Copyright© 2026 Eric Yang. Made Using HTML, CSS, JS. I also <i class="fa-solid fa-heart"></i> rhythm games <i class="fa-solid fa-music"></i></p>
     </div>
 </div>
 <script>
