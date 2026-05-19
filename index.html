@@ -223,7 +223,7 @@
 <!-- create a playground -->
 <section id="playground">
   <div class="container">
-    <h1 class="sub-title">Where Data Meets Art.</h1>
+    <h1 class="sub-title">Motion Particle Playground.</h1>
     <p class="playground-sub">
       Change parameters and watch the animation respond.
     </p>
@@ -331,6 +331,255 @@ particle.angle += settings.drift;
     </div> <!-- end .playground-split -->
   </div> <!-- end .container -->
 </section>
+
+<!-- ===================================== -->
+<!-- 3D NEURAL SPHERE -->
+<!-- ===================================== -->
+
+<section id="ml-demo">
+  <div class="container">
+
+    <div class="playground-hero">
+
+      <h1 class="sub-title">
+        3D Neural Network Playground.
+      </h1>
+
+      <p class="playground-sub">
+        A volumetric neural field with rotating depth,
+        glowing connectivity, and live agreement dynamics.
+      </p>
+
+      <div class="playground-badges">
+        <span class="playground-badge">
+          True 3D Volume
+        </span>
+
+        <span class="playground-badge">
+          Volumetric Connectivity
+        </span>
+
+        <span class="playground-badge">
+          Live Agreement Signal
+        </span>
+      </div>
+
+    </div>
+
+    <div class="playground-split">
+
+      <!-- LEFT SIDE -->
+
+      <div class="playground-card playground-card--featured">
+
+        <div class="playground-card-head">
+
+          <div>
+
+            <h2>
+              Neural Orbital Field
+            </h2>
+
+            <p>
+              Nodes exist inside a rotating 3D sphere while
+              activation waves propagate through the network.
+            </p>
+
+          </div>
+
+          <div class="playground-metric">
+
+            <span class="metric-label">
+              Confidence
+            </span>
+
+            <span
+              class="metric-value"
+              id="nnSphereMetric"
+            >
+              0.000
+            </span>
+
+          </div>
+
+        </div>
+
+        <!-- CONTROLS -->
+
+        <div class="playground-controls">
+
+          <div class="playground-control-row">
+
+            <label for="nnSphereSpeed">
+              Speed
+            </label>
+
+            <input
+              type="range"
+              id="nnSphereSpeed"
+              min="0.2"
+              max="2.0"
+              step="0.1"
+              value="1.0"
+            />
+
+            <span id="nnSphereSpeedVal">
+              1.0
+            </span>
+
+          </div>
+
+          <div class="playground-control-row">
+
+            <label for="nnSphereDensity">
+              Density
+            </label>
+
+            <input
+              type="range"
+              id="nnSphereDensity"
+              min="40"
+              max="220"
+              step="5"
+              value="120"
+            />
+
+            <span id="nnSphereDensityVal">
+              120
+            </span>
+
+          </div>
+
+          <div class="playground-control-row">
+
+            <label for="nnSpherePulse">
+              Neural Activity
+            </label>
+
+            <input
+              type="range"
+              id="nnSpherePulse"
+              min="0"
+              max="1"
+              step="0.05"
+              value="0.45"
+            />
+
+            <span id="nnSpherePulseVal">
+              0.45
+            </span>
+
+          </div>
+
+        </div>
+
+        <!-- CANVAS -->
+
+        <div class="playground-canvas-wrap">
+          <canvas id="nnSphereCanvas"></canvas>
+        </div>
+
+        <!-- FOOTER -->
+
+        <div class="playground-footer">
+
+          <span class="footer-chip">
+            Volumetric Nodes
+          </span>
+
+          <span class="footer-chip">
+            Depth Projection
+          </span>
+
+          <span class="footer-chip">
+            Dynamic Activation
+          </span>
+
+        </div>
+
+      </div>
+
+      <!-- RIGHT SIDE -->
+
+      <div class="playground-card">
+
+        <div class="playground-card-head">
+
+          <div>
+
+            <h2>
+              Neural Field Update (JavaScript)
+            </h2>
+
+            <p>
+              Core activation logic driving the
+              volumetric neural sphere.
+            </p>
+
+          </div>
+
+        </div>
+
+        <!-- CODE BLOCK -->
+
+        <div class="playground-code-wrapper">
+
+<pre class="playground-code-block"><code>
+<span class="cm">// volumetric neural field update</span>
+<span class="kw">const</span> pulseCenter = {
+  x: <span class="fn">Math</span>.sin(t * <span class="num">0.8</span>) * <span class="num">70</span>,
+  y: <span class="fn">Math</span>.cos(t * <span class="num">0.6</span>) * <span class="num">70</span>,
+  z: <span class="fn">Math</span>.sin(t * <span class="num">0.5</span>) * <span class="num">70</span>
+};
+
+<span class="kw">for</span> (<span class="kw">const</span> node<span class="kw"> of</span> nodes) {
+  <span class="kw">const</span> dist = <span class="fn">Math</span>.hypot(node.x - pulseCenter.x,node.y - pulseCenter.y,node.z - pulseCenter.z);
+  <span class="kw">const</span> wave = <span class="num">0.5</span> + <span class="num">0.5</span> *<span class="fn">Math</span>.sin(t * <span class="num">1.7</span> +node.phase);
+  node.activation = clamp(wave + (<span class="num">1</span> - dist / <span class="num">160</span>) *<span class="num">0.45</span>,<span class="num">0</span>,<span class="num">1</span>)
+};
+
+<span class="kw">const</span> confidence = sigmoid((raw - <span class="num">0.5</span>) * <span class="num">8</span>);
+
+<span class="kw">const</span> agreement = (confidence > <span class="num">0.5</span>) == (target > <span class="num">0.5</span>);
+</code></pre>
+
+        </div>
+
+        <!-- LIVE STATE -->
+
+        <div class="playground-run-panel">
+
+          <div class="playground-run-header">
+
+            <span>
+              Live network state
+            </span>
+
+            <button type="button">
+              Inspect
+            </button>
+
+          </div>
+
+          <div
+            class="playground-output"
+            id="nnSphereStateOutput"
+          >
+
+            confidence: 0.000<br>
+            loss: 0.000<br>
+            agreement: 0%
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+  </div>
+</section>
+
 <!-- Contact Information-->
 <div id="contact">
     <div class="container">
@@ -362,6 +611,7 @@ particle.angle += settings.drift;
         <p><i class="fa-solid fa-music"></i> Copyright© 2026 Eric Yang. Made Using HTML, CSS, JS. I also <i class="fa-solid fa-heart"></i> rhythm games <i class="fa-solid fa-music"></i></p>
     </div>
 </div>
+
 <script>
     var tablinks = document.getElementsByClassName("tab-links");
     var tabcontents = document.getElementsByClassName("tab-contents");
@@ -376,6 +626,7 @@ particle.angle += settings.drift;
         document.getElementById(tabname).classList.add("active-tab");
     }
 </script>
+
 <script>
 // ===== Playground: multi-mode particle system (ring, torus, swarm) =====
 
@@ -663,6 +914,771 @@ if (runBtn && jsOutput && jsCodeBlock) {
     }
   });
 }
+</script>
+<script>
+(() => {
+
+  const canvas =
+    document.getElementById("nnSphereCanvas");
+
+  const ctx =
+    canvas ? canvas.getContext("2d") : null;
+
+  if (!canvas || !ctx) return;
+
+  const speedInput =
+    document.getElementById("nnSphereSpeed");
+
+  const densityInput =
+    document.getElementById("nnSphereDensity");
+
+  const pulseInput =
+    document.getElementById("nnSpherePulse");
+
+  const speedVal =
+    document.getElementById("nnSphereSpeedVal");
+
+  const densityVal =
+    document.getElementById("nnSphereDensityVal");
+
+  const pulseVal =
+    document.getElementById("nnSpherePulseVal");
+
+  const metricEl =
+    document.getElementById("nnSphereMetric");
+
+  const stateOutput =
+    document.getElementById(
+      "nnSphereStateOutput"
+    );
+
+  const settings = {
+    speed:
+      speedInput ?
+      parseFloat(speedInput.value) :
+      1.0,
+
+    density:
+      densityInput ?
+      parseInt(densityInput.value, 10) :
+      120,
+
+    pulse:
+      pulseInput ?
+      parseFloat(pulseInput.value) :
+      0.45
+  };
+
+  const sphereRadius = 150;
+  const connectRadius = 92;
+
+  let nodes = [];
+  let edges = [];
+  let rotX = 0.35;
+  let rotY = 0.15;
+  let rotZ = 0.0;
+
+  let lastTs = 0;
+  let lossHistory = [];
+
+  function clamp(v, min, max) {
+    return Math.max(min, Math.min(max, v));
+  }
+
+  function randInSphere(radius) {
+
+    const u = Math.random();
+    const v = Math.random();
+    const w = Math.random();
+
+    const theta = 2 * Math.PI * u;
+    const phi = Math.acos(2 * v - 1);
+    const r = radius * Math.cbrt(w);
+
+    const sinPhi = Math.sin(phi);
+
+    return {
+      x: r * sinPhi * Math.cos(theta),
+      y: r * sinPhi * Math.sin(theta),
+      z: r * Math.cos(phi)
+    };
+  }
+
+  function resizeCanvas() {
+
+    const rect =
+      canvas.getBoundingClientRect();
+
+    const dpr =
+      window.devicePixelRatio || 1;
+
+    canvas.width = rect.width * dpr;
+    canvas.height = rect.height * dpr;
+
+    ctx.setTransform(
+      dpr,
+      0,
+      0,
+      dpr,
+      0,
+      0
+    );
+
+    buildNetwork();
+  }
+
+  function buildNetwork() {
+
+    nodes = [];
+    edges = [];
+
+    for (
+      let i = 0;
+      i < settings.density;
+      i++
+    ) {
+
+      const p =
+        randInSphere(sphereRadius);
+
+      const r =
+        Math.hypot(p.x, p.y, p.z);
+
+      nodes.push({
+        x: p.x,
+        y: p.y,
+        z: p.z,
+        baseR: r,
+        phase:
+          Math.random() *
+          Math.PI *
+          2,
+        hue:
+          185 +
+          Math.random() * 100,
+        activation: 0
+      });
+    }
+
+    const edgeSet = new Set();
+
+    for (let i = 0; i < nodes.length; i++) {
+
+      const candidates = [];
+
+      for (let j = 0; j < nodes.length; j++) {
+
+        if (i === j) continue;
+
+        const dx =
+          nodes[i].x - nodes[j].x;
+
+        const dy =
+          nodes[i].y - nodes[j].y;
+
+        const dz =
+          nodes[i].z - nodes[j].z;
+
+        const d =
+          Math.hypot(dx, dy, dz);
+
+        candidates.push([j, d]);
+      }
+
+      candidates.sort(
+        (a, b) => a[1] - b[1]
+      );
+
+      for (
+        let k = 0;
+        k < 3 && k < candidates.length;
+        k++
+      ) {
+
+        const j = candidates[k][0];
+        const d = candidates[k][1];
+
+        if (d > connectRadius)
+          continue;
+
+        const a = Math.min(i, j);
+        const b = Math.max(i, j);
+
+        const key = `${a}-${b}`;
+
+        if (edgeSet.has(key))
+          continue;
+
+        edgeSet.add(key);
+
+        edges.push({ a, b });
+      }
+    }
+  }
+
+  function projectPoint(
+    node,
+    rx,
+    ry,
+    rz,
+    w,
+    h
+  ) {
+
+    let x = node.x;
+    let y = node.y;
+    let z = node.z;
+
+    const cz = Math.cos(rz);
+    const sz = Math.sin(rz);
+
+    const cy = Math.cos(ry);
+    const sy = Math.sin(ry);
+
+    const cx = Math.cos(rx);
+    const sx = Math.sin(rx);
+
+    let x1 = x * cz - y * sz;
+    let y1 = x * sz + y * cz;
+    let z1 = z;
+
+    let x2 = x1 * cy + z1 * sy;
+    let z2 = -x1 * sy + z1 * cy;
+    let y2 = y1;
+
+    let y3 = y2 * cx - z2 * sx;
+    let z3 = y2 * sx + z2 * cx;
+    let x3 = x2;
+
+    const perspective = 460;
+
+    const scale =
+      perspective /
+      (perspective + z3 + 240);
+
+    return {
+      x: w / 2 + x3 * scale,
+      y: h / 2 + y3 * scale,
+      z: z3,
+      scale
+    };
+  }
+
+  function updateActivations(t) {
+
+    const pulseCenter = {
+      x: Math.sin(t * 0.8) * 70,
+      y: Math.cos(t * 0.6) * 70,
+      z:
+        Math.sin(t * 0.5 + 1.2) *
+        70
+    };
+
+    for (const node of nodes) {
+
+      const dx =
+        node.x - pulseCenter.x;
+
+      const dy =
+        node.y - pulseCenter.y;
+
+      const dz =
+        node.z - pulseCenter.z;
+
+      const dist =
+        Math.hypot(dx, dy, dz);
+
+      const radial =
+        1 -
+        clamp(
+          node.baseR /
+          sphereRadius,
+          0,
+          1
+        );
+
+      const wave =
+        0.5 +
+        0.5 *
+        Math.sin(
+          t * 1.7 +
+          node.phase +
+          node.x * 0.012 +
+          node.y * 0.011 +
+          node.z * 0.013
+        );
+
+      const pulse =
+        Math.max(
+          0,
+          1 - dist / 160
+        );
+
+      const noise =
+        (Math.random() - 0.5) *
+        settings.pulse *
+        0.12;
+
+      node.activation = clamp(
+        0.12 +
+        wave * 0.35 +
+        radial * 0.25 +
+        pulse * 0.45 +
+        noise,
+        0,
+        1
+      );
+    }
+  }
+
+  function drawEdges(
+    rx,
+    ry,
+    rz,
+    w,
+    h
+  ) {
+
+    for (const edge of edges) {
+
+      const na = nodes[edge.a];
+      const nb = nodes[edge.b];
+
+      const pa =
+        projectPoint(
+          na,
+          rx,
+          ry,
+          rz,
+          w,
+          h
+        );
+
+      const pb =
+        projectPoint(
+          nb,
+          rx,
+          ry,
+          rz,
+          w,
+          h
+        );
+
+      const intensity =
+        (na.activation +
+        nb.activation) * 0.5;
+
+      ctx.beginPath();
+
+      ctx.strokeStyle =
+        `rgba(
+          79,
+          209,
+          255,
+          ${0.03 + intensity * 0.28}
+        )`;
+
+      ctx.lineWidth =
+        0.5 + intensity * 1.6;
+
+      ctx.moveTo(pa.x, pa.y);
+      ctx.lineTo(pb.x, pb.y);
+
+      ctx.stroke();
+    }
+  }
+
+  function drawNodes(
+    rx,
+    ry,
+    rz,
+    w,
+    h
+  ) {
+
+    const projected = [];
+
+    for (const node of nodes) {
+
+      const p =
+        projectPoint(
+          node,
+          rx,
+          ry,
+          rz,
+          w,
+          h
+        );
+
+      projected.push({
+        ...p,
+        activation: node.activation,
+        hue: node.hue
+      });
+    }
+
+    projected.sort(
+      (a, b) => a.z - b.z
+    );
+
+    for (const p of projected) {
+
+      const a = p.activation;
+
+      const radius =
+        (3.5 + a * 7.5) *
+        p.scale;
+
+      const glow =
+        8 + a * 18;
+
+      ctx.save();
+
+      ctx.shadowBlur = glow;
+
+      ctx.shadowColor =
+        `hsla(
+          ${p.hue},
+          90%,
+          70%,
+          0.9
+        )`;
+
+      ctx.beginPath();
+
+      ctx.fillStyle =
+        `hsla(
+          ${p.hue},
+          90%,
+          ${55 + a * 20}%,
+          ${0.12 + a * 0.8}
+        )`;
+
+      ctx.arc(
+        p.x,
+        p.y,
+        radius,
+        0,
+        Math.PI * 2
+      );
+
+      ctx.fill();
+
+      ctx.restore();
+    }
+  }
+
+  function drawHUD(
+    output,
+    loss,
+    agreement,
+    w,
+    h
+  ) {
+
+    ctx.fillStyle =
+      "rgba(2, 6, 23, 0.58)";
+
+    ctx.strokeStyle =
+      "rgba(255,255,255,0.10)";
+
+    ctx.lineWidth = 1;
+
+    ctx.beginPath();
+    ctx.rect(18, 16, 250, 92);
+    ctx.fill();
+    ctx.stroke();
+
+    ctx.fillStyle =
+      "rgba(229,231,235,0.92)";
+
+    ctx.font =
+      '12px "SF Mono", Menlo, monospace';
+
+    ctx.fillText(
+      `confidence: ${output.toFixed(3)}`,
+      30,
+      40
+    );
+
+    ctx.fillText(
+      `loss: ${loss.toFixed(3)}`,
+      30,
+      62
+    );
+
+    ctx.fillText(
+      `agreement: ${(
+        agreement * 100
+      ).toFixed(0)}%`,
+      30,
+      84
+    );
+
+    const chartX = 52;
+    const chartY = h - 48;
+    const chartW = w - 104;
+    const chartH = 26;
+
+    ctx.strokeStyle =
+      "rgba(255,255,255,0.12)";
+
+    ctx.strokeRect(
+      chartX,
+      chartY,
+      chartW,
+      chartH
+    );
+
+    if (lossHistory.length > 1) {
+
+      ctx.beginPath();
+
+      for (
+        let i = 0;
+        i < lossHistory.length;
+        i++
+      ) {
+
+        const px =
+          chartX +
+          (
+            i /
+            (lossHistory.length - 1)
+          ) *
+          chartW;
+
+        const py =
+          chartY +
+          chartH -
+          lossHistory[i] * chartH;
+
+        if (i === 0)
+          ctx.moveTo(px, py);
+        else
+          ctx.lineTo(px, py);
+      }
+
+      ctx.strokeStyle =
+        "rgba(127,228,255,0.95)";
+
+      ctx.lineWidth = 2;
+      ctx.stroke();
+    }
+  }
+
+  function render(ts) {
+
+    const w =
+      canvas.width /
+      (window.devicePixelRatio || 1);
+
+    const h =
+      canvas.height /
+      (window.devicePixelRatio || 1);
+
+    const dt =
+      lastTs ?
+      (ts - lastTs) * 0.001 :
+      0.016;
+
+    lastTs = ts;
+
+    const t =
+      ts * 0.001 *
+      settings.speed;
+
+    rotY +=
+      dt *
+      0.55 *
+      settings.speed;
+
+    rotX +=
+      dt *
+      0.32 *
+      settings.speed;
+
+    rotZ +=
+      dt *
+      0.18 *
+      settings.speed;
+
+    updateActivations(t);
+
+    const raw =
+      nodes.reduce(
+        (sum, n) =>
+          sum + n.activation,
+        0
+      ) / nodes.length;
+
+    const output =
+      1 /
+      (
+        1 +
+        Math.exp(
+          -(raw - 0.5) * 8
+        )
+      );
+
+    const target =
+      0.5 +
+      0.5 *
+      Math.sin(t * 0.7);
+
+    const loss =
+      Math.abs(
+        target - output
+      );
+
+    const predicted =
+      output > 0.5 ? 1 : 0;
+
+    const actual =
+      target > 0.5 ? 1 : 0;
+
+    const agreement =
+      predicted === actual
+        ? 1
+        : 0;
+
+    lossHistory.push(
+      clamp(loss, 0, 1)
+    );
+
+    if (lossHistory.length > 120) {
+      lossHistory.shift();
+    }
+
+    ctx.fillStyle = "#020308";
+
+    ctx.fillRect(
+      0,
+      0,
+      w,
+      h
+    );
+
+    drawEdges(
+      rotX,
+      rotY,
+      rotZ,
+      w,
+      h
+    );
+
+    drawNodes(
+      rotX,
+      rotY,
+      rotZ,
+      w,
+      h
+    );
+
+    drawHUD(
+      output,
+      loss,
+      agreement,
+      w,
+      h
+    );
+
+    if (metricEl) {
+      metricEl.textContent =
+        output.toFixed(3);
+    }
+
+    if (stateOutput) {
+
+      stateOutput.innerHTML =
+        `confidence: ${
+          output.toFixed(3)
+        }<br>` +
+
+        `loss: ${
+          loss.toFixed(3)
+        }<br>` +
+
+        `agreement: ${
+          (
+            agreement * 100
+          ).toFixed(0)
+        }%`;
+    }
+
+    requestAnimationFrame(render);
+  }
+
+  if (speedInput && speedVal) {
+
+    speedInput.addEventListener(
+      "input",
+      () => {
+
+        settings.speed =
+          parseFloat(
+            speedInput.value
+          );
+
+        speedVal.textContent =
+          speedInput.value;
+      }
+    );
+  }
+
+  if (
+    densityInput &&
+    densityVal
+  ) {
+
+    densityInput.addEventListener(
+      "input",
+      () => {
+
+        settings.density =
+          parseInt(
+            densityInput.value,
+            10
+          );
+
+        densityVal.textContent =
+          densityInput.value;
+
+        buildNetwork();
+      }
+    );
+  }
+
+  if (
+    pulseInput &&
+    pulseVal
+  ) {
+
+    pulseInput.addEventListener(
+      "input",
+      () => {
+
+        settings.pulse =
+          parseFloat(
+            pulseInput.value
+          );
+
+        pulseVal.textContent =
+          settings.pulse.toFixed(2);
+      }
+    );
+  }
+
+  resizeCanvas();
+
+  window.addEventListener(
+    "resize",
+    resizeCanvas
+  );
+
+  requestAnimationFrame(render);
+
+})();
 </script>
 </body>
 </html>
