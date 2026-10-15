@@ -1,0 +1,623 @@
+# Instructions
+
+- Following Playwright test failed.
+- Explain why, be concise, respect Playwright best practices.
+- Provide a snippet of code with the fix, if possible.
+
+# Test info
+
+- Name: mobile.spec.ts >> mobile rooms fit and close after scrolling at 320x740
+- Location: tests\mobile.spec.ts:4:3
+
+# Error details
+
+```
+Test timeout of 30000ms exceeded.
+```
+
+# Page snapshot
+
+```yaml
+- generic [ref=e2]:
+  - link "Skip to research" [ref=e3] [cursor=pointer]:
+    - /url: "#research"
+  - banner [ref=e4]:
+    - link "Eric Yang ." [ref=e5] [cursor=pointer]:
+      - /url: "#"
+      - text: Eric Yang
+      - generic [ref=e6]: .
+    - navigation "Main navigation" [ref=e7]:
+      - link "About" [ref=e8] [cursor=pointer]:
+        - /url: "#about"
+      - link "Background" [ref=e9] [cursor=pointer]:
+        - /url: "#background"
+      - link "Research" [ref=e10] [cursor=pointer]:
+        - /url: "#research"
+      - link "Projects" [ref=e11] [cursor=pointer]:
+        - /url: "#projects"
+      - link "Art" [ref=e12] [cursor=pointer]:
+        - /url: "#creative"
+      - link "Contact" [ref=e13] [cursor=pointer]:
+        - /url: "#contact"
+      - link "CV ↗" [ref=e14] [cursor=pointer]:
+        - /url: /images/eric_cv.pdf
+      - link "GitHub ↗" [ref=e17] [cursor=pointer]:
+        - /url: https://github.com/yangpings
+      - link "LinkedIn ↗" [ref=e20] [cursor=pointer]:
+        - /url: https://www.linkedin.com/in/eyangucsf/
+  - main [ref=e23]:
+    - region [ref=e24]:
+      - generic [ref=e25]:
+        - paragraph [ref=e26]: RESEARCH. ML. SIDE QUESTS.
+        - heading [level=1] [ref=e28]:
+          - text: One curious
+          - strong [ref=e29]: mind
+          - text: .
+          - generic [ref=e30]:
+            - text: One
+            - strong [ref=e31]: world
+            - text: to find.
+          - text: One
+          - strong [ref=e32]: step
+          - text: at a time.
+        - paragraph [ref=e33]: I’m Eric, a machine learning researcher and AI engineer working across healthcare and music. I build systems and investigate what they learn, where they fail, and how reliably they work. In my free time, I draw, sing, and design!
+        - generic [ref=e34]:
+          - link "Step into my world ↓" [ref=e35] [cursor=pointer]:
+            - /url: "#world"
+            - text: Step into my world
+            - generic [ref=e36]: ↓
+          - link "Here for the research? ↗" [ref=e37] [cursor=pointer]:
+            - /url: "#research"
+            - text: Here for the research?
+            - generic [ref=e38]: ↗
+        - generic [ref=e39]:
+          - generic [ref=e40]: UCSF M.S. Health Data Science
+          - generic [ref=e41]: ·
+          - generic [ref=e42]: UCLA B.S. Computational & Systems Biology
+      - complementary [ref=e43]:
+        - button "Make Eric's photo bounce" [ref=e44] [cursor=pointer]:
+          - img "Eric Yang outdoors among green plants" [ref=e45]
+          - generic [ref=e46]: NICE TO MEET YOU
+        - generic [ref=e47]:
+          - strong [ref=e48]: Eric Yang
+          - generic [ref=e49]: Researcher / Engineer / Artist
+    - region [ref=e50]:
+      - generic [ref=e52]:
+        - text: 01 / EXPLORE THE WORLD OF ERIC
+        - heading "A little of everything I do." [level=2] [ref=e53]
+      - paragraph [ref=e54]: Walk into a room, pick up an instrument, draw something, chase a beat, or investigate a model.
+      - generic [ref=e55]:
+        - generic [ref=e56]:
+          - generic [ref=e57]: ERIC’S LITTLE WORLD
+          - generic [ref=e59]: 0 / 8 rooms explored
+          - button "Walk around" [ref=e60] [cursor=pointer]
+        - group "Interactive world. Use arrow keys or WASD to walk, E to interact, Escape to release controls. Or select any room button." [ref=e61]:
+          - img "A miniature nighttime workspace with eight connected rooms" [ref=e62]:
+            - generic [ref=e66]: FOLLOW YOUR CURIOSITY
+            - generic [ref=e67]:
+              - generic [ref=e75]: "> WHOAMI_"
+              - generic [ref=e86]: AI LAB
+            - generic [ref=e88]: VISION LAB
+            - generic [ref=e109]: ART STUDIO
+            - generic [ref=e130]:
+              - generic [ref=e138]: ♫
+              - generic [ref=e157]: MUSIC ROOM
+            - generic [ref=e159]: THE LIBRARY
+            - generic [ref=e206]: HOME, SWEET HOME
+            - generic [ref=e225]:
+              - generic [ref=e233]: ONE MORE
+              - generic [ref=e242]: JUST ONE MORE
+            - generic [ref=e244]: OUT IN THE WORLD
+            - generic [ref=e267]: THE LIGHTS ARE ON.
+            - generic [ref=e268]: NO WRONG TURNS HERE.
+          - button "Explore AI / Research lab" [active] [ref=e269] [cursor=pointer]:
+            - generic [ref=e270]: ↗
+            - generic [ref=e271]: AI / Research lab
+          - button "Explore Vision lab" [ref=e272] [cursor=pointer]:
+            - generic [ref=e273]: ↗
+            - generic [ref=e274]: Vision lab
+          - button "Explore Art studio" [ref=e275] [cursor=pointer]:
+            - generic [ref=e276]: ↗
+            - generic [ref=e277]: Art studio
+          - button "Explore Music room" [ref=e278] [cursor=pointer]:
+            - generic [ref=e279]: ↗
+            - generic [ref=e280]: Music room
+          - button "Explore Library / CV" [ref=e281] [cursor=pointer]:
+            - generic [ref=e282]: ↗
+            - generic [ref=e283]: Library / CV
+          - button "Explore Home / About Eric" [ref=e284] [cursor=pointer]:
+            - generic [ref=e285]: ↗
+            - generic [ref=e286]: Home / About Eric
+          - button "Explore Arcade" [ref=e287] [cursor=pointer]:
+            - generic [ref=e288]: ↗
+            - generic [ref=e289]: Arcade
+          - button "Explore Travel / Conferences" [ref=e290] [cursor=pointer]:
+            - generic [ref=e291]: ↗
+            - generic [ref=e292]: Travel / Conferences
+          - button "Inspect the suspicious plant" [ref=e293] [cursor=pointer]: "?"
+        - generic [ref=e294]:
+          - generic [ref=e295]:
+            - generic [ref=e296]: WASD / Arrow keys to walk · E to enter
+            - generic [ref=e297]: Follow the hallway to an open doorway.
+          - generic "Movement controls" [ref=e298]:
+            - button "Move up" [ref=e299] [cursor=pointer]: ↑
+            - button "Move left" [ref=e300] [cursor=pointer]: ←
+            - button "Move down" [ref=e301] [cursor=pointer]: ↓
+            - button "Move right" [ref=e302] [cursor=pointer]: →
+          - button "Enter room" [disabled] [ref=e303]: Enter room ↗
+      - generic "Room shortcuts" [ref=e304]:
+        - button "AI / Research lab ↗" [ref=e305] [cursor=pointer]:
+          - text: AI / Research lab
+          - generic [ref=e306]: ↗
+        - button "Vision lab ↗" [ref=e307] [cursor=pointer]:
+          - text: Vision lab
+          - generic [ref=e308]: ↗
+        - button "Art studio ↗" [ref=e309] [cursor=pointer]:
+          - text: Art studio
+          - generic [ref=e310]: ↗
+        - button "Music room ↗" [ref=e311] [cursor=pointer]:
+          - text: Music room
+          - generic [ref=e312]: ↗
+        - button "Library / CV ↗" [ref=e313] [cursor=pointer]:
+          - text: Library / CV
+          - generic [ref=e314]: ↗
+        - button "Home / About Eric ↗" [ref=e315] [cursor=pointer]:
+          - text: Home / About Eric
+          - generic [ref=e316]: ↗
+        - button "Arcade ↗" [ref=e317] [cursor=pointer]:
+          - text: Arcade
+          - generic [ref=e318]: ↗
+        - button "Travel / Conferences ↗" [ref=e319] [cursor=pointer]:
+          - text: Travel / Conferences
+          - generic [ref=e320]: ↗
+      - generic [ref=e321]: Click a room to jump in, or walk through the open doorways.
+    - region [ref=e323]:
+      - generic [ref=e324]:
+        - text: 02 / THE PERSON AT THE KEYBOARD
+        - heading "My Journey" [level=2] [ref=e325]
+        - generic [ref=e326]:
+          - link "Let’s connect on LinkedIn" [ref=e327] [cursor=pointer]:
+            - /url: https://www.linkedin.com/in/eyangucsf/
+          - link "eric.yang2@ucsf.edu" [ref=e330] [cursor=pointer]:
+            - /url: mailto:eric.yang2@ucsf.edu
+      - generic [ref=e333]:
+        - paragraph [ref=e334]: My path has taken me from studying biology and computation at UCLA to exploring AI in healthcare at UCSF. Along the way, I helped build health technology in Kobe and worked with music at BOLERO, bringing research and engineering into different parts of my life.
+        - paragraph [ref=e335]: Art has been part of that journey too, through cover illustration and editing. These days, you’ll also find me drawing, singing, playing drums, traveling, or trying one more rhythm game.
+      - region [ref=e336]:
+        - generic [ref=e337]:
+          - heading "Education" [level=3] [ref=e338]
+          - link "Full CV ↗" [ref=e339] [cursor=pointer]:
+            - /url: /images/eric_cv.pdf
+        - generic [ref=e341]:
+          - article [ref=e342]:
+            - generic [ref=e343]:
+              - generic [ref=e344]: UCSF
+              - generic [ref=e345]: 2024-2026
+            - heading "M.S. in Health Data Science" [level=4] [ref=e346]
+            - paragraph [ref=e347]: University of California, San Francisco
+            - paragraph [ref=e348]: San Francisco, California
+          - article [ref=e349]:
+            - generic [ref=e350]:
+              - generic [ref=e351]: UCLA
+              - generic [ref=e352]: 2020-2024
+            - heading "B.S. in Computational and Systems Biology" [level=4] [ref=e353]
+            - paragraph [ref=e354]: University of California, Los Angeles
+            - paragraph [ref=e355]: Los Angeles, California
+            - paragraph [ref=e356]: "Concentration: Biological Data Sciences · Departmental Highest Honors"
+      - region [ref=e357]:
+        - generic [ref=e358]:
+          - text: WHERE I’VE WORKED
+          - heading "Research & Work Experience" [level=3] [ref=e359]
+          - paragraph [ref=e360]: Research, industry, and creative roles, by start date.
+        - generic [aria-hidden] [ref=e361]:
+          - generic [ref=e362]: Research
+          - generic [ref=e363]: Industry & Creative
+        - list "Positions and experience timeline" [ref=e364]:
+          - listitem [ref=e365]:
+            - heading "2025" [level=4] [ref=e366]
+            - article [ref=e368]:
+              - generic [ref=e369]:
+                - generic [ref=e370]: Apr 2025 – Apr 2026
+                - generic [ref=e371]: Research
+              - heading "Data Science Specialist" [level=4] [ref=e372]
+              - paragraph [ref=e373]: UCSF Department of Medicine
+              - paragraph [ref=e374]: Led LLM evaluation against physician expert judgment for medical student OSCE assessment.
+              - paragraph [ref=e375]: Apprenticeship · San Francisco, California · Hybrid
+              - group [ref=e376]:
+                - generic "Full role description" [ref=e377] [cursor=pointer]:
+                  - text: Full role description
+                  - generic [aria-hidden] [ref=e378]: +
+              - button "Try it out ↗" [ref=e379] [cursor=pointer]
+            - article [ref=e381]:
+              - generic [ref=e382]:
+                - generic [ref=e383]: Apr 2025 – Mar 2026
+                - generic [ref=e384]: Industry
+              - heading "Lead Data Scientist" [level=4] [ref=e385]
+              - paragraph [ref=e386]: BOLERO · Tokyo, Japan
+              - paragraph [ref=e387]: Led AI/ML and production data systems for 100,000+ Japanese, English, and Mandarin music tracks.
+              - paragraph [ref=e388]: Full-time · Remote
+              - group [ref=e389]:
+                - generic "Full role description" [ref=e390] [cursor=pointer]:
+                  - text: Full role description
+                  - generic [aria-hidden] [ref=e391]: +
+              - button "Try it out ↗" [ref=e392] [cursor=pointer]
+              - link "BOLERO Website ↗" [ref=e393] [cursor=pointer]:
+                - /url: https://bolero.tokyo/
+          - listitem [ref=e394]:
+            - heading "2024" [level=4] [ref=e395]
+            - article [ref=e397]:
+              - generic [ref=e398]:
+                - generic [ref=e399]: Oct 2024 – Jun 2026
+                - generic [ref=e400]: Research
+              - heading "Graduate Student Researcher" [level=4] [ref=e401]
+              - paragraph [ref=e402]: UCSF Hswen Lab
+              - paragraph [ref=e403]: Led methodology, imaging pipelines, anatomical ablations, and foundation-model evaluation for ADRD prediction.
+              - paragraph [ref=e404]: Apprenticeship · San Francisco, California · Hybrid
+              - group [ref=e405]:
+                - generic "Full role description" [ref=e406] [cursor=pointer]:
+                  - text: Full role description
+                  - generic [aria-hidden] [ref=e407]: +
+              - button "Try it out ↗" [ref=e408] [cursor=pointer]
+            - article [ref=e410]:
+              - generic [ref=e411]:
+                - generic [ref=e412]: Apr 2024 – Dec 2024
+                - generic [ref=e413]: Creative
+              - heading "Cover Illustrator" [level=4] [ref=e414]
+              - paragraph [ref=e415]: KADOKAWA Corporation
+              - paragraph [ref=e416]: Created artwork, contributed to design and editing, and built graphic-design web applications.
+              - paragraph [ref=e417]: Contract · Tokyo, Japan · Remote
+              - group [ref=e418]:
+                - generic "Full role description" [ref=e419] [cursor=pointer]:
+                  - text: Full role description
+                  - generic [aria-hidden] [ref=e420]: +
+              - button "Try it out ↗" [ref=e421] [cursor=pointer]
+          - listitem [ref=e422]:
+            - heading "2023" [level=4] [ref=e423]
+            - article [ref=e425]:
+              - generic [ref=e426]:
+                - generic [ref=e427]: Mar 2023 – Jun 2024
+                - generic [ref=e428]: Research
+              - heading "Clinical Design & Analysis Assistant" [level=4] [ref=e429]
+              - paragraph [ref=e430]: UCLA Suthana Lab
+              - paragraph [ref=e431]: Analyzed 1,000+ patient EEG recordings and built reusable MATLAB and machine-learning workflows for clinical neuroscience.
+              - paragraph [ref=e432]: David Geffen School of Medicine at UCLA · Santa Monica, California · Hybrid
+              - group [ref=e433]:
+                - generic "Full role description" [ref=e434] [cursor=pointer]:
+                  - text: Full role description
+                  - generic [aria-hidden] [ref=e435]: +
+            - generic [ref=e436]:
+              - article [ref=e437]:
+                - generic [ref=e438]:
+                  - generic [ref=e439]: Sep 2023 – Jun 2024
+                  - generic [ref=e440]: Creative
+                - heading "Assistant Illustrations Editor" [level=4] [ref=e441]
+                - paragraph [ref=e442]: UCLA Student Media
+                - paragraph [ref=e443]: Supported a nine-member illustration staff, coordinated biweekly artwork, and collaborated on layout illustrations.
+                - paragraph [ref=e444]: Part-time · Los Angeles, California · On-site
+                - group [ref=e445]:
+                  - generic "Full role description" [ref=e446] [cursor=pointer]:
+                    - text: Full role description
+                    - generic [aria-hidden] [ref=e447]: +
+                - button "Try it out ↗" [ref=e448] [cursor=pointer]
+              - article [ref=e449]:
+                - generic [ref=e450]:
+                  - generic [ref=e451]: Jun 2023 – Sep 2023
+                  - generic [ref=e452]: Industry
+                - heading "Chief Technology Officer" [level=4] [ref=e453]
+                - paragraph [ref=e454]: PITTAN · Kobe, Japan
+                - paragraph [ref=e455]: Led a multimodal skin-analysis platform, hardware/data workflows, and mobile application development and deployment.
+                - paragraph [ref=e456]: Full-time · On-site
+                - group [ref=e457]:
+                  - generic "Full role description" [ref=e458] [cursor=pointer]:
+                    - text: Full role description
+                    - generic [aria-hidden] [ref=e459]: +
+                - link "PITTAN Website ↗" [ref=e460] [cursor=pointer]:
+                  - /url: https://www.pittan.life/lang/en
+          - listitem [ref=e461]:
+            - heading "2022" [level=4] [ref=e462]
+            - article [ref=e464]:
+              - generic [ref=e465]:
+                - generic [ref=e466]: Aug 2022 – Feb 2023
+                - generic [ref=e467]: Industry
+              - heading "Data Analysis Assistant" [level=4] [ref=e468]
+              - paragraph [ref=e469]: Institute of Neuro Innovation
+              - paragraph [ref=e470]: Supported clinical-trial analysis for 500+ participants and evaluated three VR/audio therapy protocols for depression.
+              - paragraph [ref=e471]: Internship · Santa Monica, California · Hybrid
+              - group [ref=e472]:
+                - generic "Full role description" [ref=e473] [cursor=pointer]:
+                  - text: Full role description
+                  - generic [aria-hidden] [ref=e474]: +
+          - listitem [ref=e475]:
+            - heading "2021" [level=4] [ref=e476]
+            - article [ref=e478]:
+              - generic [ref=e479]:
+                - generic [ref=e480]: 2021 – 2022
+                - generic [ref=e481]: Research
+              - heading "Research Assistant" [level=4] [ref=e482]
+              - paragraph [ref=e483]: UCLA Arisaka Lab
+              - paragraph [ref=e484]: Worked on brain interfaces and UI/UX.
+          - listitem [ref=e485]:
+            - heading "2020" [level=4] [ref=e486]
+            - article [ref=e488]:
+              - generic [ref=e489]:
+                - generic [ref=e490]: Jun 2020 – Mar 2024
+                - generic [ref=e491]: Creative
+              - heading "Copy Editor" [level=4] [ref=e492]
+              - paragraph [ref=e493]: Tong Li Publishing
+              - paragraph [ref=e494]: Translated 20+ manga books and light novels from Japanese to Mandarin, with cover illustration, content polishing, and leadership of a 15-person team.
+              - paragraph [ref=e495]: Part-time · Taipei, Taiwan · Remote
+              - group [ref=e496]:
+                - generic "Full role description" [ref=e497] [cursor=pointer]:
+                  - text: Full role description
+                  - generic [aria-hidden] [ref=e498]: +
+          - listitem [ref=e499]:
+            - heading "2018" [level=4] [ref=e500]
+            - article [ref=e502]:
+              - generic [ref=e503]:
+                - generic [ref=e504]: Sep 2018 – Jun 2021
+                - generic [ref=e505]: Industry
+              - heading "Customer Service Representative" [level=4] [ref=e506]
+              - paragraph [ref=e507]: Milksha
+              - paragraph [ref=e508]: Customer service role in Taoyuan, Taiwan.
+              - paragraph [ref=e509]: Part-time · Taoyuan, Taiwan · On-site
+    - region "Research and projects" [ref=e510]:
+      - region [ref=e511]:
+        - generic [ref=e512]:
+          - generic [ref=e513]:
+            - text: 03 / THE WORK BEHIND THE WORLD
+            - heading "Real questions. Carefully built systems." [level=2] [ref=e514]
+          - link "More on GitHub ↗" [ref=e515] [cursor=pointer]:
+            - /url: https://github.com/yangpings
+        - paragraph [ref=e518]: Machine learning, evaluation, and the space between a promising model and a reliable one.
+        - generic [ref=e519]:
+          - article [ref=e520]:
+            - generic [ref=e521]: 01 / AI / RESEARCH LAB
+            - heading "Clinical LLM Evaluation Against Physician Judgment" [level=3] [ref=e525]
+            - paragraph [ref=e526]: Developed an evaluation framework for LLM-generated assessments of medical student OSCE performance, benchmarking structured scores and narrative feedback against physician expert judgment.
+            - generic [ref=e527]:
+              - generic [ref=e528]: LLM evaluation
+              - generic [ref=e529]: Reliable AI
+            - button "Explore this work ↗" [ref=e530] [cursor=pointer]:
+              - text: Explore this work
+              - generic [ref=e531]: ↗
+          - article [ref=e532]:
+            - generic [ref=e533]: 02 / VISION LAB
+            - 'heading "TIME AD: Retinal Foundation Models for Alzheimer’s Disease Prediction" [level=3] [ref=e537]'
+            - paragraph [ref=e538]: Evaluated RETFound Vision Transformers and CNNs for Alzheimer’s disease and related dementias prediction using approximately 180,000 UK Biobank retinal images, demographic variables, ICD-10 diagnoses, and linked clinical data.
+            - generic [ref=e539]:
+              - generic [ref=e540]: Computer vision
+              - generic [ref=e541]: Foundation models
+            - button "Explore this work ↗" [ref=e542] [cursor=pointer]:
+              - text: Explore this work
+              - generic [ref=e543]: ↗
+          - article [ref=e544]:
+            - generic [ref=e545]: 03 / PROJECT / COMPUTER VISION
+            - 'heading "ODIR-5K: Deep Learning Benchmarks for Retinal Disease Detection" [level=3] [ref=e549]'
+            - paragraph [ref=e550]: Built a unified training and evaluation framework comparing multiple deep-learning architectures on ODIR-5K for retinal disease detection.
+            - generic [ref=e551]:
+              - generic [ref=e552]: Computer vision
+              - generic [ref=e553]: Retinal imaging
+            - button "Explore this work ↗" [ref=e554] [cursor=pointer]:
+              - text: Explore this work
+              - generic [ref=e555]: ↗
+          - article [ref=e556]:
+            - generic [ref=e557]: 04 / RESEARCH / NLP
+            - 'heading "Nicotine Pouch Discourse: Topic Modeling and Sentiment Analysis" [level=3] [ref=e561]'
+            - paragraph [ref=e562]: Built a reproducible NLP workflow to analyze 38,000+ Reddit posts about nicotine-pouch use, studying behavioral patterns, sentiment, and how people discuss these products in online public-health conversations.
+            - generic [ref=e563]:
+              - generic [ref=e564]: NLP
+              - generic [ref=e565]: Public health
+            - button "Explore this work ↗" [ref=e566] [cursor=pointer]:
+              - text: Explore this work
+              - generic [ref=e567]: ↗
+          - article [ref=e568]:
+            - generic [ref=e569]: 05 / RESEARCH / BIOMARKERS
+            - heading "Sweat Amino Acid Biomarkers for Noninvasive Skin Assessment" [level=3] [ref=e573]
+            - paragraph [ref=e574]: Designed and executed a study of sweat amino-acid biomarkers for non-invasive skin assessment, using 500+ clinical samples collected with Kobe University.
+            - generic [ref=e575]:
+              - generic [ref=e576]: Biomarkers
+              - generic [ref=e577]: Multimodal ML
+            - button "Explore this work ↗" [ref=e578] [cursor=pointer]:
+              - text: Explore this work
+              - generic [ref=e579]: ↗
+          - article [ref=e580]:
+            - generic [ref=e581]: 06 / UPCOMING / RESEARCH
+            - generic [ref=e585]: Coming soon
+            - 'heading "Project ANNIE: Retinal Biomarkers and AI for Alzheimer’s Disease" [level=3] [ref=e586]'
+            - paragraph [ref=e587]: A planned research program investigating retinal biomarkers before Alzheimer’s diagnosis, external population validation, improved retinal AI methods, and human-guided versus autonomous multimodal AI.
+            - generic [ref=e588]:
+              - generic [ref=e589]: Retinal biomarkers
+              - generic [ref=e590]: Multimodal AI
+            - button "Explore this work ↗" [ref=e591] [cursor=pointer]:
+              - text: Explore this work
+              - generic [ref=e592]: ↗
+      - region [ref=e593]:
+        - generic [ref=e594]:
+          - text: WHAT I’VE WORKED ON
+          - heading "Project Timelines" [level=3] [ref=e595]
+        - generic [aria-hidden] [ref=e596]:
+          - generic [ref=e597]: Research
+          - generic [ref=e598]: Industry & Creative
+        - list "Project timeline" [ref=e599]:
+          - listitem [ref=e600]:
+            - heading "Next" [level=4] [ref=e601]
+            - article [ref=e603]:
+              - generic [ref=e604]:
+                - generic [ref=e605]: Coming soon
+                - generic [ref=e606]: Research
+              - heading "Project ANNIE" [level=4] [ref=e607]
+              - paragraph [ref=e608]: Planned research on prediagnostic retinal biomarkers, cross-population validation, and whether autonomous AI can integrate retinal, OCT, and clinical evidence more reliably than human-designed workflows.
+              - group [ref=e609]:
+                - generic "Project details" [ref=e610] [cursor=pointer]:
+                  - text: Project details
+                  - generic [aria-hidden] [ref=e611]: +
+          - listitem [ref=e612]:
+            - heading "2026" [level=4] [ref=e613]
+            - generic [ref=e614]:
+              - article [ref=e615]:
+                - generic [ref=e616]:
+                  - generic [ref=e617]: July 2026 · AAIC, London
+                  - generic [ref=e618]: Research
+                - heading "Retinal imaging & Alzheimer’s disease" [level=4] [ref=e619]
+                - paragraph [ref=e620]: Benchmarked RETFound Vision Transformers, CNNs, and statistical baselines using approximately 180,000 UK Biobank retinal images and linked clinical data. Used anatomical ablations, calibration, and robustness analysis to investigate what drove model predictions.
+                - group [ref=e621]:
+                  - generic "Project details" [ref=e622] [cursor=pointer]:
+                    - text: Project details
+                    - generic [aria-hidden] [ref=e623]: +
+                - link "TIME AD Projects ↗" [ref=e624] [cursor=pointer]:
+                  - /url: https://www.time-ad.org/projects
+                - link "TIME AD Team ↗" [ref=e625] [cursor=pointer]:
+                  - /url: https://www.time-ad.org/leadership-1
+                - link "Research Abstract ↗" [ref=e626] [cursor=pointer]:
+                  - /url: https://docs.google.com/document/d/11eGrURvvL8WGgiO9oDmD2h_Cb47VtLhjsPz2RPUrBOw/edit?usp=sharing
+                - link "Full-resolution Poster ↗" [ref=e627] [cursor=pointer]:
+                  - /url: /images/limits.png
+              - article [ref=e628]:
+                - generic [ref=e629]:
+                  - generic [ref=e630]: February 2026 · UCSF AI & Education Symposium
+                  - generic [ref=e631]: Research
+                - heading "LLM evaluation against physician judgment" [level=4] [ref=e632]
+                - paragraph [ref=e633]: Built multimodal pipelines for LLM assessment of medical student OSCE encounters. Compared model scores and feedback with physician judgment using structured scoring, Cohen’s kappa, semantic similarity, and natural language inference.
+                - group [ref=e634]:
+                  - generic "Project details" [ref=e635] [cursor=pointer]:
+                    - text: Project details
+                    - generic [aria-hidden] [ref=e636]: +
+              - article [ref=e637]:
+                - generic [ref=e638]:
+                  - generic [ref=e639]: 2026 · Research documented in CV
+                  - generic [ref=e640]: Research
+                - heading "Nicotine-pouch discourse analysis" [level=4] [ref=e641]
+                - paragraph [ref=e642]: Analyzed 38,000+ Reddit posts with preprocessing, lemmatization, LDA topic modeling, and VADER sentiment analysis to study discussion themes, behavioral patterns, and public-health communication.
+                - group [ref=e643]:
+                  - generic "Project details" [ref=e644] [cursor=pointer]:
+                    - text: Project details
+                    - generic [aria-hidden] [ref=e645]: +
+                - link "APHA 2026 Conference Abstract ↗" [ref=e646] [cursor=pointer]:
+                  - /url: https://apha.confex.com/apha/2026/meetingapp.cgi/Paper/595449
+          - listitem [ref=e647]:
+            - heading "2025" [level=4] [ref=e648]
+            - article [ref=e650]:
+              - generic [ref=e651]:
+                - generic [ref=e652]: Apr 2025 – Mar 2026 · During BOLERO appointment
+                - generic [ref=e653]: Industry
+              - heading "Music ML & production data systems" [level=4] [ref=e654]
+              - paragraph [ref=e655]: Built end-to-end ML pipelines for 100,000+ multilingual music tracks, from Fourier-based audio features and representation learning to similarity analysis and prediction. Connected model outputs, external APIs, and databases to a secure web analytics platform.
+              - group [ref=e656]:
+                - generic "Project details" [ref=e657] [cursor=pointer]:
+                  - text: Project details
+                  - generic [aria-hidden] [ref=e658]: +
+              - link "BOLERO Website ↗" [ref=e659] [cursor=pointer]:
+                - /url: https://bolero.tokyo/
+          - listitem [ref=e660]:
+            - heading "2023" [level=4] [ref=e661]
+            - article [ref=e663]:
+              - generic [ref=e664]:
+                - generic [ref=e665]: Jun 2023 – Jun 2024 · Honors thesis
+                - generic [ref=e666]: Research
+              - heading "Sweat amino-acid biomarkers" [level=4] [ref=e667]
+              - paragraph [ref=e668]: Designed a non-invasive skin-assessment study using 500+ clinical samples collected with Kobe University. Evaluated random forest and multimodal neural-network models using biochemical measurements and compared diagnostic feasibility with biopsy-based assessment.
+              - group [ref=e669]:
+                - generic "Project details" [ref=e670] [cursor=pointer]:
+                  - text: Project details
+                  - generic [aria-hidden] [ref=e671]: +
+              - link "PITTAN Website ↗" [ref=e672] [cursor=pointer]:
+                - /url: https://www.pittan.life/lang/en
+      - generic [ref=e673]:
+        - text: FROM THE RESEARCH ARCHIVE
+        - heading "Example Work" [level=2] [ref=e674]
+        - group "Research posters" [ref=e675]:
+          - button "Enlarge Retinal imaging research poster" [ref=e676] [cursor=pointer]:
+            - generic:
+              - img "Research poster on limits of fundus-based deep learning for Alzheimer’s disease prediction, anatomical ablation and clinical benchmarking in UK Biobank"
+            - generic [ref=e677]:
+              - text: Retinal imaging research poster
+              - generic [aria-hidden] [ref=e678]: ↗
+    - region [ref=e679]:
+      - generic [ref=e680]:
+        - text: 04 / OFF THE CLOCK, STILL MAKING THINGS
+        - heading "Different tools. Same curiosity." [level=2] [ref=e681]
+        - button "Visit the art studio ↗" [ref=e682] [cursor=pointer]
+      - generic [ref=e685]:
+        - img "Black and white character illustration of Flora" [ref=e686]
+        - generic [ref=e687]:
+          - text: FROM THE STUDIO
+          - generic [ref=e688]: "Concept Code 02: Flora"
+      - generic [ref=e689]:
+        - text: CURRENT SIDE QUESTS
+        - generic [ref=e690]:
+          - generic [aria-hidden] [ref=e691]: ♫
+          - generic [ref=e692]:
+            - text: Make some noise
+            - generic [ref=e693]: Music, singing & drumming
+        - generic [ref=e694]:
+          - generic [aria-hidden] [ref=e695]: ✣
+          - generic [ref=e696]:
+            - text: One more round
+            - generic [ref=e697]: A little room for play
+        - link "My rhythm-game channel ↗" [ref=e698] [cursor=pointer]:
+          - /url: https://www.youtube.com/@takinouob_b/videos
+        - link "My VTuber clipping channel ↗" [ref=e701] [cursor=pointer]:
+          - /url: https://www.youtube.com/@yp1786
+        - generic [ref=e704]:
+          - generic [aria-hidden] [ref=e705]: ◎
+          - generic [ref=e706]: Travelling
+    - region "THE ART STUDIO / OPEN GALLERY" [ref=e707]:
+      - group "Digital artwork gallery" [ref=e710]:
+        - button "Enlarge Hatsune Miku Fan Art" [ref=e711] [cursor=pointer]:
+          - generic:
+            - img "Colorful Hatsune Miku illustration with turquoise hair"
+          - generic [ref=e712]:
+            - text: Hatsune Miku Fan Art
+            - generic [aria-hidden] [ref=e713]: ↗
+        - 'button "Enlarge Concept Code 01: Minami" [ref=e714] [cursor=pointer]':
+          - generic:
+            - img "Black and white close-up character illustration of Minami"
+          - generic [ref=e715]:
+            - text: "Concept Code 01: Minami"
+            - generic [aria-hidden] [ref=e716]: ↗
+        - button "Enlarge Travel to the Future" [ref=e717] [cursor=pointer]:
+          - generic:
+            - img "A figure looking toward a luminous planet above colorful clouds"
+          - generic [ref=e718]:
+            - text: Travel to the Future
+            - generic [aria-hidden] [ref=e719]: ↗
+      - generic [ref=e720]:
+        - text: SKETCHES & TEXTURES.
+        - group "Visual archive" [ref=e721]:
+          - button "Enlarge Architectural illustration" [ref=e722] [cursor=pointer]:
+            - generic:
+              - img "White line drawing of a building and trees on black"
+            - generic [ref=e723]:
+              - text: Architectural illustration
+              - generic [aria-hidden] [ref=e724]: ↗
+          - button "Enlarge From the visual archive" [ref=e725] [cursor=pointer]:
+            - generic:
+              - img "Dark blue artwork with fine luminous lines"
+            - generic [ref=e726]:
+              - text: From the visual archive
+              - generic [aria-hidden] [ref=e727]: ↗
+          - button "Enlarge Original site background" [ref=e728] [cursor=pointer]:
+            - generic:
+              - img "Abstract textured artwork in red, blue, green, and gold"
+            - generic [ref=e729]:
+              - text: Original site background
+              - generic [aria-hidden] [ref=e730]: ↗
+      - generic [ref=e733]: EVERY WORLD STARTS SOMEWHERE.
+    - region [ref=e734]:
+      - generic [ref=e735]:
+        - text: 05 / KEEP THE CONVERSATION GOING
+        - heading "Let’s make something interesting." [level=2] [ref=e736]
+        - paragraph [ref=e737]: An idea to explore, a problem to untangle, or a reason to say hello.
+      - generic [ref=e738]:
+        - link "eric.yang2@ucsf.edu ↗" [ref=e739] [cursor=pointer]:
+          - /url: mailto:eric.yang2@ucsf.edu
+        - link "LinkedIn ↗" [ref=e742] [cursor=pointer]:
+          - /url: https://www.linkedin.com/in/eyangucsf/
+        - link "GitHub ↗" [ref=e745] [cursor=pointer]:
+          - /url: https://github.com/yangpings
+  - contentinfo [ref=e748]:
+    - link "Eric Yang." [ref=e749] [cursor=pointer]:
+      - /url: "#"
+    - paragraph [ref=e750]: Built with curiosity. Best explored with a little of yours.
+    - generic [ref=e751]: © 2026 Eric Yang
+```
