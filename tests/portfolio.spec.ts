@@ -123,7 +123,7 @@ test('microphone tracks stop when leaving the singing corner', async ({ page }) 
 
 test('little world has playable music, rhythm, art, and travel corners', async ({ page }) => {
   await page.goto('/');
-  await expect(page.locator('#world-title')).toHaveText('A little of everything I do.');
+  await expect(page.locator('#world-title')).toHaveText("Welcome to Eric's home.");
   await expect(page.getByText('Start your day', { exact: true })).toHaveCount(0);
   await page.getByRole('button', { name: 'Explore Music room', exact: true }).click();
   for (const label of ['Crash', 'Snare', 'Kick', 'Floor tom']) await page.getByRole('button', { name: new RegExp(label) }).click();
