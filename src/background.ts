@@ -10,14 +10,14 @@ export type ExperienceCategory = 'Research' | 'Industry' | 'Creative';
 // Expanded descriptions combine the updated CV and supplied LinkedIn text.
 export const experienceDetails: Record<string, string[]> = {
   'UCSF Department of Medicine': (findEntry('llm')?.details ?? []),
-  'BOLERO · Tokyo, Japan': findEntry('music')?.details?.slice(0, -1) ?? [],
+  'BOLERO · Seed · Tokyo, Japan': findEntry('music')?.details?.slice(0, -1) ?? [],
   'UCSF Hswen Lab': (findEntry('retina')?.details ?? []).concat(findEntry('nlp')?.details ?? []),
   'UCLA & PITTAN': [
     'Independently designed and executed a study of sweat amino-acid biomarkers using 500+ clinical samples collected with Kobe University.',
     'Designed experimental workflows, coordinated international data collection, and statistically analyzed biochemical measurements.',
     'Developed random forest and multimodal neural-network models for dermatological outcome prediction and evaluated diagnostic performance and feasibility relative to biopsy-based assessment.',
   ],
-  'PITTAN · Kobe, Japan': [
+  'PITTAN · Pre-seed · Kobe, Japan': [
     'Led technical development of a health-technology platform translating biochemical research into a user-facing diagnostic system.',
     'Designed Python and Raspberry Pi data-acquisition and workflow-automation systems for sweat analysis.',
     'Developed multimodal ML models combining biochemical and sensor-derived biomarkers for skin-condition prediction, coordinating research, engineering, and product implementation in an international team.',
@@ -53,12 +53,12 @@ export const experienceDetails: Record<string, string[]> = {
 };
 export const experience: { title: string; organization: string; dates: string; category: ExperienceCategory; summary: string; entry?: string; context?: string; links?: { label: string; href: string }[] }[] = [
   { title: 'Data Science Specialist', organization: 'UCSF Department of Medicine', dates: 'Apr 2025 – Apr 2026', category: 'Research', context: 'Apprenticeship · San Francisco, California · Hybrid', summary: "Benchmarked three GPT models against four physician evaluators across approximately 500 medical-student OSCE encounters, using disagreement analysis to refine assessment rubrics.", entry: 'llm' },
-  { title: 'Lead Data Scientist', organization: 'BOLERO · Tokyo, Japan', dates: 'Apr 2025 – Mar 2026', category: 'Industry', context: 'Full-time · Remote', summary: "Led a six-person team building multimodal music analytics for 100,000+ tracks. Delivered an initial production demo in three weeks and reduced reporting from about two days to minutes.", entry: 'music', links: [{ label: 'BOLERO Website', href: links.bolero }] },
+  { title: 'Lead Data Scientist', organization: 'BOLERO · Seed · Tokyo, Japan', dates: 'Apr 2025 – Mar 2026', category: 'Industry', context: 'Full-time · Remote', summary: "Led a six-person team building multimodal music analytics for 100,000+ tracks. Delivered an initial production demo in three weeks and reduced reporting from about two days to minutes.", entry: 'music', links: [{ label: 'BOLERO Website', href: links.bolero }] },
   { title: 'Graduate Student Researcher', organization: 'UCSF Hswen Lab', dates: 'Oct 2024 – Jun 2026', category: 'Research', context: 'Apprenticeship · San Francisco, California · Hybrid', summary: "Benchmarked retinal foundation models on 156,724 fundus images from 78,349 UK Biobank participants. Tested anatomical ablations and the added value of fundus and OCT measures beyond demographics.", entry: 'retina' },
   { title: 'Cover Illustrator', organization: 'KADOKAWA Corporation', dates: 'Apr 2024 – Dec 2024', category: 'Creative', context: 'Contract · Tokyo, Japan · Remote', summary: 'Created artwork, contributed to design and editing, and built graphic-design web applications.', entry: 'art' },
   { title: 'Undergraduate Honors Thesis', organization: 'UCLA & PITTAN', dates: 'Jun 2023 – Jun 2024', category: 'Research', summary: 'Experimental study of sweat amino-acid biomarkers for non-invasive skin assessment.', entry: 'library' },
   { title: 'Assistant Illustrations Editor', organization: 'UCLA Student Media', dates: 'Sep 2023 – Jun 2024', category: 'Creative', context: 'Part-time · Los Angeles, California · On-site', summary: 'Supported a nine-member illustration staff, coordinated biweekly artwork, and collaborated on layout illustrations.', entry: 'art' },
-  { title: 'Chief Technology Officer', organization: 'PITTAN · Kobe, Japan', dates: 'Jun 2023 – Sep 2023', category: 'Industry', context: 'Full-time · On-site', summary: 'Built Python/Raspberry Pi pipelines for sweat analysis, collecting 500 measurements in 21 days. Developed neural-network models for skin-condition assessment with AUROC 0.85.', links: [{ label: 'PITTAN Website', href: links.pittan }] },
+  { title: 'Chief Technology Officer', organization: 'PITTAN · Pre-seed · Kobe, Japan', dates: 'Jun 2023 – Sep 2023', category: 'Industry', context: 'Full-time · On-site', summary: 'Built Python/Raspberry Pi pipelines for sweat analysis, collecting 500 measurements in 21 days. Developed neural-network models for skin-condition assessment with AUROC 0.85.', links: [{ label: 'PITTAN Website', href: links.pittan }] },
   { title: 'Clinical Design & Analysis Assistant', organization: 'UCLA Suthana Lab', dates: 'Mar 2023 – Jun 2024', category: 'Research', context: 'David Geffen School of Medicine at UCLA · Santa Monica, California · Hybrid', summary: 'Analyzed 1,000+ patient EEG recordings and built reusable MATLAB and machine-learning workflows for clinical neuroscience.' },
   { title: 'Data Analysis Assistant', organization: 'Institute of Neuro Innovation', dates: 'Aug 2022 – Feb 2023', category: 'Industry', context: 'Internship · Santa Monica, California · Hybrid', summary: 'Supported clinical-trial analysis for 500+ participants and evaluated three VR/audio therapy protocols for depression.' },
   { title: 'Research Assistant', organization: 'UCLA Arisaka Lab', dates: '2021 – 2022', category: 'Research', summary: 'Worked on brain interfaces and UI/UX.' },
