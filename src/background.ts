@@ -22,7 +22,7 @@ export const experienceDetails: Record<string, string[]> = {
     'Designed Python and Raspberry Pi data-acquisition and workflow-automation systems for sweat analysis.',
     'Developed multimodal ML models combining biochemical and sensor-derived biomarkers for skin-condition prediction, coordinating research, engineering, and product implementation in an international team.',
     'Combined amino-acid profiles, moisture, lipid measurements, and sensor-derived features to generate skin-health metrics.',
-    'Directed development and deployment of the PITTAN mobile application, integrating model outputs, cloud infrastructure, data acquisition, and user-facing workflows; contributed to application security and technical deployment.',
+    'Directed development and deployment of the PITTAN mobile application. Connected model outputs, cloud infrastructure, and data collection to the application workflows. Contributed to application security.',
   ],
   'UCLA Suthana Lab': [
     'Processed and analyzed 1,000+ EEG recordings using MATLAB for clinical neuroscience research.',

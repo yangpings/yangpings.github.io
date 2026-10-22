@@ -15,12 +15,12 @@ function TimelineCard({ item, project = false }: { item: TimelineItem; project?:
 }
 
 export function ProjectTimeline() {
-  return <section className="individual-timeline section-timeline sided-timeline" aria-labelledby="project-timeline-title"><header><span className="eyebrow">WHAT I’VE WORKED ON</span><h3 id="project-timeline-title">Project Timelines</h3></header><SidedTimeline items={projectTimeline} label="Project timeline" project/></section>;
+  return <section className="individual-timeline section-timeline sided-timeline" aria-labelledby="project-timeline-title"><header><span className="eyebrow">WHAT I’VE WORKED ON</span><h3 id="project-timeline-title">Project timelines</h3></header><SidedTimeline items={projectTimeline} label="Project timeline" project/></section>;
 }
 
 export function PositionTimeline() {
   const positions = experience.filter(item => item.title !== 'Undergraduate Honors Thesis');
-  return <section className="individual-timeline section-timeline sided-timeline" aria-labelledby="positions-timeline-title"><header><span className="eyebrow">WHERE I’VE WORKED</span><h3 id="positions-timeline-title">Research & Work Experience</h3><p>Research, industry, and creative roles, by start date.</p></header><SidedTimeline items={positions} label="Positions and experience timeline"/></section>;
+  return <section className="individual-timeline section-timeline sided-timeline" aria-labelledby="positions-timeline-title"><header><span className="eyebrow">WHERE I’VE WORKED</span><h3 id="positions-timeline-title">Research and work experience</h3><p>Research, industry, and creative roles, by start date.</p></header><SidedTimeline items={positions} label="Positions and experience timeline"/></section>;
 }
 
 function SidedTimeline({ items, label, project = false }: { items: TimelineItem[]; label: string; project?: boolean }) {

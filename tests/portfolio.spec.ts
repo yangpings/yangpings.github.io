@@ -10,7 +10,7 @@ test('playground supports nonlinear patterns, live pause, and custom training da
   await sandbox.getByRole('button', { name: 'Use curved features' }).click();
   await sandbox.getByRole('button', { name: 'Train 50 steps' }).click();
   const curved = await sandbox.getByRole('status').textContent();
-  const correct = (value: string | null) => Number(value!.match(/steps \/ (\d+)/)![1]);
+  const correct = (value: string | null) => Number(value!.match(/correctly classifies (\d+)/)![1]);
   expect(correct(curved)).toBeGreaterThan(correct(linear));
   await sandbox.getByRole('button', { name: 'Start live training' }).click();
   await expect(sandbox.getByRole('status')).toContainText('Training live.');
@@ -135,7 +135,7 @@ test('little world has playable music, rhythm, art, and travel corners', async (
   await page.getByRole('button', { name: 'Listen to loop' }).click();
   await expect(page.getByRole('status')).toContainText('Now playing');
   await page.getByRole('button', { name: 'Stop listening' }).click();
-  await expect(page.getByRole('status')).toContainText('quiet');
+  await expect(page.getByRole('status')).toContainText('No loop is playing.');
   await page.getByRole('button', { name: 'Close details' }).click();
   await page.getByRole('button', { name: 'Explore Arcade', exact: true }).click();
   await page.getByRole('button', { name: 'Start rhythm session' }).click();
@@ -225,9 +225,9 @@ test('all rooms, secret, and existing CV are reachable', async ({ page, request 
   }
   await expect(page.getByText('8 / 8 rooms explored')).toBeVisible();
   await page.getByRole('button', { name: 'Inspect the suspicious plant' }).click();
-  await expect(page.getByRole('dialog')).toContainText('zero parameters');
+  await expect(page.getByRole('dialog')).toContainText('You found the office plant');
   await page.keyboard.press('Escape');
-  await expect(page.locator('footer')).toContainText('Peer-reviewed by a plant');
+  await expect(page.locator('footer')).toContainText('You found the hidden plant.');
   const cv = await page.getByRole('navigation').getByRole('link', { name: 'CV ↗' }).getAttribute('href');
   expect((await request.get(cv!)).status()).toBe(200);
 });
