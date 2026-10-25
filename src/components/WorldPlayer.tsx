@@ -1,7 +1,7 @@
 ﻿import { useEffect, useRef, useState } from 'react';
 import type { Point } from '../world';
 type Direction = 'down' | 'up' | 'left' | 'right';
-export default function WorldPlayer({ position, paused }: { position: Point; paused: boolean }) {
+export default function WorldPlayer({ position, paused, decorative = false }: { position: Point; paused: boolean; decorative?: boolean }) {
   const previous = useRef(position);
   const [direction, setDirection] = useState<Direction>('down');
   const [moving, setMoving] = useState(false);
@@ -17,7 +17,7 @@ export default function WorldPlayer({ position, paused }: { position: Point; pau
   }, [position.x, position.y]);
   const walking = moving && !paused;
   const side = direction === 'left' || direction === 'right';
-  return <g transform={`translate(${position.x},${position.y})`} data-testid="player" data-x={position.x.toFixed(1)} data-y={position.y.toFixed(1)} data-facing={direction} data-moving={walking} className={`world-player ${walking ? 'is-walking' : 'is-idle'}${paused ? ' is-paused' : ''}`} aria-hidden="true">
+  return <g transform={`translate(${position.x},${position.y})`} data-testid={decorative ? undefined : "player"} data-x={position.x.toFixed(1)} data-y={position.y.toFixed(1)} data-facing={direction} data-moving={walking} className={`world-player ${walking ? 'is-walking' : 'is-idle'}${paused ? ' is-paused' : ''}`} aria-hidden="true">
     <ellipse className="player-shadow" cy="10" rx="11" ry="4" fill="#130c19" opacity=".5"/>
     <g className="player-body"><g transform={direction === 'left' ? 'scale(-1,1)' : undefined}>
       <g className="player-leg player-leg-back"><path d={side ? 'M-3 2v8' : 'M-5 2v8'} stroke="#607180" strokeWidth="5"/><path d={side ? 'M-5 11h6' : 'M-7 11h5'} stroke="#ead9b9" strokeWidth="3"/></g>

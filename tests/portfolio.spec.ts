@@ -321,10 +321,10 @@ test('project and position timelines stay separate and retain full descriptions'
   expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
 });
 
-test('page follows introduction, world, about, projects, creative, contact order', async ({ page }) => {
+test('page follows introduction, world, about, projects, creative, roadmap, contact order', async ({ page }) => {
   await page.goto('/');
   const order = await page.locator('main > section').evaluateAll(sections => sections.map(section => section.id || section.className));
-  expect(order).toEqual(['hero', 'world', 'about', 'projects', 'creative', 'image-archive', 'contact']);
+  expect(order).toEqual(['hero', 'world', 'about', 'projects', 'creative', 'image-archive', 'roadmap', 'contact']);
   await expect(page.locator('#projects').getByRole('group', {name:'Research posters'})).toHaveCount(1);
   await expect(page.locator('#contact').getByRole('link', {name:'eric.yang2@ucsf.edu'})).toHaveAttribute('href', 'mailto:eric.yang2@ucsf.edu');
 });
@@ -345,4 +345,33 @@ test('art studio cycles through every artwork with matching previews and links',
     await expect(page.locator('.art-preview img')).toHaveAttribute('src', new RegExp(`${file}\\.webp$`));
     await expect(page.locator('.world-art image')).toHaveAttribute('href', new RegExp(`${file}\\.webp$`));
   }
+});
+
+test('roadmap climb shows the current level and opens planned work per stop', async ({ page }) => {
+  await page.goto('/');
+  await page.getByRole('link', { name: 'Roadmap', exact: true }).click();
+  const roadmap = page.locator('#roadmap');
+  await expect(roadmap.getByRole('heading', { name: 'Roadmap.' })).toBeVisible();
+  const stops = roadmap.getByRole('list', { name: 'Roadmap levels' }).getByRole('button');
+  await expect(stops).toHaveCount(7);
+  await expect(roadmap.getByRole('button', { name: 'Level 1: Engineering foundations' })).toHaveAttribute('aria-pressed', 'true');
+  const log = roadmap.locator('#roadmap-log');
+  await expect(log).toContainText('evalkit');
+  await roadmap.getByRole('button', { name: 'Level 3: LLM systems & evaluation' }).click();
+  await expect(log).toContainText('clineval');
+  await log.getByRole('button', { name: 'Up a level →' }).click();
+  await expect(log).toContainText('mednote-lora');
+  await page.setViewportSize({ width: 390, height: 844 });
+  expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
+});
+
+test('footer lists the technologies behind the website', async ({ page }) => {
+  await page.goto('/');
+  const stack = page.locator('footer').getByRole('list', { name: 'Technologies used to build this website' });
+  await expect(stack.getByRole('listitem')).toHaveCount(8);
+  await expect(stack).toContainText('TypeScript');
+  await expect(stack).toContainText('React');
+  await expect(stack).toContainText('Playwright');
+  await page.setViewportSize({ width: 390, height: 844 });
+  expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
 });

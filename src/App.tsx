@@ -9,6 +9,7 @@ import EntryDialog from './components/EntryDialog';
 import MediaGallery from './components/MediaGallery';
 import { artworks, posters, preview, visualArchive } from './media';
 import Background, { ProjectTimeline, PositionTimeline } from './components/Background';
+import Roadmap from './components/Roadmap';
 
 export default function App() {
   const projectsRef = useSectionMotion('projects');
@@ -36,7 +37,7 @@ export default function App() {
   }
   return <>
     <a className="skip-link" href="#research">Skip to research</a>
-    <header className="site-header"><a className="wordmark" href="#"><img className="brand-logo" src={preview('logo.png')} alt="" width="36" height="36"/>Eric Yang<span className="wordmark-dot">.</span></a><nav aria-label="Main navigation"><a href="#about">About</a><a href="#background">Background</a><a href="#research">Research</a><a href="#projects">Projects</a><a href="#creative">Art</a><a href="#contact">Contact</a><a href={links.cv} target="_blank" rel="noreferrer"><Icon name="cv"/>CV ↗</a><span className="nav-divider"/><a href={links.github} target="_blank" rel="noreferrer"><Icon name="github"/>GitHub ↗</a><a href={links.linkedin} target="_blank" rel="noreferrer"><Icon name="linkedin"/>LinkedIn ↗</a></nav></header>
+    <header className="site-header"><a className="wordmark" href="#"><img className="brand-logo" src={preview('logo.png')} alt="" width="36" height="36"/>Eric Yang<span className="wordmark-dot">.</span></a><nav aria-label="Main navigation"><a href="#about">About</a><a href="#background">Background</a><a href="#research">Research</a><a href="#projects">Projects</a><a href="#creative">Art</a><a href="#roadmap">Roadmap</a><a href="#contact">Contact</a><a href={links.cv} target="_blank" rel="noreferrer"><Icon name="cv"/>CV ↗</a><span className="nav-divider"/><a href={links.github} target="_blank" rel="noreferrer"><Icon name="github"/>GitHub ↗</a><a href={links.linkedin} target="_blank" rel="noreferrer"><Icon name="linkedin"/>LinkedIn ↗</a></nav></header>
     <main>
       <section className="hero" aria-labelledby="hero-title">
         <div className="hero-copy"><p className="eyebrow"><span className="status-dot"/> RESEARCH. ML. SIDE QUESTS.</p><h1 id="hero-title">One curious <strong className="hero-keyword keyword-mind">mind</strong>,<br/><span>One <strong className="hero-keyword keyword-world">world</strong> to find,</span><br/>One <strong className="hero-keyword keyword-step">step</strong> at a time.</h1><p className="hero-description">I’m Eric, a machine learning researcher and AI engineer working across healthcare and music. I specialize in AI evaluation, foundation models, and multimodal learning. In my free time, I draw, sing, and design!</p><div className="hero-actions"><a className="button primary" href="#world">Step into my world <span>↓</span></a><a className="text-link" href="#research">Here for the research? <span>↗</span></a></div><div className="credentials"><span>UCSF <small>M.S. Health Data Science</small></span><span className="credential-dot">·</span><span>UCLA <small>B.S. Computational & Systems Biology</small></span></div></div>
@@ -61,9 +62,11 @@ export default function App() {
         <div className="archive-texture" aria-hidden="true"><picture><source media="(max-width: 760px)" srcSet={preview('background2.png')}/><img src={preview('background_top.png')} alt="" loading="lazy"/></picture><img src={preview('background_bottom.png')} alt="" loading="lazy"/></div>
       </section>
 
-      <section id="contact" className="contact-section" aria-labelledby="contact-title"><div><span className="eyebrow">05 / KEEP THE CONVERSATION GOING</span><h2 id="contact-title">Connect with me.</h2></div><div className="contact-links"><a className="text-link" href="mailto:eric.yang2@ucsf.edu"><Icon name="email"/>eric.yang2@ucsf.edu ↗</a><a className="text-link" href={links.linkedin} target="_blank" rel="noreferrer"><Icon name="linkedin"/>LinkedIn ↗</a><a className="text-link" href={links.github} target="_blank" rel="noreferrer"><Icon name="github"/>GitHub ↗</a></div></section>
+      <Roadmap/>
+
+      <section id="contact" className="contact-section" aria-labelledby="contact-title"><div><span className="eyebrow">06 / KEEP THE CONVERSATION GOING</span><h2 id="contact-title">Connect with me.</h2></div><div className="contact-links"><a className="text-link" href="mailto:eric.yang2@ucsf.edu"><Icon name="email"/>eric.yang2@ucsf.edu ↗</a><a className="text-link" href={links.linkedin} target="_blank" rel="noreferrer"><Icon name="linkedin"/>LinkedIn ↗</a><a className="text-link" href={links.github} target="_blank" rel="noreferrer"><Icon name="github"/>GitHub ↗</a></div></section>
     </main>
-    <footer><a className="wordmark" href="#">Eric Yang.</a><span>{secret?'You found the hidden plant.':'© 2026 Eric Yang'}</span></footer>
+    <footer><a className="wordmark" href="#">Eric Yang.</a><div className="built-with"><span className="eyebrow">BUILT WITH</span><ul aria-label="Technologies used to build this website">{['TypeScript', 'HTML', 'CSS', 'Python', 'React', 'Vite', 'Playwright', 'GitHub Actions'].map(tech => <li key={tech}>{tech}</li>)}</ul></div><span>{secret?'You found the hidden plant.':'© 2026 Eric Yang'}</span></footer>
     <EntryDialog interactive={interactive} completed={completed} onComplete={id => setCompleted(previous => new Set([...previous, id]))} entry={displayedEntry} onClose={() => setSelected(undefined)}/>
   </>;
 }
