@@ -17,7 +17,7 @@ export default function Roadmap() {
   const here = stops[currentIndex];
   return <section id="roadmap" className="roadmap-section" aria-labelledby="roadmap-title">
     <div className="section-bar"><div><span className="eyebrow">05 / WHERE I’M HEADED NEXT</span><h2 id="roadmap-title">Roadmap.</h2></div><a href={links.github} target="_blank" rel="noreferrer" className="text-link"><Icon name="github"/>Follow along on GitHub ↗</a></div>
-    <p className="section-intro roadmap-intro">I am still advancing my skillset with state of the art techniques working towards expertise on both pillars of AI and medicine.</p>
+    <p className="section-intro roadmap-intro">This is my journey from engineering foundations (Level 1) to staff-level judgment (Level 7) in AI and medicine. I am also documenting as I climb. Each level will become a chapter of a guide covering what I studied and what I built.</p>
     <div className="roadmap-climb">
       <div className="roadmap-map">
         <svg className="roadmap-art" viewBox="0 0 1000 520" role="img" aria-label={`A mountain trail with seven stops. Eric is at Level ${roadmap[currentIndex].level}; the summit is Level 7.`}>
