@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { roadmap, roadmapPrinciple, roadmapStatus } from '../roadmap';
+import { roadmap, roadmapStatus } from '../roadmap';
 import { links } from '../content';
 import Icon from './Icon';
 import WorldPlayer from './WorldPlayer';
@@ -51,6 +51,5 @@ export default function Roadmap() {
         <div className="roadmap-log-nav"><button type="button" onClick={() => setSelected(selected - 1)} disabled={selected === 0}>← Down a level</button><button type="button" onClick={() => setSelected(selected + 1)} disabled={selected === roadmap.length - 1}>Up a level →</button></div>
       </article>
     </div>
-    <p className="roadmap-principle">{roadmapPrinciple}</p>
   </section>;
 }

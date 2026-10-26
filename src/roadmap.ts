@@ -20,7 +20,6 @@ export const roadmapStatus = {
   step: 'Setting up repo tooling and building evalkit, a library of evaluation statistics for medical ML.',
 };
 
-export const roadmapPrinciple = 'Learn → implement → debug → evaluate → test → report → ship.';
 
 export const roadmap: RoadmapLevel[] = [
   {
