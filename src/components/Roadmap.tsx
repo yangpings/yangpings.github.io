@@ -7,7 +7,7 @@ import WorldPlayer from './WorldPlayer';
 // Trail stops in a 1000 × 520 map, climbing from the base camp (Level 1) to the summit (Level 7).
 const stops = [{ x: 130, y: 470 }, { x: 300, y: 440 }, { x: 500, y: 400 }, { x: 700, y: 340 }, { x: 590, y: 265 }, { x: 420, y: 190 }, { x: 540, y: 78 }];
 const trail = stops.map((p, i) => `${i ? 'L' : 'M'}${p.x} ${p.y}`).join(' ');
-const statusLabel = (status: string) => status === 'Now' ? 'In progress' : status;
+const statusLabel = (status: string) => ({ Now: 'Building now', Next: 'Up next', Later: 'Queued' }[status] ?? status);
 const slug = (status: string) => status.toLowerCase().replace(' ', '-');
 
 export default function Roadmap() {
@@ -16,8 +16,8 @@ export default function Roadmap() {
   const level = roadmap[selected];
   const here = stops[currentIndex];
   return <section id="roadmap" className="roadmap-section" aria-labelledby="roadmap-title">
-    <div className="section-bar"><div><span className="eyebrow">05 / WHERE I’M HEADED NEXT</span><h2 id="roadmap-title">Roadmap.</h2></div><a href={links.github} target="_blank" rel="noreferrer" className="text-link"><Icon name="github"/>Follow along on GitHub ↗</a></div>
-    <p className="section-intro roadmap-intro">This is my journey from engineering foundations (Level 1) to staff-level judgment (Level 7) in AI and medicine. I am also documenting as I climb. Each level will become a chapter of a guide covering what I studied and what I built.</p>
+    <div className="section-bar"><div><span className="eyebrow">05 / WHAT I’M BUILDING</span><h2 id="roadmap-title">Roadmap.</h2></div><a href={links.github} target="_blank" rel="noreferrer" className="text-link"><Icon name="github"/>Follow along on GitHub ↗</a></div>
+    <p className="section-intro roadmap-intro">I’m building open-source medical AI in public, in seven stages: from trustworthy EHR data pipelines (Level 1) to safety research on frontier models (Level 7). Each stage ships repos with tested code, results with confidence intervals, and a paper. Pick a stop to see what’s in it.</p>
     <div className="roadmap-climb">
       <div className="roadmap-map">
         <svg className="roadmap-art" viewBox="0 0 1000 520" role="img" aria-label={`A mountain trail with seven stops. Eric is at Level ${roadmap[currentIndex].level}; the summit is Level 7.`}>
@@ -41,13 +41,13 @@ export default function Roadmap() {
         </li>)}</ol>
       </div>
       <article id="roadmap-log" className={`roadmap-log status-${slug(level.status)}`} aria-live="polite">
-        <div className="roadmap-log-top"><span className="roadmap-badge">Level {level.level} · {statusLabel(level.status)}</span><span className="roadmap-log-step">{selected === currentIndex ? `Now: ${roadmapStatus.step}` : selected > currentIndex ? `${selected - currentIndex} ${selected - currentIndex === 1 ? 'stop' : 'stops'} above me` : 'Completed'}</span></div>
+        <div className="roadmap-log-top"><span className="roadmap-badge">Level {level.level} · {statusLabel(level.status)}</span><span className="roadmap-log-step">{selected === currentIndex ? `Now: ${roadmapStatus.step}` : selected > currentIndex ? `Starts after Level ${level.level - 1}` : 'Shipped'}</span></div>
         <h3>{level.theme}</h3>
         <p className="roadmap-goal">{level.goal}</p>
         <div className="tags">{level.focus.map(item => <span key={item}>{item}</span>)}</div>
-        <h4>What I’ll build</h4>
+        <h4>Builds</h4>
         <ul>{level.builds.map(build => <li key={build.name}><code>{build.name}</code> {build.summary}</li>)}</ul>
-        <p className="roadmap-paper"><b>Paper goal:</b> {level.paper}</p>
+        <p className="roadmap-paper"><b>Paper from this work:</b> {level.paper}</p>
         <div className="roadmap-log-nav"><button type="button" onClick={() => setSelected(selected - 1)} disabled={selected === 0}>← Down a level</button><button type="button" onClick={() => setSelected(selected + 1)} disabled={selected === roadmap.length - 1}>Up a level →</button></div>
       </article>
     </div>
