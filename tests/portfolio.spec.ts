@@ -356,9 +356,9 @@ test('roadmap climb shows the current level and opens planned work per stop', as
   await expect(stops).toHaveCount(7);
   await expect(roadmap.getByRole('button', { name: 'Level 1: Engineering foundations' })).toHaveAttribute('aria-pressed', 'true');
   const log = roadmap.locator('#roadmap-log');
-  await expect(log).toContainText('evalkit');
+  await expect(log).toContainText('ehr-asof');
   await roadmap.getByRole('button', { name: 'Level 3: LLM systems & evaluation' }).click();
-  await expect(log).toContainText('clineval');
+  await expect(log).toContainText('clinical-agent-redteam');
   await log.getByRole('button', { name: 'Up a level →' }).click();
   await expect(log).toContainText('mednote-lora');
   await page.setViewportSize({ width: 390, height: 844 });
