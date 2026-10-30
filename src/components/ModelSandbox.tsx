@@ -35,7 +35,7 @@ export default function ModelSandbox({ complete }: { complete: () => void }) {
   }
   const challenge = preset === 'Diagonal' ? 'Can a straight boundary separate these classes?' : preset === 'Four corners' ? 'Opposite corners share a class. Try a straight boundary, then curved features.' : 'One class forms an island. Can your model learn a boundary around it?';
   return <div className="ml-playground"><div className="model-sandbox">
-    <div className="sandbox-intro"><span className="eyebrow">THE ML PLAYGROUND</span><h4>Draw data. Train a model. Try to break it.</h4><p>{challenge}</p></div>
+    <div className="sandbox-intro"><h4>Draw data. Train a model. Try to break it.</h4><p>{challenge}</p></div>
     <div className="dataset-picker" aria-label="Dataset presets">{(['Diagonal', 'Four corners', 'Island'] as Dataset[]).map(name => <button key={name} aria-pressed={preset === name} onClick={() => choose(name)}>{name}</button>)}</div>
     <div className="sandbox-layout"><div className="sandbox-chart">
       <div className="plot-tools"><span>Add a training dot:</span><button aria-pressed={brush === 0} onClick={() => setBrush(0)}>Coral / A</button><button aria-pressed={brush === 1} onClick={() => setBrush(1)}>Sky / B</button></div>

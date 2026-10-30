@@ -20,7 +20,7 @@ export default function Portrait() {
   return <aside ref={card} className="portrait-card">
     <button className="portrait-image portrait-play" onClick={hop} aria-label="Make Eric's photo bounce">
       <img src={preview('aboutme.jpg')} alt="Eric Yang outdoors among green plants" width="933" height="1400" fetchPriority="high"/>
-      <span className="portrait-badge">NICE TO MEET YOU</span>
+      <span className="portrait-badge">Nice to meet you</span>
     </button>
     <div className="portrait-caption"><strong>Eric Yang</strong><span>Researcher / Engineer / Artist</span></div>
   </aside>;

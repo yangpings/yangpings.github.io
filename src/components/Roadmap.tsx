@@ -16,7 +16,7 @@ export default function Roadmap() {
   const level = roadmap[selected];
   const here = stops[currentIndex];
   return <section id="roadmap" className="roadmap-section" aria-labelledby="roadmap-title">
-    <div className="section-bar"><div><span className="eyebrow">05 / WHAT I’M BUILDING</span><h2 id="roadmap-title">Roadmap.</h2></div><a href={links.github} target="_blank" rel="noreferrer" className="text-link"><Icon name="github"/>Follow along on GitHub ↗</a></div>
+    <div className="section-bar"><div><h2 id="roadmap-title">Roadmap.</h2></div><a href={links.github} target="_blank" rel="noreferrer" className="text-link"><Icon name="github"/>Follow along on GitHub ↗</a></div>
     <p className="section-intro roadmap-intro">I’m building open-source medical AI in public, in seven stages: from trustworthy EHR data pipelines (Level 1) to safety research on frontier models (Level 7). Each stage ships repos with tested code, results with confidence intervals, and a paper. Pick a stop to see what’s in it.</p>
     <div className="roadmap-climb">
       <div className="roadmap-map">

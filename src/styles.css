@@ -209,15 +209,15 @@ h3 { font-weight: 600; }
 .lane-caption { display: block; font-size: 11px; font-weight: 400; color: #e6b2aa; margin-top: 8px; margin-left: 18px; }
 .lane-center { font-size: 10px; letter-spacing: 1.3px; color: #edbab1; text-align: center; padding-top: 5px; }
 .branch-timeline { list-style: none; padding: 0; margin: 0; position: relative; }
-.branch-timeline::before { content: ''; position: absolute; top: 0; bottom: 0; left: 50%; width: 2px; transform: translateX(-50%); background: linear-gradient(#ff9e7a, #e67d86 75%, #e67d8620); }
+.branch-timeline::before { content: ''; position: absolute; top: 0; bottom: 0; left: 50%; width: 2px; transform: translateX(-50%); background: #e67d86; }
 .timeline-year { display: grid; grid-template-columns: minmax(0, 1fr) 90px minmax(0, 1fr); position: relative; padding-bottom: 32px; }
 .year-marker { grid-column: 2; grid-row: 1; position: relative; z-index: 1; align-self: start; justify-self: center; margin: 20px 0 0; padding: 9px 8px; font-size: 13px; font-weight: 600; color: #371421; background: #ffd078; border: 3px solid #381320; box-shadow: 0 0 0 1px #c37d6e; }
 .research-branch { grid-column: 1; grid-row: 1; padding-right: 20px; }
 .other-branch { grid-column: 3; grid-row: 1; padding-left: 20px; }
-.branch-card { position: relative; padding: 20px; border: 1px solid #c76c6b; border-left: 3px solid #ff8b7c; background: linear-gradient(130deg, #762638, #551b2b); margin-bottom: 18px; box-shadow: 4px 4px 0 #1a0b1640; }
+.branch-card { position: relative; padding: 20px; border: 1px solid #c76c6b; border-left: 3px solid #ff8b7c; background: #6a2133; margin-bottom: 18px; box-shadow: 4px 4px 0 #1a0b1640; }
 .branch-card:last-child { margin-bottom: 0; }
-.branch-card.industry { border-color: #ac794c; border-left-color: #ffd078; background: linear-gradient(130deg, #68402c, #4c2427); }
-.branch-card.creative { border-color: #bc637d; border-left-color: #ffa4c5; background: linear-gradient(130deg, #6c2648, #4b1d35); }
+.branch-card.industry { border-color: #ac794c; border-left-color: #ffd078; background: #5c3229; }
+.branch-card.creative { border-color: #bc637d; border-left-color: #ffa4c5; background: #5e2240; }
 .research-branch > .branch-card:first-child::after { content: ''; position: absolute; right: -66px; top: 40px; width: 65px; height: 1px; background: #e9877f; }
 .other-branch > .branch-card:first-child::before { content: ''; position: absolute; left: -66px; top: 40px; width: 65px; height: 1px; background: #e4b070; }
 .branch-card h4 { font-size: 20px; font-weight: 600; line-height: 1.4; margin: 14px 0 5px; }
@@ -445,3 +445,26 @@ h3 { font-weight: 600; }
 .built-with{display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:6px 16px;flex:1 1 420px;text-align:center}
 .built-with ul{list-style:none;margin:0;padding:0;display:contents}
 .built-with li{font-size:12px;color:#fff0db}
+
+/* Refinement pass: sentence-case labels, one-colour headline, readable body sizes, even gallery crops */
+.eyebrow, .portrait-badge, .art-preview > span, .card-meta { text-transform: none; letter-spacing: 0; }
+.eyebrow { font-size: 13px; font-weight: 500; }
+.card-meta { font-size: 13px; color: #f2bab0; }
+.hero-keyword, .keyword-mind, .keyword-world, .keyword-step, .hero h1 > span { color: inherit; }
+.hero-description { font-size: 17px; line-height: 1.6; color: #fff0db; max-width: 62ch; }
+.credentials { font-size: 14px; gap: 10px 28px; }
+.credentials small { font-size: 13px; }
+.research-card p { font-size: 15px; line-height: 1.6; }
+.sided-timeline .branch-card p, .sided-timeline .timeline-role-details li { font-size: 14px; line-height: 1.65; }
+.creative-copy h2 { margin: 0 0 12px; }
+.creative-copy p { font-size: 16px; line-height: 1.6; color: #fff0db; margin: 0 0 20px; max-width: 32ch; }
+.side-quests h3, .visual-archive h3 { font-size: 20px; font-weight: 600; margin: 0 0 12px; }
+.image-archive .section-bar h2 { margin: 0; }
+.visual-archive .media-grid { align-items: start; }
+.visual-archive .media-card img { aspect-ratio: 4 / 3; object-fit: cover; }
+.art-preview > span { font-size: 13px; }
+@media (max-width: 760px) {
+  .hero-description { font-size: 16px; }
+  .credentials, .credentials small { font-size: 13px; }
+  .research-card p { font-size: 15px; }
+}

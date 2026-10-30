@@ -30,6 +30,6 @@ export default function EntryDialog({ entry, onClose, completed, onComplete, int
     return () => { dialog.current?.close(); document.body.style.overflow = overflow; previous?.focus(); };
   }, [entry]);
   return <dialog ref={dialog} className={`entry-dialog${interactive && entry?.id === 'llm' ? ' playground-dialog' : interactive && entry?.id === 'art' ? ' studio-dialog' : ''}`} onCancel={onClose} onClick={e => {if (e.target === e.currentTarget) onClose();}} aria-labelledby="entry-title">
-    {entry && <article><div className="dialog-top"><span className="eyebrow">{interactive ? 'ERIC’S LITTLE WORLD' : entry.category}</span><button autoFocus className="close-button" onClick={onClose} aria-label="Close details">✕</button></div><h2 id="entry-title">{interactive ? worldTitles[entry.id] ?? entry.title : entry.title}</h2>{interactive ? <WorldPanel key={entry.id} entry={entry} completed={completed} onComplete={onComplete}/> : <EntryBody entry={entry} narrative/>}</article>}
+    {entry && <article><div className="dialog-top"><span className="eyebrow">{interactive ? 'Eric’s little world' : entry.category}</span><button autoFocus className="close-button" onClick={onClose} aria-label="Close details">✕</button></div><h2 id="entry-title">{interactive ? worldTitles[entry.id] ?? entry.title : entry.title}</h2>{interactive ? <WorldPanel key={entry.id} entry={entry} completed={completed} onComplete={onComplete}/> : <EntryBody entry={entry} narrative/>}</article>}
   </dialog>;
 }

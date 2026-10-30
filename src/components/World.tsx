@@ -79,7 +79,7 @@ export default function World({ onOpen, visited, paused, artwork, completed }: {
     return () => { cancelAnimationFrame(frame); clear(); window.removeEventListener('blur', clear); document.removeEventListener('visibilitychange', clear); };
   }, [active, paused]);
   return <section ref={section} id="world" className="world-section" aria-labelledby="world-title">
-    <div className="section-bar"><div><span className="eyebrow">01 / EXPLORE THE WORLD OF ERIC</span><h2 id="world-title">Welcome to Eric's home.</h2></div><span className="world-status"><span className="status-dot"/> WORLD 001 · AFTER HOURS</span></div>
+    <div className="section-bar"><div><h2 id="world-title">Welcome to Eric's home.</h2></div></div>
     <p className="section-intro">Walk into a room, pick up an instrument, draw something, chase a beat, or investigate a model.</p>
     <div className="world-shell">
       <div className="world-toolbar"><span><span className="tiny-square"/> ERIC’S LITTLE WORLD</span><span>{visited.size} / 8 rooms explored</span><button className="world-walk" onClick={() => world.current?.focus()}>Walk around</button></div>
