@@ -38,35 +38,29 @@ export default function MapScenery({ allClear }: { allClear: boolean }) {
     {rocks.map(([x, y], i) => <g key={i} transform={`translate(${x},${y})`}><path d="M-10 4-6-5 3-7 10 1 7 5Z" fill="#3b1420"/><path d="M-6-5 3-7 5-3-4-2Z" fill="#7a2a3c"/></g>)}
     {flowers.map(([x, y], i) => <g key={i} transform={`translate(${x},${y})`} fill={['#ffd078', '#ff7868', '#fff1db'][i % 3]}><circle r="2.2"/><circle cx="5" cy="2" r="1.7"/><circle cx="-4" cy="3" r="1.7"/></g>)}
 
-    {/* The castle on its hill: a crenellated keep between two round towers with pointed roofs,
-        lit windows, an arched gate, and the flag that rises once every level is explored. */}
+    {/* A compact stone castle. */}
     <g transform="translate(900,128)" className={`map-castle${allClear ? ' is-clear' : ''}`}>
-      <ellipse cy="46" rx="86" ry="14" fill="#4a1622"/>
-      {/* Curtain wall */}
-      <rect x="-62" y="2" width="124" height="44" fill="#d9524f"/>
-      <path d="M-62 2h10v-8h10v8h10v-8h10v8h10v-8h10v8h10v-8h10v8h10v-8h10v8h10v-8h10v8h10v-8h4v8" fill="#d9524f"/>
-      <path d="M-62 18h124M-62 32h124" stroke="#b8403f" strokeWidth="1.2" opacity=".6"/>
-      {/* Towers */}
-      {[-58, 58].map(x => <g key={x} transform={`translate(${x} 0)`}>
-        <rect x="-15" y="-26" width="30" height="72" fill="#ff7868"/>
-        <rect x="-15" y="-26" width="9" height="72" fill="#ffffff22"/>
-        <path d="M-19-26 0-66 19-26Z" fill="#ffd078"/><path d="M-19-26 0-66 0-26Z" fill="#ffe7ad"/>
-        <path d="M-19-26h38" stroke="#b8862d" strokeWidth="3"/>
-        <rect className="castle-window" x="-4" y="-12" width="8" height="13" rx="4" fill="#ffd078"/>
-        <rect className="castle-window" x="-4" y="14" width="8" height="13" rx="4" fill="#ffd078"/>
+      <ellipse cy="49" rx="81" ry="12" fill="#4a1622"/>
+      {/* The keep and its four evenly spaced, connected battlements. */}
+      <path d="M-32 44V-35h10v10h8v-10h10v10h8v-10h10v10h8v-10h10v79Z" fill="#eaa080" stroke="#9e4546" strokeWidth="2" strokeLinejoin="round"/>
+      <path d="M-30-23h8v65h-8Z" fill="#fff1db" opacity=".16"/>
+      <path d="M-30-19h60M-30 0h60M-30 19h60M-16-19V0M15 0v19" fill="none" stroke="#9e4546" strokeOpacity=".4" strokeWidth="1.5"/>
+      {[-13, 13].map(x => <path key={x} className="castle-window" d={`M${x - 4}-5v-7a4 4 0 0 1 8 0v7Z`} fill="#ffd078" stroke="#9e4546" strokeWidth="1.5"/>)}
+      {/* Matching side towers; dark eaves give each roof a solid seat. */}
+      {[-53, 53].map(x => <g key={x} transform={`translate(${x} 0)`}>
+        <rect x="-16" y="-18" width="32" height="62" rx="2" fill="#d87665" stroke="#9e4546" strokeWidth="2"/>
+        <path d="M-14-16h8v58h-8Z" fill="#fff1db" opacity=".17"/>
+        <path d="M-15 10h30M-15 29h30M3 10v19" stroke="#9e4546" strokeOpacity=".5" strokeWidth="1.5"/>
+        <path d="M-21-19 0-58 21-19Z" fill="#b94d50" stroke="#84333f" strokeWidth="2" strokeLinejoin="round"/>
+        <path d="M-18-21 0-55 0-21Z" fill="#f28b72"/>
+        <path d="M-21-19h42" stroke="#ffd078" strokeWidth="3" strokeLinecap="round"/>
+        <path className="castle-window" d="M-4 5V-3a4 4 0 0 1 8 0v8Z" fill="#ffd078" stroke="#9e4546" strokeWidth="1.5"/>
+        <path d="M-19 44h38" stroke="#9e4546" strokeWidth="5" strokeLinecap="round"/>
       </g>)}
-      {/* Keep */}
-      <rect x="-26" y="-34" width="52" height="80" fill="#ff8a78"/>
-      <rect x="-26" y="-34" width="14" height="80" fill="#ffffff1f"/>
-      <path d="M-30-34h8v-9h8v9h8v-9h8v9h8v-9h8v9h8v-9h8v9" fill="#ff8a78"/>
-      <rect className="castle-window" x="-12" y="-20" width="9" height="14" rx="4.5" fill="#ffd078"/>
-      <rect className="castle-window" x="3" y="-20" width="9" height="14" rx="4.5" fill="#ffd078"/>
-      <path d="M-14 46V20a14 14 0 0 1 28 0v26Z" fill="#2a0d16"/>
-      <path d="M-14 46V20a14 14 0 0 1 28 0v26" fill="none" stroke="#ffd078" strokeWidth="2.5"/>
-      <path d="M-7 46V14m7 32V8m7 38V14M-14 30h28" stroke="#ffd07866" strokeWidth="1.5"/>
-      {/* Flag */}
-      <path d="M0-43v-40" stroke="#fff1db" strokeWidth="2.5" strokeLinecap="round"/>
-      <path className="castle-flag" d="M1.5-83h26l-7 7.5 7 7.5h-26Z" fill="#ffd078"/>
+      {/* Arched entrance and a short stone threshold. */}
+      <path d="M-13 44V22a13 13 0 0 1 26 0v22Z" fill="#2a0d16" stroke="#ffd078" strokeWidth="3"/>
+      <path d="M-6 43V17m6 26V12m6 31V17M-12 30h24" stroke="#c98a52" strokeWidth="1.5"/>
+      <path d="M-18 47h36" stroke="#eaa080" strokeWidth="5" strokeLinecap="round"/>
     </g>
     {/* The secret islet: shore, a tuft of grass. */}
     <g transform="translate(560,140)">
