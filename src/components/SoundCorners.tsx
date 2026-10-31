@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
+import StepSequencer from './StepSequencer';
 
 export function useSound() {
   const audio = useRef<AudioContext | null>(null);
@@ -9,8 +10,8 @@ export function useSound() {
       audio.current ??= new AudioContext(); const ctx = audio.current;
       await ctx.resume(); if (ctx.state === 'closed') return;
       const gain = ctx.createGain(); gain.connect(ctx.destination);
-      const duration = kind === 'cymbal' ? .65 : kind === 'tone' ? .65 : .25;
-      gain.gain.setValueAtTime(.16, ctx.currentTime); gain.gain.exponentialRampToValueAtTime(.001, ctx.currentTime + duration);
+      const duration = kind === 'cymbal' ? .65 : kind === 'tone' ? .65 : kind === 'bass' ? .42 : kind === 'tick' ? .09 : .25;
+      gain.gain.setValueAtTime(kind === 'tick' ? .07 : kind === 'bass' ? .2 : .16, ctx.currentTime); gain.gain.exponentialRampToValueAtTime(.001, ctx.currentTime + duration);
       if (kind === 'snare' || kind === 'hat' || kind === 'cymbal') {
         const buffer = ctx.createBuffer(1, Math.ceil(ctx.sampleRate * duration), ctx.sampleRate);
         const data = buffer.getChannelData(0); for (let i = 0; i < data.length; i++) data[i] = Math.random() * 2 - 1;
@@ -19,9 +20,10 @@ export function useSound() {
         source.buffer = buffer; source.connect(filter); filter.connect(gain); source.start();
         source.onended = () => { source.disconnect(); filter.disconnect(); gain.disconnect(); };
       } else {
-        const osc = ctx.createOscillator(); osc.type = kind === 'tone' ? 'sine' : 'triangle';
+        const osc = ctx.createOscillator(); osc.type = kind === 'tone' || kind === 'tick' ? 'sine' : kind === 'bass' ? 'sawtooth' : 'triangle';
         osc.frequency.setValueAtTime(kind === 'kick' ? 130 : frequency, ctx.currentTime);
-        if (kind !== 'tone') osc.frequency.exponentialRampToValueAtTime(kind === 'kick' ? 40 : frequency * .5, ctx.currentTime + duration);
+        if (kind !== 'tone' && kind !== 'tick' && kind !== 'bass') osc.frequency.exponentialRampToValueAtTime(kind === 'kick' ? 40 : frequency * .5, ctx.currentTime + duration);
+        if (kind === 'bass') { const low = ctx.createBiquadFilter(); low.type = 'lowpass'; low.frequency.value = 420; osc.connect(low); low.connect(gain); osc.start(); osc.stop(ctx.currentTime + duration); osc.onended = () => { osc.disconnect(); low.disconnect(); gain.disconnect(); }; return; }
         osc.connect(gain); osc.start(); osc.stop(ctx.currentTime + duration);
         osc.onended = () => { osc.disconnect(); gain.disconnect(); };
       }
@@ -39,7 +41,7 @@ export function DrumKit({ complete }: { complete: () => void }) {
 }
 
 export function Singing({ complete }: { complete: () => void }) {
-  const { sound, error } = useSound(); const [note, setNote] = useState(0); const [listening, setListening] = useState(false); const [pending, setPending] = useState(false); const [pitch, setPitch] = useState('');
+  const { sound, error } = useSound(); const [note, setNote] = useState(0); const [listening, setListening] = useState(false); const [pending, setPending] = useState(false); const [pitch, setPitch] = useState(''); const [cents, setCents] = useState<number | null>(null);
   const cleanup = useRef<() => void>(() => {}); const alive = useRef(true);
   const targets = [{ name: 'C4', hz: 261.63 }, { name: 'D4', hz: 293.66 }, { name: 'E4', hz: 329.63 }, { name: 'G4', hz: 392 }];
   useEffect(() => { alive.current = true; return () => { alive.current = false; cleanup.current(); }; }, []);
@@ -55,7 +57,7 @@ export function Singing({ complete }: { complete: () => void }) {
       await ctx.resume(); setListening(true); const data = new Float32Array(analyser.fftSize); let held = 0;
       const tick = () => {
         analyser.getFloatTimeDomainData(data); let energy = 0; for (const value of data) energy += value * value;
-        if (Math.sqrt(energy / data.length) < .015) { setPitch('Sing or hum a steady note…'); held = 0; }
+        if (Math.sqrt(energy / data.length) < .015) { setPitch('Sing or hum a steady note…'); setCents(null); held = 0; }
         else {
           let best = 0; let lag = 0;
           for (let offset = Math.floor(ctx.sampleRate / 650); offset < Math.floor(ctx.sampleRate / 80); offset++) {
@@ -63,7 +65,7 @@ export function Singing({ complete }: { complete: () => void }) {
             for (let i = 0; i < data.length - offset; i++) { dot += data[i] * data[i + offset]; a += data[i] ** 2; b += data[i + offset] ** 2; }
             const correlation = dot / Math.sqrt(a * b || 1); if (correlation > best) { best = correlation; lag = offset; }
           }
-          if (best > .85 && lag) { const hz = ctx.sampleRate / lag; const cents = 1200 * Math.log2(hz / targets[note].hz); const matched = Math.abs(cents) < 50; setPitch(`${Math.round(hz)} Hz · ${matched ? 'On the note!' : cents < 0 ? 'Try a little higher' : 'Try a little lower'}`); held = matched ? held + 1 : 0; if (held >= 12) complete(); }
+          if (best > .85 && lag) { const hz = ctx.sampleRate / lag; const cents = 1200 * Math.log2(hz / targets[note].hz); const matched = Math.abs(cents) < 50; setCents(Math.max(-100, Math.min(100, cents))); setPitch(`${Math.round(hz)} Hz · ${matched ? 'On the note!' : cents < 0 ? 'Try a little higher' : 'Try a little lower'}`); held = matched ? held + 1 : 0; if (held >= 12) complete(); }
           else { setPitch('Try a clear, steady vowel. Headphones help.'); held = 0; }
         }
         frame = requestAnimationFrame(tick);
@@ -71,7 +73,7 @@ export function Singing({ complete }: { complete: () => void }) {
     } catch { cleanup.current(); if (alive.current) setPitch('Microphone unavailable or access declined. You can still play a note and sing along.'); }
     finally { if (alive.current) setPending(false); }
   }
-  return <><p>Play a reference note, then sing or hum it back. Choose a comfortable pitch. This is a warm-up, not a judgment of your voice.</p><div className="activity-options compact">{targets.map((target, i) => <button key={target.name} disabled={listening} aria-pressed={note === i} onClick={() => setNote(i)}>{target.name}</button>)}<button onClick={() => { void sound('tone', targets[note].hz); complete(); }}>Play reference note</button></div><div className="activity-options compact"><button disabled={listening || pending} onClick={() => void listen()}>Enable microphone pitch guide</button>{listening && <button onClick={() => { cleanup.current(); setListening(false); setPitch('Microphone stopped.'); }}>Stop microphone</button>}</div><p role="status" className="activity-feedback">{error || pitch || 'Sing along without a microphone, or enable the optional live pitch guide.'}</p><small>Microphone audio is analyzed in your browser. It is never recorded or uploaded. The pitch guide is approximate.</small></>;
+  return <><p>Play a reference note, then sing or hum it back. Choose a comfortable pitch. This is a warm-up, not a judgment of your voice.</p><div className="activity-options compact">{targets.map((target, i) => <button key={target.name} disabled={listening} aria-pressed={note === i} onClick={() => setNote(i)}>{target.name}</button>)}<button onClick={() => { void sound('tone', targets[note].hz); complete(); }}>Play reference note</button></div><div className="activity-options compact"><button disabled={listening || pending} onClick={() => void listen()}>Enable microphone pitch guide</button>{listening && <button onClick={() => { cleanup.current(); setListening(false); setPitch('Microphone stopped.'); }}>Stop microphone</button>}</div><div className={`pitch-meter${listening ? ' is-live' : ''}`} aria-hidden="true"><span className="pitch-note">{targets[note].name}</span><div className="pitch-track"><i className="pitch-zone"/><b style={{ left: `${50 + (cents ?? 0) / 2}%`, opacity: cents === null ? .25 : 1 }} className={cents !== null && Math.abs(cents) < 50 ? 'is-on' : ''}/></div><div className="pitch-scale"><span>Flat</span><span>On pitch</span><span>Sharp</span></div></div><p role="status" className="activity-feedback">{error || pitch || 'Sing along without a microphone, or enable the optional live pitch guide.'}</p><small>Microphone audio is analyzed in your browser. It is never recorded or uploaded. The pitch guide is approximate.</small></>;
 }
 
 export function Listening({ complete }: { complete: () => void }) {
@@ -79,11 +81,19 @@ export function Listening({ complete }: { complete: () => void }) {
   const timer = useRef<ReturnType<typeof setInterval> | undefined>(undefined); const step = useRef(0);
   function stop() { clearInterval(timer.current); timer.current = undefined; setPlaying(false); }
   useEffect(() => () => clearInterval(timer.current), []);
-  function start() { stop(); setPlaying(true); complete(); step.current = 0; const notes = mood === 'Slow glow' ? [261.63, 329.63, 392, 329.63] : [440, 523.25, 659.25, 523.25, 392, 523.25]; const tick = () => { void sound('tone', notes[step.current++ % notes.length]); }; tick(); timer.current = setInterval(tick, mood === 'Slow glow' ? 650 : 300); }
-  return <><p>Put on headphones and settle in. Pick a little instrumental loop and let it play while you listen.</p><div className="activity-options compact">{['Slow glow', 'Bright steps'].map(label => <button key={label} aria-pressed={mood === label} onClick={() => { stop(); setMood(label); }}>{label}</button>)}<button onClick={playing ? stop : start}>{playing ? 'Stop listening' : 'Listen to loop'}</button></div><p className="activity-feedback" role="status">{error || (playing ? `Now playing: ${mood}` : 'No loop is playing.')}</p><small>Synthesized demo loops made for this site. These are not Eric's recordings or a claimed favorite playlist.</small></>;
+  const [lit, setLit] = useState(-1);
+  const notesFor = (m: string) => m === 'Slow glow' ? [261.63, 329.63, 392, 329.63] : [440, 523.25, 659.25, 523.25, 392, 523.25];
+  function start() { stop(); setPlaying(true); complete(); step.current = 0; const notes = notesFor(mood); const tick = () => { const i = step.current++ % notes.length; setLit(i); void sound('tone', notes[i]); }; tick(); timer.current = setInterval(tick, mood === 'Slow glow' ? 650 : 300); }
+  const notes = notesFor(mood);
+  return <><p>Put on headphones and settle in. Pick a little instrumental loop and let it play while you listen.</p>
+    <div className={`listen-visual${playing ? ' is-playing' : ''}`} aria-hidden="true">
+      <div className="listen-disc"><span/></div>
+      <div className="listen-bars">{notes.map((hz, i) => <i key={i} className={playing && lit === i ? 'is-lit' : ''} style={{ height: `${30 + (hz - 250) / 420 * 70}%` }}/>)}</div>
+    </div>
+    <div className="activity-options compact">{['Slow glow', 'Bright steps'].map(label => <button key={label} aria-pressed={mood === label} onClick={() => { stop(); setMood(label); }}>{label}</button>)}<button onClick={playing ? stop : start}>{playing ? 'Stop listening' : 'Listen to loop'}</button></div><p className="activity-feedback" role="status">{error || (playing ? `Now playing: ${mood}` : 'No loop is playing.')}</p><small>Synthesized demo loops made for this site. These are not Eric's recordings or a claimed favorite playlist.</small></>;
 }
 
 export default function SoundCorners({ onComplete }: { onComplete: (id: string) => void }) {
   const [corner, setCorner] = useState('Drums');
-  return <><div className="corner-picker" aria-label="Music corners">{['Drums', 'Singing', 'Listening'].map(label => <button key={label} aria-pressed={corner === label} onClick={() => setCorner(label)}>{label}</button>)}</div><div key={corner}>{corner === 'Drums' ? <DrumKit complete={() => onComplete('drums')}/> : corner === 'Singing' ? <Singing complete={() => onComplete('singing')}/> : <Listening complete={() => onComplete('listening')}/>}</div></>;
+  return <><div className="corner-picker" aria-label="Music corners">{['Drums', 'Singing', 'Listening'].map(label => <button key={label} aria-pressed={corner === label} onClick={() => setCorner(label)}>{label}</button>)}</div><div key={corner}>{corner === 'Drums' ? <><StepSequencer complete={() => onComplete('drums')}/><details className="music-break"><summary>Play the kit by hand</summary><DrumKit complete={() => onComplete('drums')}/></details></> : corner === 'Singing' ? <Singing complete={() => onComplete('singing')}/> : <Listening complete={() => onComplete('listening')}/>}</div></>;
 }

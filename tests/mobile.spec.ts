@@ -1,4 +1,5 @@
 import { test, expect } from '@playwright/test';
+import { openRoom } from './helpers';
 const rooms = ['AI / Research lab', 'Vision lab', 'Art studio', 'Music room', 'Library / CV', 'Home', 'Arcade', 'Travel / Conferences'];
 for (const viewport of [{width:320,height:740},{width:390,height:844},{width:768,height:1024},{width:844,height:390}]) {
   test(`mobile rooms fit and close after scrolling at ${viewport.width}x${viewport.height}`, async ({ browser }) => {
@@ -8,7 +9,7 @@ for (const viewport of [{width:320,height:740},{width:390,height:844},{width:768
     await page.goto('/');
     expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
     for (const name of rooms) {
-      await page.getByRole('button', {name:`Explore ${name}`,exact:true}).tap();
+      await openRoom(page, name);
       const dialog = page.getByRole('dialog');
       expect(await dialog.evaluate(el => el.scrollWidth <= el.clientWidth)).toBe(true);
       await dialog.evaluate(el => { el.scrollTop = el.scrollHeight; });

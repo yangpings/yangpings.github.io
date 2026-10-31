@@ -1,5 +1,5 @@
 // The island's scenery, drawn in layers from back to front: night sky and sea, a far mountain range,
-// the island with its cliff, shore and meadows, hills, rocks and flowers, the castle on its
+// the island with its cliff, shore and meadows, rocks and flowers, the castle on its
 // hill, and the secret islet. Flat colours from the site palette; light comes from the top left.
 
 const stars = [[60, 40], [140, 90], [235, 30], [330, 70], [410, 22], [470, 95], [640, 35], [700, 80], [760, 20], [960, 60], [990, 120], [30, 150], [600, 110], [890, 28]];
@@ -30,12 +30,6 @@ export default function MapScenery({ allClear }: { allClear: boolean }) {
     {/* Meadow patches in two tones. */}
     {[[150, 470, 70, 22], [420, 480, 90, 24], [690, 470, 80, 20], [300, 500, 60, 16]].map(([x, y, rx, ry], i) => <ellipse key={i} cx={x} cy={y} rx={rx} ry={ry} fill="#6a2133"/>)}
 
-    {/* Rolling hills with a lit crest. */}
-    {[[170, 312, 56], [330, 326, 42], [610, 314, 60], [462, 310, 36]].map(([x, y, r]) => <g key={x}>
-      <path d={`M${x - r} ${y + 10}a${r} ${r * .7} 0 0 1 ${r * 2} 0Z`} fill="#7a2a3c"/>
-      <path d={`M${x - r * .7} ${y - r * .42}a${r * .8} ${r * .5} 0 0 1 ${r * .9} -${r * .1}`} fill="none" stroke="#ff7868" strokeOpacity=".35" strokeWidth="3" strokeLinecap="round"/>
-    </g>)}
-
     {/* Castle hill. */}
     <path d="M752 262c18-118 192-128 214 0 10 54-22 96-64 106h-96c-44-10-62-64-54-106Z" fill="#6a2133"/>
     <path d="M770 240c20-80 150-92 176-16" fill="none" stroke="#ff7868" strokeOpacity=".3" strokeWidth="4" strokeLinecap="round"/>
@@ -44,20 +38,36 @@ export default function MapScenery({ allClear }: { allClear: boolean }) {
     {rocks.map(([x, y], i) => <g key={i} transform={`translate(${x},${y})`}><path d="M-10 4-6-5 3-7 10 1 7 5Z" fill="#3b1420"/><path d="M-6-5 3-7 5-3-4-2Z" fill="#7a2a3c"/></g>)}
     {flowers.map(([x, y], i) => <g key={i} transform={`translate(${x},${y})`} fill={['#ffd078', '#ff7868', '#fff1db'][i % 3]}><circle r="2.2"/><circle cx="5" cy="2" r="1.7"/><circle cx="-4" cy="3" r="1.7"/></g>)}
 
-    {/* The castle on its hill. */}
-    <g transform="translate(880,150)" className={`map-castle${allClear ? ' is-clear' : ''}`}>
-      <ellipse cy="40" rx="66" ry="10" fill="#120509" opacity=".5"/>
-      <rect x="-40" y="-8" width="80" height="46" fill="#ff7868"/>
-      <rect x="-40" y="-8" width="80" height="8" fill="#ffa497"/>
-      <rect x="-54" y="-36" width="24" height="74" fill="#e8605a"/><rect x="30" y="-36" width="24" height="74" fill="#e8605a"/>
-      <path d="M-54-36h24l-12-22Z M30-36h24l-12-22Z" fill="#ffd078"/>
-      <path d="M-40-8h7v-7h6v7h7v-7h6v7h7v-7h6v7h7v-7h6v7h7" fill="none" stroke="#ff7868" strokeWidth="5"/>
-      <rect x="-47" y="-20" width="9" height="13" rx="4.5" fill="#280d15"/><rect x="38" y="-20" width="9" height="13" rx="4.5" fill="#280d15"/>
-      <rect className="castle-window" x="-26" y="6" width="9" height="12" rx="4.5" fill="#ffd078"/><rect className="castle-window" x="17" y="6" width="9" height="12" rx="4.5" fill="#ffd078"/>
-      <path d="M-11 38V18a11 11 0 0 1 22 0v20Z" fill="#280d15"/>
-      <path d="M0-8v-52" stroke="#fff1db" strokeWidth="3"/><path className="castle-flag" d="M2-60h30l-8 9 8 9H2Z" fill="#ffd078"/>
+    {/* The castle on its hill: a crenellated keep between two round towers with pointed roofs,
+        lit windows, an arched gate, and the flag that rises once every level is explored. */}
+    <g transform="translate(900,128)" className={`map-castle${allClear ? ' is-clear' : ''}`}>
+      <ellipse cy="46" rx="86" ry="14" fill="#4a1622"/>
+      {/* Curtain wall */}
+      <rect x="-62" y="2" width="124" height="44" fill="#d9524f"/>
+      <path d="M-62 2h10v-8h10v8h10v-8h10v8h10v-8h10v8h10v-8h10v8h10v-8h10v8h10v-8h10v8h10v-8h4v8" fill="#d9524f"/>
+      <path d="M-62 18h124M-62 32h124" stroke="#b8403f" strokeWidth="1.2" opacity=".6"/>
+      {/* Towers */}
+      {[-58, 58].map(x => <g key={x} transform={`translate(${x} 0)`}>
+        <rect x="-15" y="-26" width="30" height="72" fill="#ff7868"/>
+        <rect x="-15" y="-26" width="9" height="72" fill="#ffffff22"/>
+        <path d="M-19-26 0-66 19-26Z" fill="#ffd078"/><path d="M-19-26 0-66 0-26Z" fill="#ffe7ad"/>
+        <path d="M-19-26h38" stroke="#b8862d" strokeWidth="3"/>
+        <rect className="castle-window" x="-4" y="-12" width="8" height="13" rx="4" fill="#ffd078"/>
+        <rect className="castle-window" x="-4" y="14" width="8" height="13" rx="4" fill="#ffd078"/>
+      </g>)}
+      {/* Keep */}
+      <rect x="-26" y="-34" width="52" height="80" fill="#ff8a78"/>
+      <rect x="-26" y="-34" width="14" height="80" fill="#ffffff1f"/>
+      <path d="M-30-34h8v-9h8v9h8v-9h8v9h8v-9h8v9h8v-9h8v9" fill="#ff8a78"/>
+      <rect className="castle-window" x="-12" y="-20" width="9" height="14" rx="4.5" fill="#ffd078"/>
+      <rect className="castle-window" x="3" y="-20" width="9" height="14" rx="4.5" fill="#ffd078"/>
+      <path d="M-14 46V20a14 14 0 0 1 28 0v26Z" fill="#2a0d16"/>
+      <path d="M-14 46V20a14 14 0 0 1 28 0v26" fill="none" stroke="#ffd078" strokeWidth="2.5"/>
+      <path d="M-7 46V14m7 32V8m7 38V14M-14 30h28" stroke="#ffd07866" strokeWidth="1.5"/>
+      {/* Flag */}
+      <path d="M0-43v-40" stroke="#fff1db" strokeWidth="2.5" strokeLinecap="round"/>
+      <path className="castle-flag" d="M1.5-83h26l-7 7.5 7 7.5h-26Z" fill="#ffd078"/>
     </g>
-
     {/* The secret islet: shore, a tuft of grass. */}
     <g transform="translate(560,140)">
       <ellipse cy="6" rx="60" ry="18" fill="#0f0408"/>

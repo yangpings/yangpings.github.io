@@ -1,4 +1,4 @@
-﻿import { test, expect } from '@playwright/test';
+import { test, expect } from '@playwright/test';
 
 test('character faces the way it walks along the road, stops at a level, and respects reduced motion', async ({ page }) => {
   await page.goto('/');

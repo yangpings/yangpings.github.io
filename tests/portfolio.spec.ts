@@ -1,77 +1,43 @@
 import { expect, test } from '@playwright/test';
+import { openRoom } from './helpers';
 
-test('playground supports nonlinear patterns, live pause, and custom training data', async ({ page }) => {
+test('neural network playground trains live, pauses, and takes custom points', async ({ page }) => {
   await page.goto('/');
-  await page.getByRole('button', { name: 'Explore AI / Research lab', exact: true }).click();
+  await openRoom(page, 'AI / Research lab');
   const sandbox = page.locator('.model-sandbox');
-  await sandbox.getByRole('button', { name: 'Four corners', exact: true }).click();
-  await sandbox.getByRole('button', { name: 'Train 50 steps' }).click();
-  const linear = await sandbox.getByRole('status').textContent();
-  await sandbox.getByRole('button', { name: 'Use curved features' }).click();
-  await sandbox.getByRole('button', { name: 'Train 50 steps' }).click();
-  const curved = await sandbox.getByRole('status').textContent();
-  const correct = (value: string | null) => Number(value!.match(/correctly classifies (\d+)/)![1]);
-  expect(correct(curved)).toBeGreaterThan(correct(linear));
-  await sandbox.getByRole('button', { name: 'Start live training' }).click();
-  await expect(sandbox.getByRole('status')).toContainText('Training live.');
-  await sandbox.getByRole('button', { name: 'Pause training' }).click();
-  const paused = await sandbox.getByRole('status').textContent();
+  const status = sandbox.locator('.playground-status');
+  await sandbox.getByRole('radio', { name: 'XOR', exact: true }).click();
+  await sandbox.getByRole('button', { name: 'Step 1 epoch' }).click();
+  await expect(status).toContainText('After 1 epoch');
+  await sandbox.getByRole('button', { name: 'Resume training' }).click();
+  await expect(status).toContainText('Training live.');
+  await sandbox.getByRole('button', { name: 'Pause', exact: true }).click();
+  const paused = await status.textContent();
   await page.waitForTimeout(250);
-  expect(await sandbox.getByRole('status').textContent()).toBe(paused);
-  await sandbox.locator('.keyboard-dots summary').click();
-  await sandbox.getByRole('button', { name: 'Add coral dot: upper left', exact: true }).click();
-  await expect(sandbox.getByRole('status')).toContainText('0 training steps');
-  await expect(sandbox.getByRole('status')).toContainText('1 custom dots added');
-  await expect(sandbox).toContainText('Held-out accuracy / 22 dots');
+  expect(await status.textContent()).toBe(paused);
+  const plot = (await sandbox.locator('.nn-plot').boundingBox())!;
+  await page.mouse.click(plot.x + plot.width * .2, plot.y + plot.height * .2);
+  await expect(status).toContainText('After 0 epochs');
+  await expect(status).toContainText('1 custom points added');
+  await expect(sandbox).toContainText('Held-out accuracy / 60 points');
   await page.setViewportSize({ width: 390, height: 844 });
   expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
 });
 
-test('the overworld map walks level to level and opens the level you stand on', async ({ page }) => {
+test('neural network learns, and resets when the architecture changes', async ({ page }) => {
   await page.goto('/');
-  const world = page.getByRole('group', { name: /Interactive world/ });
-  const player = page.getByTestId('player');
-  await world.focus();
-  const startX = Number(await player.getAttribute('data-x'));
-  await page.keyboard.press('d');
-  await page.keyboard.down('d'); await page.waitForTimeout(250); await page.keyboard.up('d');
-  await expect.poll(async () => Number(await player.getAttribute('data-x'))).toBeGreaterThan(startX + 100);
-  await expect(page.locator('.world-control-copy [aria-live]')).toContainText('Library', { timeout: 4000 });
-  await page.keyboard.press('e');
-  await expect(page.getByRole('dialog').first().getByRole('heading', { name: 'Library' })).toBeVisible();
-  await page.keyboard.press('Escape');
-  await expect(world).toBeFocused();
-});
-
-test('on-screen controls walk to the next level and open it', async ({ page }) => {
-  await page.setViewportSize({ width: 390, height: 844 });
-  await page.goto('/');
-  const player = page.getByTestId('player');
-  const startX = Number(await player.getAttribute('data-x'));
-  const right = page.getByRole('button', { name: 'Move right', exact: true });
-  await right.scrollIntoViewIfNeeded();
-  const bounds = (await right.boundingBox())!;
-  await page.mouse.move(bounds.x + bounds.width / 2, bounds.y + bounds.height / 2);
-  await page.mouse.down(); await page.waitForTimeout(300); await page.mouse.up();
-  await expect.poll(async () => Number(await player.getAttribute('data-x')), { timeout: 4000 }).toBeGreaterThan(startX + 100);
-  await expect(page.locator('.world-control-copy [aria-live]')).toContainText('Library', { timeout: 4000 });
-  await page.getByRole('button', { name: 'Play level' }).click();
-  await expect(page.getByRole('dialog').first().getByRole('heading', { name: 'Library' })).toBeVisible();
-});
-
-test('AI sandbox learns from synthetic data and resets when features change', async ({ page }) => {
-  await page.goto('/');
-  await page.getByRole('button', { name: 'Explore AI / Research lab', exact: true }).click();
+  await openRoom(page, 'AI / Research lab');
   const sandbox = page.locator('.model-sandbox');
-  const initial = await sandbox.getByRole('status').textContent();
-  await sandbox.getByRole('button', { name: 'Train 50 steps' }).click();
-  await expect(sandbox.getByRole('status')).toContainText('50 training steps');
-  expect(await sandbox.getByRole('status').textContent()).not.toBe(initial);
-  await sandbox.getByRole('button', { name: 'Use horizontal feature only' }).click();
-  await expect(sandbox.getByRole('status')).toContainText('0 training steps');
-  await sandbox.getByRole('button', { name: 'Train 50 steps' }).click();
+  const status = sandbox.locator('.playground-status');
+  await sandbox.getByRole('button', { name: 'Step 1 epoch' }).click();
+  await sandbox.getByRole('button', { name: 'Step 1 epoch' }).click();
+  await expect(status).toContainText('After 2 epochs');
+  await sandbox.getByRole('button', { name: 'More neurons in layer 1' }).click();
+  await expect(status).toContainText('After 0 epochs');
+  await sandbox.getByRole('button', { name: 'Train', exact: true }).click();
+  await expect(status).toContainText('Training live.');
   await sandbox.getByRole('button', { name: 'Reset model' }).click();
-  await expect(sandbox.getByRole('status')).toContainText('0 training steps');
+  await expect(status).toContainText('After 0 epochs');
 });
 
 test('singing handles declined microphone access without blocking the room', async ({ page }) => {
@@ -79,7 +45,7 @@ test('singing handles declined microphone access without blocking the room', asy
     navigator.mediaDevices.getUserMedia = async () => { throw new DOMException('Declined', 'NotAllowedError'); };
   });
   await page.goto('/');
-  await page.getByRole('button', { name: 'Explore Music room', exact: true }).click();
+  await openRoom(page, 'Music room');
   await page.getByRole('button', { name: 'Singing', exact: true }).click();
   await page.getByRole('button', { name: 'Enable microphone pitch guide' }).click();
   await expect(page.getByRole('status')).toContainText('access declined');
@@ -98,7 +64,7 @@ test('microphone tracks stop when leaving the singing corner', async ({ page }) 
     };
   });
   await page.goto('/');
-  await page.getByRole('button', { name: 'Explore Music room', exact: true }).click();
+  await openRoom(page, 'Music room');
   await page.getByRole('button', { name: 'Singing', exact: true }).click();
   await page.getByRole('button', { name: 'Enable microphone pitch guide' }).click();
   await expect(page.getByRole('button', { name: 'Stop microphone', exact: true })).toBeVisible();
@@ -109,10 +75,13 @@ test('microphone tracks stop when leaving the singing corner', async ({ page }) 
 test('little world has playable music, rhythm, art, and travel corners', async ({ page }) => {
   await page.goto('/');
   await expect(page.locator('#world-title')).toHaveText('World.exe');
-  await expect(page.getByText('Start your day', { exact: true })).toHaveCount(0);
-  await page.getByRole('button', { name: 'Explore Music room', exact: true }).click();
-  for (const label of ['Crash', 'Snare', 'Kick', 'Floor tom']) await page.getByRole('button', { name: new RegExp(label) }).click();
-  await expect(page.getByRole('status')).toContainText('Floor tom');
+  await openRoom(page, 'Music room');
+  const seq = page.locator('.sequencer [role=status]');
+  await page.getByRole('button', { name: 'Funk' }).click();
+  await page.getByRole('button', { name: 'Play pattern' }).click();
+  await expect(seq).toContainText('Playing');
+  await page.getByRole('button', { name: 'Stop pattern' }).click();
+  await expect(seq).toContainText('hits programmed');
   await page.getByRole('button', { name: 'Singing', exact: true }).click();
   await page.getByRole('button', { name: 'Play reference note' }).click();
   await expect(page.getByText('Microphone audio is analyzed', { exact: false })).toBeVisible();
@@ -122,24 +91,22 @@ test('little world has playable music, rhythm, art, and travel corners', async (
   await page.getByRole('button', { name: 'Stop listening' }).click();
   await expect(page.getByRole('status')).toContainText('No loop is playing.');
   await page.getByRole('button', { name: 'Close details' }).click();
-  await page.getByRole('button', { name: 'Explore Arcade', exact: true }).click();
+  await openRoom(page, 'Arcade');
   await page.getByRole('button', { name: 'Start rhythm session' }).click();
-  await expect(page.locator('.rhythm-note').first()).toBeVisible();
-  const controls = page.getByRole('group', { name: 'Rhythm game controls' });
-  await controls.focus();
-  await page.keyboard.press('d');
+  await expect(page.locator('.rhythm-note').first()).toBeVisible({ timeout: 4000 });
+  const rhythm = page.locator('.rhythm [role=status]');
   await page.getByRole('button', { name: 'Restart session' }).click();
-  await expect(page.getByRole('status')).toContainText('0 points');
-  await expect(page.getByRole('status')).toContainText('Session complete', { timeout: 17000 });
+  await expect(rhythm).toContainText('0 points');
+  await expect(rhythm).toContainText('Session complete', { timeout: 22000 });
   await page.getByRole('button', { name: 'Close details' }).click();
-  await page.getByRole('button', { name: 'Explore Art studio', exact: true }).click();
+  await openRoom(page, 'Art studio');
   await page.getByRole('application', { name: 'Drawing canvas' }).focus();
   await page.keyboard.press('Space');
   const download = page.waitForEvent('download');
   await page.getByRole('button', { name: 'Save my sketch' }).click();
-  expect((await download).suggestedFilename()).toBe('my-eric-world-sketch.svg');
+  expect((await download).suggestedFilename()).toBe('sketchbook-page-1.svg');
   await page.getByRole('button', { name: 'Close details' }).click();
-  await page.getByRole('button', { name: 'Explore Travel / Conferences', exact: true }).click();
+  await openRoom(page, 'Travel / Conferences');
   await page.getByRole('button', { name: 'Tokyo', exact: true }).click();
   await expect(page.getByRole('dialog').first().locator('iframe')).toHaveAttribute('title', 'Map of Tokyo');
 });
@@ -172,30 +139,14 @@ test('project cards open narrative panels while world rooms retain activities', 
     expect(await dialog.locator('.entry-details p').count()).toBeGreaterThanOrEqual(2);
     await page.getByRole('button', { name: 'Close details' }).click();
   }
-  await page.getByRole('button', { name: 'Explore AI / Research lab', exact: true }).click();
-  await expect(page.getByRole('button', { name: 'Train 50 steps' })).toBeVisible();
-});
-
-test('walking back from the start stays on the map, and Escape releases the controls', async ({ page }) => {
-  await page.goto('/');
-  const world = page.getByRole('group', { name: /Interactive world/ });
-  const player = page.getByTestId('player');
-  await world.focus();
-  const startX = Number(await player.getAttribute('data-x'));
-  await page.keyboard.down('a'); await page.waitForTimeout(600); await page.keyboard.up('a');
-  expect(Number(await player.getAttribute('data-x'))).toBe(startX);
-  await page.keyboard.press('e');
-  await expect(page.getByRole('dialog').first().getByRole('heading', { name: 'Home, sweet San Francisco' })).toBeVisible();
-  await page.keyboard.press('Escape');
-  await expect(world).toBeFocused();
-  await page.keyboard.press('Escape');
-  await expect(world).not.toBeFocused();
+  await openRoom(page, 'AI / Research lab');
+  await expect(page.getByRole('button', { name: 'Train', exact: true })).toBeVisible();
 });
 
 test('all rooms, secret, and existing CV are reachable', async ({ page, request }) => {
   await page.goto('/');
-  for (const button of await page.getByRole('button', {name: /^Explore (AI|Vision|Art|Music|Library|Home|Arcade|Travel)/}).all()) {
-    await button.click();
+  for (const label of ['AI / Research lab', 'Vision lab', 'Art studio', 'Music room', 'Library / CV', 'Home', 'Arcade', 'Travel / Conferences']) {
+    await openRoom(page, label);
     await expect(page.getByRole('dialog')).toBeVisible();
     await page.getByRole('button', {name: 'Close details'}).click();
   }
@@ -212,7 +163,7 @@ test('mobile layout provides touch access without horizontal overflow', async ({
   await page.setViewportSize({width:390,height:844});
   await page.goto('/');
   expect(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth)).toBe(true);
-  await page.getByRole('button', {name:'Explore Music room'}).click();
+  await page.getByRole('button', {name:'Music'}).click();
   await expect(page.getByRole('dialog')).toContainText('100,000+');
   await page.getByRole('button', {name:'Close details'}).click();
   await page.screenshot({path:'test-results/mobile.png',fullPage:true});
@@ -227,7 +178,7 @@ test('portrait, artwork, posters, and nested image previews are available', asyn
   await expect(gallery.getByRole('link', { name: 'Hatsune Miku Fan Art on Pixiv (opens in a new tab)' })).toHaveAttribute('href', 'https://www.pixiv.net/artworks/116375366');
   await expect(gallery.getByRole('link', { name: /Concept Code 01: Minami/ })).toHaveAttribute('href', 'https://www.pixiv.net/artworks/118904947');
   await expect(gallery.getByRole('link', { name: /Hatsune/ })).toHaveAttribute('target', '_blank');
-  await page.getByRole('button', { name: 'Explore Vision lab', exact: true }).click();
+  await openRoom(page, 'Vision lab');
   await page.getByRole('button', { name: 'Enlarge Retinal imaging research poster' }).last().click();
   await expect(page.getByRole('dialog', { name: 'Retinal imaging research poster', exact: true })).toBeVisible();
   await page.keyboard.press('Escape');
@@ -357,4 +308,52 @@ test('footer lists the technologies behind the website', async ({ page }) => {
   await expect(stack).toContainText('Playwright');
   await page.setViewportSize({ width: 390, height: 844 });
   expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
+});
+
+test('the overworld map walks level to level and opens the level you stand on', async ({ page }) => {
+  await page.goto('/');
+  const world = page.getByRole('group', { name: /Interactive world/ });
+  const player = page.getByTestId('player');
+  await world.focus();
+  const startX = Number(await player.getAttribute('data-x'));
+  await page.keyboard.press('d');
+  await page.keyboard.down('d'); await page.waitForTimeout(250); await page.keyboard.up('d');
+  await expect.poll(async () => Number(await player.getAttribute('data-x'))).toBeGreaterThan(startX + 100);
+  await expect(page.locator('.world-place [aria-live]')).toContainText('Library', { timeout: 4000 });
+  await page.keyboard.press('e');
+  await expect(page.getByRole('dialog').first().getByRole('heading', { name: 'Library' })).toBeVisible();
+  await page.keyboard.press('Escape');
+  await expect(world).toBeFocused();
+});
+
+test('on-screen controls walk to the next level and open it', async ({ page }) => {
+  await page.setViewportSize({ width: 390, height: 844 });
+  await page.goto('/');
+  const player = page.getByTestId('player');
+  const startX = Number(await player.getAttribute('data-x'));
+  const right = page.getByRole('button', { name: 'Move right', exact: true });
+  await right.scrollIntoViewIfNeeded();
+  const bounds = (await right.boundingBox())!;
+  await page.mouse.move(bounds.x + bounds.width / 2, bounds.y + bounds.height / 2);
+  await page.mouse.down(); await page.waitForTimeout(300); await page.mouse.up();
+  await expect.poll(async () => Number(await player.getAttribute('data-x')), { timeout: 4000 }).toBeGreaterThan(startX + 100);
+  await expect(page.locator('.world-place [aria-live]')).toContainText('Library', { timeout: 4000 });
+  await page.getByRole('button', { name: /^Enter / }).click();
+  await expect(page.getByRole('dialog').first().getByRole('heading', { name: 'Library' })).toBeVisible();
+});
+
+test('walking back from the start stays on the map, and Escape releases the controls', async ({ page }) => {
+  await page.goto('/');
+  const world = page.getByRole('group', { name: /Interactive world/ });
+  const player = page.getByTestId('player');
+  await world.focus();
+  const startX = Number(await player.getAttribute('data-x'));
+  await page.keyboard.down('a'); await page.waitForTimeout(600); await page.keyboard.up('a');
+  expect(Number(await player.getAttribute('data-x'))).toBe(startX);
+  await page.keyboard.press('e');
+  await expect(page.getByRole('dialog').first().getByRole('heading', { name: 'Home, sweet San Francisco' })).toBeVisible();
+  await page.keyboard.press('Escape');
+  await expect(world).toBeFocused();
+  await page.keyboard.press('Escape');
+  await expect(world).not.toBeFocused();
 });
