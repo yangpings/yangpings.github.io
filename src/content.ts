@@ -22,10 +22,10 @@ export const timeADLinks = [
 ];
 export const entries: Entry[] = [
   {
-    id: 'annie', category: 'UPCOMING / RESEARCH', title: 'Project ANNIE: Retinal biomarkers and AI for Alzheimer’s disease',
+    id: 'annie', category: 'UPCOMING / RESEARCH', title: 'Project ANNIE: Retinal biomarkers and AI for Alzheimer\'s disease',
     subtitle: 'Planned research · Retinal biomarkers · Multimodal and agentic AI',
     status: 'Coming soon',
-    description: 'A planned research program investigating retinal biomarkers before Alzheimer’s diagnosis, external population validation, improved retinal AI methods, and human-guided versus autonomous multimodal AI.',
+    description: 'A planned research program investigating retinal biomarkers before Alzheimer\'s diagnosis, external population validation, improved retinal AI methods, and human-guided versus autonomous multimodal AI.',
     details: ['The proposed program extends the existing retinal imaging research through clinical and epidemiologic validation alongside AI methodology development. Work and results are forthcoming.'],
     tags: ['Retinal biomarkers', 'Multimodal AI', 'Agentic AI'],
   },
@@ -33,9 +33,9 @@ export const entries: Entry[] = [
     id: 'odir', category: 'PROJECT / COMPUTER VISION', title: 'ODIR-5K: Deep learning benchmarks for retinal disease detection',
     subtitle: 'Retinal disease detection · Architecture benchmarking',
     description: 'Built a unified training and evaluation framework comparing multiple deep-learning architectures on ODIR-5K for retinal disease detection.',
-    details: ['The original portfolio describes this project as a framework for comparing deep-learning architectures and establishing retinal disease detection baselines.', 'This is a separate project from the RETFound-based Alzheimer’s disease study using UK Biobank images and clinical data. The repository below contains the ODIR-5K implementation.'],
+    details: ['The original portfolio describes this project as a framework for comparing deep-learning architectures and establishing retinal disease detection baselines.', 'This is a separate project from the RETFound-based Alzheimer\'s disease study using UK Biobank images and clinical data. The repository contains the ODIR-5K implementation.'],
     tags: ['Computer vision', 'Retinal imaging', 'Model evaluation'],
-    links: [{ label: 'ODIR-5K on GitHub ↗', href: 'https://github.com/yangpings/ODIR-5K' }],
+    links: [{ label: 'ODIR-5K on GitHub', href: 'https://github.com/yangpings/ODIR-5K' }],
   },
   {
     id: 'nlp', category: 'RESEARCH / NLP', title: 'Nicotine pouch discourse: Topic modeling and sentiment analysis',
@@ -43,7 +43,7 @@ export const entries: Entry[] = [
     description: "Analyzed 37,797 Reddit posts using topic modeling and sentiment analysis to study nicotine-pouch use, product endorsement, availability, and competing narratives about health effects.",
     details: ["Used latent Dirichlet allocation (LDA) and VADER sentiment analysis to identify discussion themes and quantify sentiment across 37,797 Reddit posts.", "Found 53.6% positive sentiment alongside competing narratives about harm reduction, addiction, withdrawal, and adverse health effects.", "Conducted at UCSF Hswen Lab. The manuscript, \u201cThemes of Online Discussions of Nicotine Pouch Use,\u201d is under revision following peer review at Social Influence."],
     tags: ['NLP', 'Public health'],
-    links: [{ label: 'Reddit / NLP project ↗', href: 'https://github.com/yangpings/Reddit-Nicotine-Sentiment' }, { label: 'APHA 2026 Conference Abstract', href: links.apha }],
+    links: [{ label: 'Reddit / NLP project', href: 'https://github.com/yangpings/Reddit-Nicotine-Sentiment' }, { label: 'APHA 2026 Conference Abstract', href: links.apha }],
   },
   {
     id: 'llm', category: 'AI / RESEARCH LAB', title: 'Clinical LLM evaluation against physician judgment',
@@ -54,8 +54,8 @@ export const entries: Entry[] = [
     links: [{ label: 'Clinical LLM Evaluation on GitHub', href: 'https://github.com/yangpings/Clinical-LLM-Evaluation' }, { label: 'MedSim AI Website', href: 'https://medsimai.com/about?tab=team' }, { label: '2026 UCSF AI and Education Symposium', href: 'https://educationandstudentaffairs.ucsf.edu/2026-ucsf-ai-and-education-symposium' }],
   },
   {
-    id: 'retina', category: 'VISION LAB', title: 'TIME AD: Retinal foundation models for Alzheimer’s disease prediction',
-    subtitle: 'Retinal imaging · Alzheimer’s disease',
+    id: 'retina', category: 'VISION LAB', title: 'TIME AD: Retinal foundation models for Alzheimer\'s disease prediction',
+    subtitle: 'Retinal imaging · Alzheimer\'s disease',
     description: "Led first-author research benchmarking retinal foundation models on 156,724 fundus images from 78,349 UK Biobank participants, testing how much imaging added beyond demographic and OCT-derived clinical measures.",
     details: ["Evaluated 156,724 fundus images from 78,349 participants, including 535 Alzheimer\u2019s disease cases, with consistent participant-level splits.", "Compared RETFound, ViT-B16, ResNet-50, EfficientNet-B3, demographic baselines, multimodal fusion, and OCT-derived clinical models. Built PyTorch pipelines for image quality control, preprocessing, class imbalance, training, inference, and evaluation.", "Tested anatomical ablations: RETFound achieved AUROC 0.671 on full-fundus images, 0.658 on central-retinal representations, and 0.608 on vessel-enhanced representations.", "Fundus features added little discrimination beyond demographics in this benchmark (AUROC 0.710 to 0.714); OCT-derived measures increased AUROC to 0.795.", "Presented first-author findings at AAIC 2026 in London. The manuscript, \u201cLimits of Fundus-Based Deep Learning for Alzheimer\u2019s Disease Classification: Anatomical Ablation and Clinical Benchmarking,\u201d is in peer review at npj Digital Medicine."],
     tags: ['Computer vision', 'Foundation models', 'Multimodal AI'],
@@ -84,7 +84,7 @@ export const entries: Entry[] = [
     details: ['Explore original characters and fan art in my illustration archive.'],
     tags: ['Digital art', 'Procreate', 'Illustration'],
     image: asset('optimized/pro.webp'), imageAlt: 'Concept Code 02: Flora, a digital illustration by Eric Yang',
-    links: [{ label: 'View Flora on Pixiv ↗', href: 'https://www.pixiv.net/artworks/128093526' }, { label: 'Visit my art archive ↗', href: links.pixiv }],
+    links: [{ label: 'View Flora on Pixiv', href: 'https://www.pixiv.net/artworks/128093526' }, { label: 'Visit my art archive', href: links.pixiv }],
   },
   {
     id: 'arcade', category: 'ARCADE', title: 'One more round?', subtitle: 'Side quest unlocked',
@@ -98,19 +98,19 @@ export const entries: Entry[] = [
     description: 'M.S. in Health Data Science, UCSF. B.S. in Computational and Systems Biology, UCLA.',
     details: ["My research spans LLM-to-physician benchmarking, retinal foundation models, nicotine-pouch discourse analysis, and sweat biomarkers for skin assessment.", "My retinal imaging manuscript is in peer review at npj Digital Medicine. My nicotine-pouch manuscript is under revision at Social Influence. I presented research at AAIC 2026 and the UCSF AI & Education Symposium. In 2026, I received an AAIC Conference Fellowship and a UCSF AGSD Summer Travel Award."],
     tags: ['UCSF', 'UCLA', 'Research'],
-    links: [{ label: 'Open CV ↗', href: links.cv }, { label: 'Reddit / NLP project ↗', href: 'https://github.com/yangpings/Reddit-Nicotine-Sentiment' }],
+    links: [{ label: 'Open CV', href: links.cv }, { label: 'Reddit / NLP project', href: 'https://github.com/yangpings/Reddit-Nicotine-Sentiment' }],
   },
   {
-    id: 'home', category: 'HOME / WHOAMI', title: 'Hi, I’m Eric.', subtitle: 'Researcher / Engineer / Artist',
+    id: 'home', category: 'HOME / WHOAMI', title: 'Hi, I\'m Eric.', subtitle: 'Researcher / Engineer / Artist',
     image: asset('optimized/aboutme.webp'), imageAlt: 'Eric Yang outdoors among green plants',
     description: "I am a machine learning researcher and engineer specializing in AI evaluation, foundation models, and multimodal learning. I combine experimental design and failure analysis with end-to-end Python, SQL, and PyTorch implementation.",
     details: ['I also make digital art, sing, play games, and enjoy creative writing. I speak Mandarin Chinese and intermediate Japanese.', 'I completed graduate study, trained neural networks, and presented research in London.', 'I study which image information neural networks use. This website includes interactive demonstrations and games.'],
     tags: ['Curiosity first', 'Many tabs open'],
-    links: [{ label: 'GitHub ↗', href: links.github }, { label: 'LinkedIn ↗', href: links.linkedin }],
+    links: [{ label: 'GitHub', href: links.github }, { label: 'LinkedIn', href: links.linkedin }],
   },
   {
     id: 'travel', category: 'TRAVEL MAP', title: 'Conferences and travel', subtitle: 'London · AAIC 2026',
-    description: 'Presented retinal imaging / Alzheimer’s disease research at AAIC 2026 in London.',
+    description: 'Presented retinal imaging / Alzheimer\'s disease research at AAIC 2026 in London.',
     details: ['I will add conference photos and presentation figures here when available.'], tags: ['Conferences', 'Research presentations'],
   },
   {

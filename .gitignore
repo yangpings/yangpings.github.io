@@ -4,3 +4,5 @@ dist/
 .idea/
 test-results/
 playwright-report/
+.taste-skill/
+website-backup-*.zip

@@ -5,7 +5,7 @@ export const rooms = [
   { id: 'art', label: 'Art studio', short: 'ART STUDIO', x: 510, y: 60, color: '#ff9254', icon: 'art' },
   { id: 'music', label: 'Music room', short: 'MUSIC ROOM', x: 750, y: 60, color: '#ff8b9e', icon: 'music' },
   { id: 'library', label: 'Library / CV', short: 'THE LIBRARY', x: 30, y: 365, color: '#ffe34d', icon: 'books' },
-  { id: 'home', label: 'Home / About Eric', short: 'HOME, SWEET HOME', x: 270, y: 365, color: '#ffc18d', icon: 'home' },
+  { id: 'home', label: 'Home', short: 'HOME, SWEET HOME', x: 270, y: 365, color: '#ffc18d', icon: 'home' },
   { id: 'arcade', label: 'Arcade', short: 'JUST ONE MORE', x: 510, y: 365, color: '#ff746d', icon: 'arcade' },
   { id: 'travel', label: 'Travel / Conferences', short: 'OUT IN THE WORLD', x: 750, y: 365, color: '#9ae7b3', icon: 'map' },
 ];
@@ -31,3 +31,6 @@ export function move(position: Point, dx: number, dy: number): Point {
   if (canWalk({ x: next.x, y: next.y + dy })) next.y += dy;
   return next;
 }
+
+// The order of the levels on the overworld map, from the start (Home) to the castle (Travel).
+export const levelOrder = ['home', 'library', 'llm', 'retina', 'art', 'music', 'arcade', 'travel'];

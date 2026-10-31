@@ -27,51 +27,36 @@ test('playground supports nonlinear patterns, live pause, and custom training da
   expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
 });
 
-test('all lower rooms allow doorway entry and walking to the far side', async ({ page }) => {
-  test.setTimeout(45000);
-  for (const room of [{ x: 30, title: 'The longer story.' }, { x: 270, title: 'Hi, I’m Eric.' }, { x: 510, title: 'One more round?' }, { x: 750, title: 'Ideas get to travel, too.' }]) {
-    await page.goto('/');
-    const world = page.getByRole('group', { name: /Interactive world/ });
-    const player = page.getByTestId('player');
-    await world.focus();
-    const key = room.x + 110 < 500 ? 'a' : 'd';
-    await page.keyboard.down(key);
-    await expect.poll(async () => Math.abs(Number(await player.getAttribute('data-x')) - room.x - 110), { intervals: [16] }).toBeLessThan(9);
-    await page.keyboard.up(key);
-    await page.keyboard.down('s');
-    await expect.poll(async () => Number(await player.getAttribute('data-y'))).toBeGreaterThan(420);
-    await page.keyboard.up('s');
-    await page.keyboard.press('e');
-    await expect(page.getByRole('dialog').first().getByRole('heading', { name: room.title, exact: true })).toBeVisible();
-    await page.keyboard.press('Escape');
-    await page.keyboard.down('a');
-    await expect.poll(async () => Number(await player.getAttribute('data-x'))).toBeLessThan(room.x + 40);
-    await page.keyboard.up('a');
-    await page.keyboard.down('s');
-    await expect.poll(async () => Number(await player.getAttribute('data-y'))).toBeGreaterThan(520);
-    await page.keyboard.up('s');
-  }
+test('the overworld map walks level to level and opens the level you stand on', async ({ page }) => {
+  await page.goto('/');
+  const world = page.getByRole('group', { name: /Interactive world/ });
+  const player = page.getByTestId('player');
+  await world.focus();
+  const startX = Number(await player.getAttribute('data-x'));
+  await page.keyboard.press('d');
+  await page.keyboard.down('d'); await page.waitForTimeout(250); await page.keyboard.up('d');
+  await expect.poll(async () => Number(await player.getAttribute('data-x'))).toBeGreaterThan(startX + 100);
+  await expect(page.locator('.world-control-copy [aria-live]')).toContainText('Library', { timeout: 4000 });
+  await page.keyboard.press('e');
+  await expect(page.getByRole('dialog').first().getByRole('heading', { name: 'Library' })).toBeVisible();
+  await page.keyboard.press('Escape');
+  await expect(world).toBeFocused();
 });
 
-test('on-screen controls move the character and open the lower arcade', async ({ page }) => {
+test('on-screen controls walk to the next level and open it', async ({ page }) => {
   await page.setViewportSize({ width: 390, height: 844 });
   await page.goto('/');
   const player = page.getByTestId('player');
+  const startX = Number(await player.getAttribute('data-x'));
   const right = page.getByRole('button', { name: 'Move right', exact: true });
   await right.scrollIntoViewIfNeeded();
-  const rightBounds = await right.boundingBox();
-  await page.mouse.move(rightBounds!.x + rightBounds!.width / 2, rightBounds!.y + rightBounds!.height / 2);
-  await page.mouse.down();
-  await expect.poll(async () => Number(await player.getAttribute('data-x')), { intervals: [16] }).toBeGreaterThan(615);
-  await page.mouse.up();
-  const down = page.getByRole('button', { name: 'Move down', exact: true });
-  const downBounds = await down.boundingBox();
-  await page.mouse.move(downBounds!.x + downBounds!.width / 2, downBounds!.y + downBounds!.height / 2);
-  await page.mouse.down();
-  await expect.poll(async () => Number(await player.getAttribute('data-y'))).toBeGreaterThan(420);
-  await page.mouse.up();
-  await page.getByRole('button', { name: 'Enter room', exact: false }).click();
-  await expect(page.getByRole('dialog').first()).toContainText('One more song');
+  const bounds = (await right.boundingBox())!;
+  await page.mouse.move(bounds.x + bounds.width / 2, bounds.y + bounds.height / 2);
+  await page.mouse.down(); await page.waitForTimeout(300); await page.mouse.up();
+  await expect.poll(async () => Number(await player.getAttribute('data-x')), { timeout: 4000 }).toBeGreaterThan(startX + 100);
+  await expect(page.locator('.world-control-copy [aria-live]')).toContainText('Library', { timeout: 4000 });
+  await page.getByRole('button', { name: 'Play level' }).click();
+  await expect(page.getByRole('dialog').first().getByRole('heading', { name: 'Library' })).toBeVisible();
 });
 
 test('AI sandbox learns from synthetic data and resets when features change', async ({ page }) => {
@@ -123,7 +108,7 @@ test('microphone tracks stop when leaving the singing corner', async ({ page }) 
 
 test('little world has playable music, rhythm, art, and travel corners', async ({ page }) => {
   await page.goto('/');
-  await expect(page.locator('#world-title')).toHaveText("Welcome to Eric's home.");
+  await expect(page.locator('#world-title')).toHaveText('World.exe');
   await expect(page.getByText('Start your day', { exact: true })).toHaveCount(0);
   await page.getByRole('button', { name: 'Explore Music room', exact: true }).click();
   for (const label of ['Crash', 'Snare', 'Kick', 'Floor tom']) await page.getByRole('button', { name: new RegExp(label) }).click();
@@ -164,11 +149,11 @@ test('professional content opens directly and restores focus', async ({ page }) 
   page.on('pageerror', error => errors.push(error.message));
   await page.goto('/');
   await page.getByRole('navigation').getByRole('link', { name: 'Research', exact: true }).click();
-  const trigger = page.getByRole('button', {name: 'Explore this work'}).first();
+  const trigger = page.getByRole('button', {name: /: open the case study$/}).first();
   await trigger.click();
   const dialog = page.getByRole('dialog');
   await expect(dialog).toBeVisible();
-  await expect(dialog).toContainText('Cohen’s kappa');
+  await expect(dialog).toContainText('Cohen\'s kappa');
   await expect(dialog.locator('.room-activity')).toHaveCount(0);
   await page.keyboard.press('Escape');
   await expect(dialog).not.toBeVisible();
@@ -181,7 +166,7 @@ test('project cards open narrative panels while world rooms retain activities', 
   const cards = page.locator('.research-card');
   await expect(cards).toHaveCount(6);
   for (const card of await cards.all()) {
-    await card.getByRole('button', { name: 'Explore this work' }).click();
+    await card.getByRole('button', { name: /: open the case study$/ }).click();
     const dialog = page.getByRole('dialog').first();
     await expect(dialog.locator('.room-activity')).toHaveCount(0);
     expect(await dialog.locator('.entry-details p').count()).toBeGreaterThanOrEqual(2);
@@ -191,25 +176,16 @@ test('project cards open narrative panels while world rooms retain activities', 
   await expect(page.getByRole('button', { name: 'Train 50 steps' })).toBeVisible();
 });
 
-test('movement respects walls, enters doorways, and interacts nearby', async ({ page }) => {
+test('walking back from the start stays on the map, and Escape releases the controls', async ({ page }) => {
   await page.goto('/');
   const world = page.getByRole('group', { name: /Interactive world/ });
   const player = page.getByTestId('player');
   await world.focus();
-  await page.keyboard.down('w');
-  await page.waitForTimeout(700);
-  await page.keyboard.up('w');
-  const blockedY = Number(await player.getAttribute('data-y'));
-  expect(blockedY).toBeGreaterThanOrEqual(282);
-  // Align with the art studio doorway at x=620, then walk into it.
-  await page.keyboard.down('d');
-  await expect.poll(async () => Number(await player.getAttribute('data-x'))).toBeGreaterThan(610);
-  await page.keyboard.up('d');
-  await page.keyboard.down('w');
-  await expect.poll(async () => Number(await player.getAttribute('data-y'))).toBeLessThan(230);
-  await page.keyboard.up('w');
+  const startX = Number(await player.getAttribute('data-x'));
+  await page.keyboard.down('a'); await page.waitForTimeout(600); await page.keyboard.up('a');
+  expect(Number(await player.getAttribute('data-x'))).toBe(startX);
   await page.keyboard.press('e');
-  await expect(page.getByRole('dialog')).toContainText('A little room to make something.');
+  await expect(page.getByRole('dialog').first().getByRole('heading', { name: 'Home, sweet San Francisco' })).toBeVisible();
   await page.keyboard.press('Escape');
   await expect(world).toBeFocused();
   await page.keyboard.press('Escape');
@@ -228,7 +204,7 @@ test('all rooms, secret, and existing CV are reachable', async ({ page, request 
   await expect(page.getByRole('dialog')).toContainText('You found the office plant');
   await page.keyboard.press('Escape');
   await expect(page.locator('footer')).toContainText('You found the hidden plant.');
-  const cv = await page.getByRole('navigation').getByRole('link', { name: 'CV ↗' }).getAttribute('href');
+  const cv = await page.getByRole('navigation').getByRole('link', { name: 'CV' }).getAttribute('href');
   expect((await request.get(cv!)).status()).toBe(200);
 });
 
@@ -246,13 +222,11 @@ test('portrait, artwork, posters, and nested image previews are available', asyn
   await page.goto('/');
   await expect(page.getByAltText('Eric Yang outdoors among green plants')).toBeVisible();
   const gallery = page.getByRole('group', { name: 'Digital artwork gallery', exact: true });
-  await expect(gallery.getByRole('button')).toHaveCount(3);
-  const artwork = gallery.getByRole('button', { name: 'Enlarge Hatsune Miku Fan Art' });
-  await artwork.click();
-  await expect(page.getByRole('dialog', { name: 'Hatsune Miku Fan Art' })).toBeVisible();
-  await expect(page.getByRole('link', { name: 'View on Pixiv' })).toHaveAttribute('href', 'https://www.pixiv.net/artworks/116375366');
-  await page.keyboard.press('Escape');
-  await expect(artwork).toBeFocused();
+  // Gallery pictures link straight to their own Pixiv pages.
+  await expect(gallery.getByRole('link')).toHaveCount(3);
+  await expect(gallery.getByRole('link', { name: 'Hatsune Miku Fan Art on Pixiv (opens in a new tab)' })).toHaveAttribute('href', 'https://www.pixiv.net/artworks/116375366');
+  await expect(gallery.getByRole('link', { name: /Concept Code 01: Minami/ })).toHaveAttribute('href', 'https://www.pixiv.net/artworks/118904947');
+  await expect(gallery.getByRole('link', { name: /Hatsune/ })).toHaveAttribute('target', '_blank');
   await page.getByRole('button', { name: 'Explore Vision lab', exact: true }).click();
   await page.getByRole('button', { name: 'Enlarge Retinal imaging research poster' }).last().click();
   await expect(page.getByRole('dialog', { name: 'Retinal imaging research poster', exact: true })).toBeVisible();
@@ -275,24 +249,30 @@ test('project and position timelines stay separate and retain full descriptions'
   await expect(background.locator('.education-overview')).toContainText('2024-2026');
   const projects = page.getByRole('list', {name: 'Project timeline', exact: true});
   const positions = page.getByRole('list', {name: 'Positions and experience timeline', exact: true});
+  await page.getByRole('tab', { name: 'Project timeline' }).click();
   await expect(projects.locator('article')).toHaveCount(6);
+  await page.getByRole('tab', { name: 'Research and work experience' }).click();
   await expect(positions.locator('article')).toHaveCount(11);
-  await expect(positions.locator('.research-branch article')).toHaveCount(4);
-  await expect(positions.locator('.other-branch article')).toHaveCount(7);
-  const firstYear = positions.locator('.timeline-year').first();
-  const leftBounds = await firstYear.locator('.research-branch article').boundingBox();
-  const markerBounds = await firstYear.locator('.year-marker').boundingBox();
-  const rightBounds = await firstYear.locator('.other-branch article').boundingBox();
-  expect(leftBounds!.x + leftBounds!.width).toBeLessThan(markerBounds!.x);
-  expect(rightBounds!.x).toBeGreaterThan(markerBounds!.x + markerBounds!.width);
-  expect(await positions.locator('article h4').first().evaluate(el => getComputedStyle(el).fontSize)).toBe('20px');
+  // Ledger: a pinned year beside its entries, and filters for each kind of work.
+  await expect(positions.locator('article[data-category="research"]')).toHaveCount(4);
+  await expect(positions.locator('article:not([data-category="research"])')).toHaveCount(7);
+  const firstYear = positions.locator('.ledger-year').first();
+  const numeral = await firstYear.locator('.ledger-numeral').boundingBox();
+  const entry = await firstYear.locator('article').first().boundingBox();
+  expect(entry!.x).toBeGreaterThan(numeral!.x + numeral!.width);
+  await page.getByRole('group', { name: 'Filter positions and experience timeline' }).getByRole('button', { name: /^Research/ }).click();
+  await expect(positions.locator('article')).toHaveCount(4);
+  await page.getByRole('group', { name: 'Filter positions and experience timeline' }).getByRole('button', { name: /^All/ }).click();
+  await expect(positions.locator('article')).toHaveCount(11);
+  await page.getByRole('tab', { name: 'Project timeline' }).click();
   await expect(projects).toContainText('July 2026');
   await expect(projects).toContainText('Sweat amino-acid biomarkers');
+  await page.getByRole('tab', { name: 'Research and work experience' }).click();
   await expect(positions).toContainText('Lead Data Scientist');
   await expect(positions).toContainText('Clinical Design & Analysis Assistant');
   await expect(positions).toContainText('Data Analysis Assistant');
-  await expect(positions).toContainText('Apr 2024 – Dec 2024');
-  await expect(positions).toContainText('Sep 2018 – Jun 2021');
+  await expect(positions).toContainText('Apr 2024 to Dec 2024');
+  await expect(positions).toContainText('Sep 2018 to Jun 2021');
   const illustration = positions.locator('article').filter({has: page.getByRole('heading', {name:'Cover Illustrator', exact:true})});
   await illustration.locator('summary').click();
   await expect(illustration).toContainText('20-person team');
@@ -308,24 +288,26 @@ test('project and position timelines stay separate and retain full descriptions'
   await bolero.getByRole('button', { name: 'Try it out' }).click();
   await expect(page.getByRole('dialog').first()).toContainText('BOLERO');
   await page.keyboard.press('Escape');
-  const projectDetails = projects.locator('article').filter({ has: page.getByRole('heading', { name: 'Retinal imaging & Alzheimer’s disease', exact: true }) }).locator('details');
+  await page.getByRole('tab', { name: 'Project timeline' }).click();
+  const projectDetails = projects.locator('article').filter({ has: page.getByRole('heading', { name: 'Retinal imaging & Alzheimer\'s disease', exact: true }) }).locator('details');
   await projectDetails.locator('summary').click();
   await expect(projectDetails).toContainText('RETFound');
   await projectDetails.locator('summary').click();
-  const projectBounds = await projects.boundingBox();
-  const positionBounds = await positions.boundingBox();
-  expect(positionBounds!.y).toBeLessThan(projectBounds!.y);
-  await expect(page.locator('#projects').getByRole('list', {name:'Project timeline', exact:true})).toBeVisible();
-  await expect(page.locator('#about').getByRole('list', {name:'Positions and experience timeline', exact:true})).toBeVisible();
+  await expect(page.locator('#experience').getByRole('list', {name:'Project timeline', exact:true})).toBeVisible();
+  await page.getByRole('tab', { name: 'Research and work experience' }).click();
+  await expect(page.locator('#experience').getByRole('list', {name:'Positions and experience timeline', exact:true})).toBeVisible();
   await page.setViewportSize({width:390,height:844});
   expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
 });
 
-test('page follows introduction, world, about, projects, creative, roadmap, contact order', async ({ page }) => {
+test('page follows the chapter order of the split-stage layout', async ({ page }) => {
   await page.goto('/');
-  const order = await page.locator('main > section').evaluateAll(sections => sections.map(section => section.id || section.className));
-  expect(order).toEqual(['hero', 'world', 'about', 'projects', 'creative', 'image-archive', 'roadmap', 'contact']);
-  await expect(page.locator('#projects').getByRole('group', {name:'Research posters'})).toHaveCount(1);
+  const order = await page.locator('main [data-chapter]').evaluateAll(chapters => chapters.map(chapter => chapter.id || chapter.className.split(' ')[0]));
+  expect(order).toEqual(['hero', 'about', 'world', 'projects', 'skills', 'experience', 'creative', 'side-quests', 'image-archive', 'roadmap', 'contact']);
+  // The research posters live with their projects now: in the preview beside the list and in each case study.
+  await expect(page.locator('.project-preview img')).toHaveCount(0);
+  await page.locator('#research .research-card').nth(1).hover();
+  await expect(page.locator('.project-preview img')).toHaveCount(1);
   await expect(page.locator('#contact').getByRole('link', {name:'eric.yang2@ucsf.edu'})).toHaveAttribute('href', 'mailto:eric.yang2@ucsf.edu');
 });
 
@@ -351,12 +333,12 @@ test('roadmap climb shows the current level and opens planned work per stop', as
   await page.goto('/');
   await page.getByRole('link', { name: 'Roadmap', exact: true }).click();
   const roadmap = page.locator('#roadmap');
-  await expect(roadmap.getByRole('heading', { name: 'Roadmap.' })).toBeVisible();
+  await expect(roadmap.getByRole('heading', { name: 'Roadmap', exact: true })).toBeVisible();
   const stops = roadmap.getByRole('list', { name: 'Roadmap levels' }).getByRole('button');
   await expect(stops).toHaveCount(7);
-  await expect(roadmap.getByRole('button', { name: 'Level 1: Engineering foundations' })).toHaveAttribute('aria-pressed', 'true');
+  await expect(roadmap.getByRole('button', { name: 'Level 2: Deep learning internals' })).toHaveAttribute('aria-pressed', 'true');
   const log = roadmap.locator('#roadmap-log');
-  await expect(log).toContainText('ehr-asof');
+  await expect(log).toContainText('clinical-tokenizer-tax');
   await roadmap.getByRole('button', { name: 'Level 3: LLM systems & evaluation' }).click();
   await expect(log).toContainText('clinical-agent-redteam');
   await log.getByRole('button', { name: 'Up a level →' }).click();
@@ -368,7 +350,8 @@ test('roadmap climb shows the current level and opens planned work per stop', as
 test('footer lists the technologies behind the website', async ({ page }) => {
   await page.goto('/');
   const stack = page.locator('footer').getByRole('list', { name: 'Technologies used to build this website' });
-  await expect(stack.getByRole('listitem')).toHaveCount(8);
+  await expect(stack.getByRole('listitem')).toHaveCount(12);
+  await expect(stack).toContainText('GSAP');
   await expect(stack).toContainText('TypeScript');
   await expect(stack).toContainText('React');
   await expect(stack).toContainText('Playwright');

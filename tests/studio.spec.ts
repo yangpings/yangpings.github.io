@@ -1,4 +1,4 @@
-﻿import { test, expect } from '@playwright/test';
+import { test, expect } from '@playwright/test';
 
 test('studio draws custom colors, restores edits and exports the artwork', async ({ page }) => {
   await page.goto('/');
@@ -21,7 +21,8 @@ test('studio draws custom colors, restores edits and exports the artwork', async
   await expect(canvas.locator('path')).toHaveCount(1);
   await dialog.getByRole('button', { name: 'Eraser', exact: true }).click();
   await canvas.focus(); await page.keyboard.press('Space');
-  await expect(canvas.locator('circle')).toHaveAttribute('fill', '#fff8eb');
+  // The dab, not the dashed keyboard cursor that is also drawn as a circle.
+  await expect(canvas.locator('circle[fill="#fff8eb"]')).toHaveCount(1);
   await dialog.getByRole('button', { name: 'Clear canvas', exact: true }).click();
   await expect(canvas.locator('path')).toHaveCount(0);
   await dialog.getByRole('button', { name: 'Undo', exact: true }).click();

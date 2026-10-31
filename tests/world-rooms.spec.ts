@@ -1,4 +1,4 @@
-﻿import { test, expect } from '@playwright/test';
+import { test, expect } from '@playwright/test';
 
 test('world rooms show activities, corrected retina, fantasy shelves and city maps', async ({ page }) => {
   await page.goto('/');
@@ -21,7 +21,7 @@ test('world rooms show activities, corrected retina, fantasy shelves and city ma
   await dialog.getByRole('button', { name: '+ Lembas bread', exact: true }).click();
   await expect(dialog.getByRole('status')).toContainText('Lembas bread');
   await close();
-  await page.getByRole('button', { name: 'Explore Home / About Eric', exact: true }).click();
+  await page.getByRole('button', { name: 'Explore Home', exact: true }).click();
   await expect(dialog.locator('iframe')).toHaveAttribute('src', /San%20Francisco/);
   await expect(dialog.getByRole('link', { name: 'Explore San Francisco in Google Maps' })).toHaveAttribute('href', /api=1/);
   await close();
