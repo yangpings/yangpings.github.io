@@ -38,7 +38,7 @@ export default function Roadmap() {
       </div>
       <div className="plan-detail">
         <h4>What it builds</h4>
-        <ul className="plan-builds">{level.builds.map(build => <li key={build.name}><b>{build.name}</b><span>{build.summary}</span></li>)}</ul>
+        <ul className="plan-builds">{level.builds.map(build => <li key={build.name}><b>{build.name}{build.state && <small className="plan-build-state">{build.state}</small>}</b><span>{build.summary}</span></li>)}</ul>
         <h4>Paper from this work</h4>
         <p className="roadmap-paper">{level.paper}</p>
         <div className="roadmap-log-nav"><button type="button" onClick={() => setSelected(selected - 1)} disabled={selected === 0}>← Down a level</button><button type="button" onClick={() => setSelected(selected + 1)} disabled={selected === roadmap.length - 1}>Up a level →</button></div>

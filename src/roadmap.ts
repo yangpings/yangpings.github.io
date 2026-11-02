@@ -10,45 +10,45 @@ export type RoadmapLevel = {
   goal: string;
   status: RoadmapStatus;
   focus: string[];
-  builds: { name: string; summary: string }[];
+  builds: { name: string; summary: string; state?: 'Shipped' | 'Building now' }[];
   paper: string;
 };
 
 export const roadmapStatus = {
   started: 'October 2026',
-  current: 'Level 2',
-  step: 'Building transformers line by line: tokenizer, attention, RoPE and KV cache.',
+  current: 'Level 1',
+  step: 'ehr-asof is complete. Building cohort-diff: published cohort definitions as tested SQL.',
 };
 
 
 export const roadmap: RoadmapLevel[] = [
   {
-    level: 1, theme: 'Engineering foundations', status: 'Done',
-    goal: 'Trustworthy clinical data infrastructure: typed, tested, containerized services that put my research rigor into code.',
-    focus: ['Typed, tested Python packages with CI', 'PostgreSQL, FastAPI and Docker services', 'Temporal SQL on clinical event tables'],
+    level: 1, theme: 'Engineering foundations', status: 'Now',
+    goal: 'Trustworthy clinical data infrastructure: typed, tested, containerized services that put my research rigor into code, including code written with AI and checked by tests.',
+    focus: ['Typed, tested Python packages with CI', 'Temporal SQL on clinical event tables', 'Serving models with FastAPI, PostgreSQL and Docker, measured under load', 'AI-assisted engineering, verified by tests'],
     builds: [
-      { name: 'ehr-asof', summary: 'Measures how much EHR prediction models rely on information that wasn\'t available at prediction time, served as an API that returns features as of any timestamp.' },
-      { name: 'cohort-diff', summary: 'A pip-installable CLI that shows how different "the same" MIMIC cohorts (sepsis, AKI, readmission) really are across papers, and how much results change.' },
+      { name: 'ehr-asof', state: 'Shipped', summary: 'Measures how much EHR prediction models rely on information that wasn\'t available at prediction time, served as an API with features as of any timestamp, event timelines, live risk scores, batch requests and Prometheus metrics.' },
+      { name: 'cohort-diff', state: 'Building now', summary: 'A pip-installable CLI that shows how different "the same" MIMIC cohorts (sepsis, AKI, readmission) really are across papers, and how much results change, plus a branch that scores LLM-drafted cohort SQL against its tests.' },
     ],
     paper: 'How much do EHR models rely on information not available at prediction time? (ML4H, CHIL or JAMIA)',
   },
   {
-    level: 2, theme: 'Deep learning internals', status: 'Now',
+    level: 2, theme: 'Deep learning internals', status: 'Next',
     goal: 'Models built and trained from scratch, plus tooling that pinpoints why training runs fail.',
     focus: ['Transformers line by line (tokenizer, attention, RoPE, KV cache)', 'Training loops and debugging failed runs', 'Self-supervised pretraining and distribution shift'],
     builds: [
       { name: 'clinical-tokenizer-tax', summary: 'How badly general tokenizers fragment clinical language, and whether that hurts small GPTs trained at matched compute.' },
-      { name: 'loss-curve-doctor', summary: 'A dataset of deliberately broken training runs, and a test of whether failures can be diagnosed from loss curves alone.' },
+      { name: 'loss-curve-doctor', summary: 'A dataset of deliberately broken training runs, and a test of whether failures can be diagnosed from loss curves alone, by rules, a classifier and an LLM.' },
       { name: 'ecg-ssl-shift', summary: 'Whether self-supervised ECG models pretrained at one hospital hold up at another, and which pretraining objective transfers best.' },
     ],
     paper: 'Do self-supervised ECG models survive a change of hospital and device?',
   },
   {
-    level: 3, theme: 'LLM systems & evaluation', status: 'Next',
+    level: 3, theme: 'LLM systems & evaluation', status: 'Later',
     goal: 'LLM systems (retrieval, RAG, agents) with the evaluation to prove they work. Evaluation is my specialty.',
-    focus: ['Eval harnesses with validated LLM judges', 'Hybrid retrieval and cited RAG', 'Reliable, secure agents'],
+    focus: ['Eval harnesses with validated LLM judges', 'Hybrid retrieval and cited RAG', 'Reliable, secure agents', 'Context engineering and agent environments'],
     builds: [
-      { name: 'clinical-agent-redteam', summary: 'How often agents act on instructions hidden in patient records and papers, and which defenses actually work.' },
+      { name: 'clinical-agent-redteam', summary: 'How often agents act on instructions hidden in patient records and papers, which defenses actually work, and whether as-of tools built on ehr-asof stop agents reading information that wasn\'t yet available.' },
       { name: 'rag-abstention', summary: 'Whether medical RAG systems say so when the answer isn\'t in the evidence, with a live demo and tracing.' },
       { name: 'extract-bias', summary: 'How LLM extraction errors from clinical notes bias downstream statistics, and how to correct them.' },
     ],
@@ -68,7 +68,7 @@ export const roadmap: RoadmapLevel[] = [
   {
     level: 5, theme: 'Scale: training, inference & data', status: 'Later',
     goal: 'Clinical models that are fast, cheap and reliable enough to run inside a hospital, and measurements of what breaks at scale.',
-    focus: ['Fast serving and quantization', 'Training across many GPUs (FSDP)', 'GPU kernels and large data pipelines'],
+    focus: ['Fast serving and quantization', 'Training across many GPUs (FSDP)', 'GPU kernels and large data pipelines', 'Serving long-running agent sessions'],
     builds: [
       { name: 'quant-safety', summary: 'Whether quantization breaks safety-critical clinical behavior even when average scores barely move, served with SLOs and a cost model.' },
       { name: 'med-contamination', summary: 'How much of today\'s medical LLM benchmarks already appears in public pretraining data, and how scores drop on clean subsets.' },
@@ -90,7 +90,7 @@ export const roadmap: RoadmapLevel[] = [
   {
     level: 7, theme: 'Staff-level knowledge & judgment', status: 'Long term',
     goal: 'Turning a mission like "make AI safe and genuinely useful for clinicians" into a working program across data, models, evaluation and deployment, and leading teams through it.',
-    focus: ['Designing medical AI systems end to end', 'Clinical validation and regulation', 'Setting direction and mentoring'],
+    focus: ['Designing medical AI systems end to end', 'Clinical validation and regulation', 'Setting direction and mentoring', 'Team policy for AI-written code and where automation is safe'],
     builds: [
       { name: 'An adopted evaluation platform', summary: 'My evaluation harness and med-sycophancy grown into something other labs and hospitals use.' },
       { name: 'An open-source project I lead', summary: 'With outside contributors and a public roadmap.' },

@@ -287,9 +287,9 @@ test('roadmap climb shows the current level and opens planned work per stop', as
   await expect(roadmap.getByRole('heading', { name: 'Roadmap', exact: true })).toBeVisible();
   const stops = roadmap.getByRole('list', { name: 'Roadmap levels' }).getByRole('button');
   await expect(stops).toHaveCount(7);
-  await expect(roadmap.getByRole('button', { name: 'Level 2: Deep learning internals' })).toHaveAttribute('aria-pressed', 'true');
+  await expect(roadmap.getByRole('button', { name: 'Level 1: Engineering foundations' })).toHaveAttribute('aria-pressed', 'true');
   const log = roadmap.locator('#roadmap-log');
-  await expect(log).toContainText('clinical-tokenizer-tax');
+  await expect(log).toContainText('cohort-diff');
   await roadmap.getByRole('button', { name: 'Level 3: LLM systems & evaluation' }).click();
   await expect(log).toContainText('clinical-agent-redteam');
   await log.getByRole('button', { name: 'Up a level →' }).click();
@@ -356,4 +356,68 @@ test('walking back from the start stays on the map, and Escape releases the cont
   await expect(world).toBeFocused();
   await page.keyboard.press('Escape');
   await expect(world).not.toBeFocused();
+});
+
+test('projects section switches between research and open source by mouse and keyboard', async ({ page }) => {
+  await page.goto('/');
+  const section = page.locator('#research');
+  const research = section.getByRole('tab', { name: 'Research (6)' });
+  const openSource = section.getByRole('tab', { name: 'Open source (2)' });
+  await expect(research).toHaveAttribute('aria-selected', 'true');
+  await expect(section.getByRole('tabpanel')).toHaveCount(1);
+  await expect(section.locator('.research-card')).toHaveCount(6);
+
+  await research.focus();
+  await page.keyboard.press('ArrowRight');
+  await expect(openSource).toBeFocused();
+  await expect(openSource).toHaveAttribute('aria-selected', 'true');
+  await expect(research).toHaveAttribute('tabindex', '-1');
+  await expect(section.locator('.research-card')).toHaveCount(2);
+  await expect(section.getByRole('tabpanel')).toContainText('cohort-diff');
+  await page.keyboard.press('ArrowRight');
+  await expect(research).toBeFocused();
+  await page.keyboard.press('ArrowLeft');
+  await expect(openSource).toBeFocused();
+
+  // "Next project" stays inside the list the project came from.
+  await section.getByRole('button', { name: 'ehr-asof: open the case study' }).click();
+  const dialog = page.getByRole('dialog').first();
+  await expect(dialog.getByRole('heading', { name: /ehr-asof/ })).toBeVisible();
+  await expect(dialog.getByRole('link', { name: 'ehr-asof on GitHub' })).toHaveAttribute('href', 'https://github.com/yangpings/ehr-asof');
+  const charts = dialog.locator('.sheet-figure img');
+  await expect(charts).toHaveCount(2);
+  for (const chart of await charts.all()) {
+    await chart.scrollIntoViewIfNeeded();
+    await expect.poll(() => chart.evaluate((el: HTMLImageElement) => el.naturalWidth)).toBeGreaterThan(0);
+  }
+  await dialog.getByRole('button', { name: /Next project/ }).click();
+  await expect(dialog.getByRole('heading', { name: /cohort-diff/ })).toBeVisible();
+  await dialog.getByRole('button', { name: /Next project/ }).click();
+  await expect(dialog.getByRole('heading', { name: /ehr-asof/ })).toBeVisible();
+  await page.getByRole('button', { name: 'Close details' }).click();
+
+  await research.click();
+  await section.getByRole('button', { name: 'Project ANNIE: open the case study' }).click();
+  await page.getByRole('dialog').first().getByRole('button', { name: /Next project/ }).click();
+  await expect(page.getByRole('dialog').first().getByRole('heading', { name: /Clinical LLM evaluation/ })).toBeVisible();
+  await page.getByRole('button', { name: 'Close details' }).click();
+  await page.setViewportSize({ width: 390, height: 844 });
+  expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
+});
+
+test('popups keep their content while closing, then clear it and return focus', async ({ page }) => {
+  await page.goto('/');
+  const trigger = page.locator('#research').getByRole('button', { name: 'TIME AD: open the case study' });
+  await trigger.click();
+  const dialog = page.locator('dialog.is-project');
+  await expect(dialog).toHaveJSProperty('open', true);
+  await expect.poll(() => dialog.evaluate(el => getComputedStyle(el).clipPath)).toBe('inset(0px)');
+  await page.getByRole('button', { name: 'Close details' }).click();
+  await expect(dialog).toHaveJSProperty('open', false);
+  await expect(trigger).toBeFocused();
+  await expect(dialog.locator('.project-sheet')).toHaveCount(0);
+  await trigger.click();
+  await expect(dialog.locator('.project-sheet')).toHaveCount(1);
+  await page.keyboard.press('Escape');
+  await expect(dialog).toHaveJSProperty('open', false);
 });

@@ -78,6 +78,23 @@ export const entries: Entry[] = [
     links: [{ label: 'PITTAN Website', href: links.pittan }],
   },
   {
+    id: 'ehrasof', category: 'OPEN SOURCE / CLINICAL ML ENGINEERING', title: 'ehr-asof: Catching EHR models that peek at the future',
+    subtitle: 'Temporal leakage · Point-in-time features · FastAPI service',
+    description: 'A tested Python package and Dockerized API that builds EHR features only from what was known at prediction time, and measures how much leakage inflates reported model performance.',
+    details: ['On synthetic data with a planted leak, mortality AUROC was 0.996 as reported, 0.884 when trained honestly, and 0.857 when the leaky model was deployed on what was actually available.', 'The service handles about 320 requests per second on 8 workers with zero errors, serves 3,680 admissions per second in batches, and fails fast under overload or a database outage.'],
+    tags: ['Clinical ML', 'Data leakage', 'FastAPI', 'PostgreSQL', 'Docker'],
+    links: [{ label: 'ehr-asof on GitHub', href: 'https://github.com/yangpings/ehr-asof' }],
+    image: asset('optimized/ehr-asof-scaling.webp'), imageAlt: 'Throughput and p95 latency vs concurrent clients for 1, 2, 4 and 8 workers',
+  },
+  {
+    id: 'cohortdiff', category: 'OPEN SOURCE / CLINICAL DATA', title: 'cohort-diff: Are "the same" MIMIC cohorts really the same?',
+    subtitle: 'Cohort definitions · Tested SQL · Command-line tool',
+    status: 'Coming soon',
+    description: 'A pip-installable CLI that implements published cohort definitions (sepsis, AKI, readmission) as tested SQL and shows how much they disagree and how much results change.',
+    details: ['A pip-installable CLI that implements published cohort definitions (sepsis, AKI, readmission) as tested SQL and shows how much they disagree and how much results change.', 'This is forthcoming work; there are no results yet.'],
+    tags: ['Clinical cohorts', 'SQL', 'CLI'],
+  },
+  {
     id: 'art', category: 'ART STUDIO', title: 'Another way of seeing.',
     subtitle: 'Digital illustration · Original characters',
     description: 'I created Concept Code 02: Flora in Procreate and edited it in Adobe Illustrator.',
@@ -120,4 +137,5 @@ export const entries: Entry[] = [
   },
 ];
 export const research = ['llm', 'retina', 'odir', 'nlp', 'sweat', 'annie'].map(id => entries.find(entry => entry.id === id)!);
+export const openSource = ['ehrasof', 'cohortdiff'].map(id => entries.find(entry => entry.id === id)!);
 export const findEntry = (id: string) => entries.find(entry => entry.id === id);

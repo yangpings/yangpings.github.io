@@ -12,6 +12,13 @@ export const posters: Media[] = [
   { file: 'limits.png', width: 3648, height: 3168, title: 'Retinal imaging research poster', alt: 'Research poster on limits of fundus-based deep learning for Alzheimer\'s disease prediction, anatomical ablation and clinical benchmarking in UK Biobank' },
   { file: 'sweat.png', width: 4608, height: 3456, title: 'Sweat amino-acid research poster', alt: 'Research poster on an alternative skin analysis using sweat amino-acid content' },
 ];
+// Charts inside a case study, each placed after the paragraph (0-based) whose claim it shows.
+export const projectFigures: Record<string, { after: number; figure: Media }[]> = {
+  ehrasof: [
+    { after: 1, figure: { file: 'ehr-asof-leakage.png', width: 1300, height: 840, title: 'Mortality AUROC by prediction time, on synthetic data with a planted leak', alt: 'Line chart of mortality AUROC with 95% confidence intervals at 6, 12, 24 and 48 hours after admission. Reported stays near 1.0 throughout; honest and deployed start far lower, about 0.84 and 0.77 at 6 hours, and approach about 0.95 at 48 hours.' } },
+    { after: 2, figure: { file: 'ehr-asof-scaling.png', width: 1500, height: 600, title: 'Throughput and p95 latency under load', alt: 'Throughput and p95 latency vs concurrent clients for 1, 2, 4 and 8 workers' } },
+  ],
+};
 // These assets have no supplied project context. Preserve descriptive labels only.
 export const visualArchive: Media[] = [
   { file: 'illus.png', width: 5740, height: 3280, title: 'Sketch', alt: 'White line drawing of a building and trees on black', noLink: true },

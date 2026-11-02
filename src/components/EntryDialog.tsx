@@ -6,7 +6,9 @@ import WorldPanel, { worldTitles } from './WorldPanel';
 import MediaGallery from './MediaGallery';
 import { artworks, posters } from '../media';
 import ProjectSheet from './ProjectSheet';
-import { projectDisplay } from '../projectDisplay';
+import useLingering from '../useLingering';
+import { displayFor, projectDisplay } from '../projectDisplay';
+import { placeProjectOrigin, placeRoomOrigin } from '../popupOrigin';
 import { levelOrder, rooms } from '../world';
 
 export function EntryBody({ entry, narrative = false }: { entry: Entry; narrative?: boolean }) {
@@ -43,19 +45,30 @@ function RoomSheet({ entry, completed, onComplete, onClose }: { entry: Entry; co
 
 export default function EntryDialog({ entry, onClose, completed, onComplete, interactive, onNavigate }: { interactive: boolean; entry?: Entry; onClose: () => void; completed: Set<string>; onComplete: (id: string) => void; onNavigate?: (id: string) => void }) {
   // Research projects opened from the project list read as a full-screen case study.
-  const caseStudy = !interactive && !!entry && entry.id in projectDisplay;
+  const shown = useLingering(entry);
+  const caseStudy = !interactive && !!shown && shown.id in projectDisplay;
   const dialog = useRef<HTMLDialogElement>(null);
   // Open and close only when a dialog starts or ends, so moving to the next project keeps it open.
   const isOpen = !!entry;
+  // Measure where this popup comes from. "Next project" re-measures, so closing returns to the project being read.
+  const place = () => {
+    if (!dialog.current || !entry) return;
+    if (caseStudy) placeProjectOrigin(dialog.current, displayFor(entry.id, entry.title, entry.category).name);
+    else if (interactive) placeRoomOrigin(dialog.current, rooms.find(room => room.id === entry.id)?.color);
+  };
+  useEffect(() => { if (dialog.current?.open) place(); }, [entry?.id]);
   useEffect(() => {
     if (!isOpen) return;
     const previous = document.activeElement as HTMLElement | null;
-    dialog.current?.showModal();
     const overflow = document.body.style.overflow;
+    // Lock the page first: hiding the scrollbar can shift it, and the origin is measured next.
     document.body.style.overflow = 'hidden';
+    place();
+    dialog.current?.showModal();
     return () => { dialog.current?.close(); document.body.style.overflow = overflow; previous?.focus(); };
   }, [isOpen]);
-  return <dialog ref={dialog} className={`entry-dialog${caseStudy ? ' is-project' : ''}${interactive ? ' is-room' : ''}${interactive && entry?.id === 'llm' ? ' playground-dialog' : interactive && entry?.id === 'art' ? ' studio-dialog' : ''}`} onCancel={onClose} onClick={e => {if (e.target === e.currentTarget) onClose();}} aria-labelledby="entry-title">
-    {entry && caseStudy && <ProjectSheet key={entry.id} entry={entry} onClose={onClose} onNavigate={onNavigate}/>}{entry && !caseStudy && interactive && <RoomSheet entry={entry} completed={completed} onComplete={onComplete} onClose={onClose}/>}{entry && !caseStudy && !interactive && <article><div className="dialog-top"><span className="eyebrow">{entry.category}</span><button autoFocus className="close-button" onClick={onClose} aria-label="Close details">✕</button></div><h2 id="entry-title">{entry.title}</h2><EntryBody entry={entry} narrative/></article>}
+  return <dialog ref={dialog} className={`entry-dialog${caseStudy ? ' is-project' : ''}${interactive ? ' is-room' : ''}${interactive && shown?.id === 'llm' ? ' playground-dialog' : interactive && shown?.id === 'art' ? ' studio-dialog' : ''}`} onCancel={onClose} onClick={e => {if (e.target === e.currentTarget) onClose();}} aria-labelledby="entry-title">
+    {shown && caseStudy && <span className="sheet-ghost" aria-hidden="true">{displayFor(shown.id, shown.title, shown.category).name}</span>}
+    {shown && caseStudy && <ProjectSheet key={shown.id} entry={shown} onClose={onClose} onNavigate={onNavigate}/>}{shown && !caseStudy && interactive && <RoomSheet entry={shown} completed={completed} onComplete={onComplete} onClose={onClose}/>}{shown && !caseStudy && !interactive && <article><div className="dialog-top"><span className="eyebrow">{shown.category}</span><button autoFocus className="close-button" onClick={onClose} aria-label="Close details">✕</button></div><h2 id="entry-title">{shown.title}</h2><EntryBody entry={shown} narrative/></article>}
   </dialog>;
 }

@@ -20,7 +20,7 @@ import ClickSpark from './components/reactbits/ClickSpark';
 import CometTrail from './components/CometTrail';
 import CardSpotlight from './components/CardSpotlight';
 import Skills from './components/Skills';
-import ProjectIndex from './components/ProjectIndex';
+import ProjectTabs from './components/ProjectTabs';
 import Band from './components/Band';
 import { applyMotionPaused, storedMotionPaused } from './motionPause';
 
@@ -94,7 +94,7 @@ export default function App() {
         <World completed={completed} onOpen={id => open(id, true)} visited={visited} paused={!!selected} artwork={preview(featuredArt.file)}/>
       </div>
       <section ref={projectsRef} id="projects" className="work-section field-coral" aria-label="Research and projects" data-chapter="Research">
-        <section id="research" className="research-section" aria-labelledby="research-title"><div className="section-bar"><div><h2 id="research-title" className="code-title">Projects</h2></div><a href={links.github} target="_blank" rel="noreferrer" className="text-link"><Icon name="github"/>More on GitHub</a></div><ProjectIndex onOpen={id => open(id, false)}/></section>
+        <section id="research" className="research-section" aria-labelledby="research-title"><div className="section-bar"><div><h2 id="research-title" className="code-title">Projects</h2></div><a href={links.github} target="_blank" rel="noreferrer" className="text-link"><Icon name="github"/>More on GitHub</a></div><ProjectTabs onOpen={id => open(id, false)}/></section>
       </section>
       <Skills/>
       <section id="experience" className="experience-section field-plum" aria-label="Education and experience" data-chapter="Background">

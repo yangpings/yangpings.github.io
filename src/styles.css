@@ -831,9 +831,8 @@ footer { border-top: 0; }
 
 /* ===== Project case study: a full-screen sheet instead of a small modal ===== */
 .entry-dialog.is-project { width: 100vw; max-width: none; height: 100dvh; max-height: none; margin: 0; inset: 0; padding: 0; border: 0; border-radius: 0;
-  background: var(--ground); color: var(--ink); overflow-y: auto; overscroll-behavior: contain; animation: sheet-up .45s var(--ease-out) both; }
+  background: var(--ground); color: var(--ink); overflow-y: auto; overscroll-behavior: contain; }
 .entry-dialog.is-project::backdrop { background: #160810d9; backdrop-filter: none; }
-@keyframes sheet-up { from { translate: 0 32px; opacity: 0; } to { translate: none; opacity: 1; } }
 .project-sheet { max-width: 1440px; margin: 0 auto; padding: 0 6% 96px; }
 .sheet-bar { position: sticky; top: 0; z-index: 2; display: flex; align-items: center; justify-content: space-between; gap: 16px; min-height: 76px; background: var(--ground); }
 .sheet-crumb { margin: 0; font-size: 15px; color: var(--rose); }
@@ -865,7 +864,6 @@ footer { border-top: 0; }
   .sheet-bar { min-height: 64px; }
   .entry-dialog.is-project .entry-details p { font-size: 17px; }
 }
-@media (prefers-reduced-motion: reduce) { .entry-dialog.is-project { animation: none; } }
 
 /* Timeline years: the gold year sits on the line with the ground behind it; the dot sits under the year. */
 .sided-timeline .year-marker, .dot-timeline .year-marker, .year-marker { padding: 4px 6px 18px; margin-top: 12px; background: var(--ground); line-height: 1; }
@@ -1466,9 +1464,8 @@ a.diploma-school:focus-visible { outline: 2px solid var(--gold); outline-offset:
 
 /* ===== Room popup: a colourful card ===== */
 .entry-dialog.is-room { width: min(1040px, calc(100vw - 32px)); max-height: 90dvh; padding: 0; border: 0; border-radius: 22px; overflow-y: auto; overscroll-behavior: contain;
-  background: var(--ground); color: var(--ink); box-shadow: 0 30px 80px -20px #000a; animation: room-pop .35s var(--ease-out); }
+  background: var(--ground); color: var(--ink); box-shadow: 0 30px 80px -20px #000a; }
 .entry-dialog.is-room::backdrop { background: #12060bcc; backdrop-filter: none; }
-@keyframes room-pop { from { opacity: 0; translate: 0 18px; scale: .97; } to { opacity: 1; translate: none; scale: 1; } }
 .room-sheet { padding: 0; }
 .room-sheet-bar { position: sticky; top: 0; z-index: 3; display: flex; align-items: center; justify-content: space-between; gap: 16px; margin: 0; padding: 14px 20px;
   background: var(--room); color: var(--ground); border: 0; }
@@ -1498,7 +1495,7 @@ a.diploma-school:focus-visible { outline: 2px solid var(--gold); outline-offset:
 .room-sheet-body h3 { font-size: clamp(22px, 2.2vw, 30px); letter-spacing: -.02em; }
 .room-sheet-body .entry-links a { color: var(--room); font-weight: 700; }
 @media (max-width: 600px) { .entry-dialog.is-room { width: 100vw; max-height: 100dvh; height: 100dvh; border-radius: 0; } }
-@media (prefers-reduced-motion: reduce) { .entry-dialog.is-room, .room-stamp { animation: none; } }
+@media (prefers-reduced-motion: reduce) { .room-stamp { animation: none; } }
 .entry-dialog.is-room > article.room-sheet { padding: 0; margin: 0; }
 .entry-dialog.is-room .dialog-top.room-sheet-bar { background: var(--room); color: var(--ground); border: 0; margin: 0; padding: 14px 20px; box-shadow: none; }
 .entry-dialog.is-room .room-sheet-crumb { color: var(--ground); }
@@ -2101,3 +2098,101 @@ footer .footer-row li:hover, footer .footer-row a:hover { translate: none; }
   .world-dock .world-enter { flex: 1; }
 }.world-head .world-segments li:not(.is-stamped) { background: #ffffff14 !important; border: 0 !important; box-shadow: none !important; }
 .world-head .world-segments li { border: 0 !important; }
+
+/* Projects tabs: the Experience tab pattern at a size that leaves the project names biggest, in
+   burgundy for the coral field. The tab row replaces the old 40px gap above the list and the negative margin takes back the difference, so the section is no taller than before. */
+.project-tabs .exp-tablist { margin: 0; }
+.project-tabs .exp-tab { min-height: 44px; font-size: clamp(20px, 2.2vw, 30px); letter-spacing: -.025em; font-weight: 700; color: var(--deep); }
+.project-tabs .exp-tab[aria-selected=true] { color: var(--ground); }
+.project-tabs .exp-tab::after { background: var(--ground); }
+@media (hover: hover) and (pointer: fine) { .project-tabs .exp-tab[aria-selected=false]:hover { color: var(--ground); } }
+.project-tabs .exp-tab:focus-visible { outline-color: var(--ground); }
+.project-tabs { --tab-gap: clamp(20px, 2.4vw, 28px); margin-bottom: calc(40px - 44px - var(--tab-gap)); }
+.project-tabs .project-index { margin-top: var(--tab-gap); }
+
+/* A repo's own state beside its name in the roadmap plan. */
+.plan-builds .plan-build-state { margin-left: 10px; font-size: 14px; font-weight: 500; letter-spacing: 0; color: var(--gold); }
+
+/* A chart keeps its whole frame: in the preview it isn't cropped to the poster ratio, and in a
+   case study it takes the full reading column so its labels stay legible. */
+.preview-frame img.is-chart { aspect-ratio: 1300 / 840; object-fit: contain; }
+.sheet-figure .media-grid { grid-template-columns: minmax(0, 1fr); margin: clamp(24px, 3vw, 36px) 0; }
+.sheet-figure .media-card > span { font-size: 14px; line-height: 1.5; }
+
+/* Popups open and close as a pair: the close retraces the open, a little faster, and each returns
+   to what opened it. Transitions rather than keyframes, so closing mid-open reverses from where it
+   is. overlay and display keep a closed <dialog> on screen until it has finished leaving; a browser
+   without them closes it instantly. popupOrigin.ts measures the origins. useLingering's EXIT_MS
+   must outlast the longest close here. */
+:root { --ease-drawer: cubic-bezier(.32, .72, 0, 1); --ease-move: cubic-bezier(.77, 0, .175, 1); }
+
+/* Image previews and other small popups: a quiet scale and fade. */
+.entry-dialog { opacity: 0; scale: .96; pointer-events: none;
+  transition: opacity 180ms ease, scale 180ms var(--ease-out), overlay 180ms allow-discrete, display 180ms allow-discrete; }
+.entry-dialog[open] { opacity: 1; scale: none; pointer-events: auto; transition-duration: 260ms; }
+@starting-style { .entry-dialog[open] { opacity: 0; scale: .96; } }
+.entry-dialog::backdrop { opacity: 0; transition: opacity 180ms ease, overlay 180ms allow-discrete, display 180ms allow-discrete; }
+.entry-dialog[open]::backdrop { opacity: 1; transition-duration: 260ms; }
+@starting-style { .entry-dialog[open]::backdrop { opacity: 0; } }
+
+/* Case study: the burgundy block behind the project's name grows until it is the whole page, the
+   name dissolves, and the content rises in. Closing clears the content first, then the page shrinks
+   back onto the name of the project being read. */
+.entry-dialog.is-project { opacity: 1; scale: none; clip-path: var(--clip-from, inset(100% 0 0 0));
+  transition: clip-path 400ms var(--ease-move) 60ms, overlay 460ms allow-discrete, display 460ms allow-discrete; }
+.entry-dialog.is-project[open] { clip-path: inset(0); transition: clip-path 600ms var(--ease-drawer), overlay 600ms allow-discrete, display 600ms allow-discrete; }
+@starting-style { .entry-dialog.is-project[open] { clip-path: var(--clip-from, inset(100% 0 0 0)); } }
+.entry-dialog.is-project::backdrop { transition-duration: 400ms; }
+
+.sheet-ghost { display: none; }
+.entry-dialog.is-project[data-ghost] .sheet-ghost { display: block; position: fixed; z-index: 5; left: var(--ghost-left); top: var(--ghost-top); width: var(--ghost-width);
+  white-space: var(--ghost-wrap); font-family: var(--ghost-font); font-variation-settings: var(--ghost-axes); font-size: var(--ghost-size); line-height: var(--ghost-line); letter-spacing: var(--ghost-track); font-weight: var(--ghost-weight); color: var(--coral); pointer-events: none;
+  opacity: 1; transition: opacity 120ms ease 300ms; }
+.entry-dialog.is-project[data-ghost][open] .sheet-ghost { opacity: 0; transition: opacity 160ms ease 60ms; }
+@starting-style { .entry-dialog.is-project[data-ghost][open] .sheet-ghost { opacity: 1; } }
+
+.entry-dialog.is-project :is(.sheet-bar, .sheet-side > *, .sheet-main > :not(dialog)) { opacity: 0; transition: opacity 100ms ease; }
+.entry-dialog.is-project[open] :is(.sheet-bar, .sheet-side > *, .sheet-main > :not(dialog)) { opacity: 1; translate: none;
+  transition: opacity 340ms ease var(--rise, 240ms), translate 560ms var(--ease-out) var(--rise, 240ms); }
+@starting-style { .entry-dialog.is-project[open] :is(.sheet-bar, .sheet-side > *, .sheet-main > :not(dialog)) { opacity: 0; translate: 0 28px; } }
+.is-project .sheet-side > :nth-child(1) { --rise: 220ms; }
+.is-project .sheet-side > :nth-child(2) { --rise: 280ms; }
+.is-project .sheet-side > :nth-child(3) { --rise: 340ms; }
+.is-project .sheet-side > :nth-child(4) { --rise: 400ms; }
+.is-project .sheet-main > * { --rise: 320ms; }
+
+/* World.exe lab: a game's iris wipe. A circle in the level's colour blooms from its spot on the map
+   and settles to dark while the card flies out of the same spot; closing sucks both back in. */
+.entry-dialog.is-room { opacity: 0; scale: .08; translate: calc(var(--origin-x, 50vw) - 50vw) calc(var(--origin-y, 50vh) - 50vh);
+  transition: translate 340ms var(--ease-move), scale 340ms var(--ease-move), opacity 90ms linear 250ms, overlay 340ms allow-discrete, display 340ms allow-discrete; }
+.entry-dialog.is-room[open] { opacity: 1; scale: none; translate: none;
+  transition: translate 540ms var(--ease-out), scale 540ms cubic-bezier(.34, 1.2, .64, 1), opacity 120ms ease, overlay 540ms allow-discrete, display 540ms allow-discrete; }
+@starting-style { .entry-dialog.is-room[open] { opacity: 0; scale: .08; translate: calc(var(--origin-x, 50vw) - 50vw) calc(var(--origin-y, 50vh) - 50vh); } }
+.entry-dialog.is-room::backdrop { opacity: 1; background: var(--portal, #12060bcc); clip-path: circle(0 at var(--origin-x, 50vw) var(--origin-y, 50vh));
+  transition: clip-path 340ms var(--ease-move), background-color 340ms ease, overlay 340ms allow-discrete, display 340ms allow-discrete; }
+.entry-dialog.is-room[open]::backdrop { opacity: 1; background: #12060bcc; clip-path: circle(150vmax at var(--origin-x, 50vw) var(--origin-y, 50vh));
+  transition: clip-path 640ms var(--ease-drawer), background-color 560ms ease 120ms, overlay 640ms allow-discrete, display 640ms allow-discrete; }
+@starting-style { .entry-dialog.is-room[open]::backdrop { background: var(--portal, #12060bcc); clip-path: circle(0 at var(--origin-x, 50vw) var(--origin-y, 50vh)); } }
+.entry-dialog.is-room :is(.room-sheet-head > *, .room-sheet-body) { opacity: 0; transition: opacity 90ms ease; }
+.entry-dialog.is-room[open] :is(.room-sheet-head > *, .room-sheet-body) { opacity: 1; translate: none;
+  transition: opacity 300ms ease var(--rise, 240ms), translate 500ms var(--ease-out) var(--rise, 240ms); }
+@starting-style { .entry-dialog.is-room[open] :is(.room-sheet-head > *, .room-sheet-body) { opacity: 0; translate: 0 22px; } }
+.is-room .room-sheet-head > :nth-child(2) { --rise: 300ms; }
+.is-room .room-sheet-body { --rise: 360ms; }
+
+/* Reduced motion: a short fade and no travel, overriding the site-wide rule that removes transitions. */
+@media (prefers-reduced-motion: reduce) {
+  .entry-dialog, .entry-dialog.is-project, .entry-dialog.is-room, .entry-dialog[open], .entry-dialog.is-project[open], .entry-dialog.is-room[open],
+  .entry-dialog::backdrop, .entry-dialog.is-room::backdrop, .entry-dialog[open]::backdrop, .entry-dialog.is-room[open]::backdrop {
+    transition: opacity 150ms ease, overlay 150ms allow-discrete, display 150ms allow-discrete !important; }
+  .entry-dialog, .entry-dialog.is-project, .entry-dialog.is-room { opacity: 0; scale: none; translate: none; clip-path: none; }
+  .entry-dialog[open], .entry-dialog.is-project[open], .entry-dialog.is-room[open] { opacity: 1; clip-path: none; }
+  .entry-dialog.is-room::backdrop { opacity: 0; clip-path: none; background: #12060bcc; }
+  .entry-dialog.is-room[open]::backdrop { opacity: 1; clip-path: none; }
+  .entry-dialog.is-project[data-ghost] .sheet-ghost { display: none; }
+  .entry-dialog.is-project :is(.sheet-bar, .sheet-side > *, .sheet-main > :not(dialog)), .entry-dialog.is-room :is(.room-sheet-head > *, .room-sheet-body) { opacity: 1; }
+  @starting-style {
+    .entry-dialog.is-project[open], .entry-dialog.is-room[open] { opacity: 0; scale: none; translate: none; clip-path: none; }
+    .entry-dialog.is-room[open]::backdrop { opacity: 0; clip-path: none; background: #12060bcc; }
+  }
+}

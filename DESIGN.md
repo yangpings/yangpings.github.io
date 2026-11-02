@@ -21,7 +21,7 @@ On coral and gold every word is burgundy. Real interfaces (the room game, marked
 | --- | --- | --- |
 | Opening and About | Burgundy | Split: portrait, then "Travel to the Future", fixed left; giant "eric yang" crosses onto the photo |
 | Play (room game) | Gold | Full width |
-| Projects | Coral | Big-name index with a preview; the active name flips to a burgundy block |
+| Projects | Coral | Research and Open source tabs over one big-name index with a preview; the active name flips to a burgundy block |
 | Skills | Burgundy | Two columns over the Vanta waves |
 | Experience | Plum | Education and both timelines |
 | Motto | Burgundy | Scroll-lit statement over the Vanta cells |
@@ -41,4 +41,5 @@ One family, **Bricolage Grotesque**. Display 700–800 weight, tracking -0.035 t
 - The fixed picture opens like a curtain on load and crossfades between chapters.
 - The headline types; the roles roll; the about statement and the motto light up as they are read.
 - Lenis smooth scrolling; GSAP reveals; Vanta scenes only on desktop and only while near view.
+- Popups retrace their open when they close. A case study grows out of the burgundy block behind the project's name and shrinks back onto it; a World.exe lab opens as an iris wipe in the level's colour from its spot on the map.
 - "Pause motion" freezes everything that moves on its own; reduced motion turns all of it off.

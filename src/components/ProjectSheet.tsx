@@ -1,13 +1,13 @@
-import { useEffect, useRef } from 'react';
+import { Fragment, useEffect, useRef } from 'react';
 import type { Entry } from '../content';
 import { projectNarratives } from '../projectNarratives';
 import { displayFor, nextProject } from '../projectDisplay';
 import MediaGallery from './MediaGallery';
-import { posters } from '../media';
+import { posters, projectFigures } from '../media';
 
 // A project read as a case study: a pinned column with the title, what kind of work it is and its
 // topics, beside a reading column with the poster (when there is one) and the story.
-// "Next project" moves straight on without closing, so all six can be read in a row.
+// "Next project" moves straight on without closing, so a whole list can be read in a row.
 export default function ProjectSheet({ entry, onClose, onNavigate }: { entry: Entry; onClose: () => void; onNavigate?: (id: string) => void }) {
   const info = displayFor(entry.id, entry.title, entry.category);
   const story = projectNarratives[entry.id] ?? entry.details;
@@ -31,7 +31,10 @@ export default function ProjectSheet({ entry, onClose, onNavigate }: { entry: En
       </header>
       <div className="sheet-main">
         {poster.length > 0 && <MediaGallery items={poster} label={`${info.name} poster`}/>}
-        <div className="entry-details">{story.map(paragraph => <p key={paragraph}>{paragraph}</p>)}</div>
+        <div className="entry-details">{story.map((paragraph, index) => <Fragment key={paragraph}>
+          <p>{paragraph}</p>
+          {projectFigures[entry.id]?.filter(item => item.after === index).map(({ figure }) => <div className="sheet-figure" key={figure.file}><MediaGallery items={[figure]} label={figure.title}/></div>)}
+        </Fragment>)}</div>
         {next && onNavigate && <button className="sheet-next" onClick={() => onNavigate(next.id)}>
           <span className="sheet-next-label">Next project</span>
           <span className="sheet-next-name">{displayFor(next.id, next.title, next.category).name}</span>
