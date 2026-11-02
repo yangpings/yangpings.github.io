@@ -2,7 +2,7 @@ import { useRef, useState, type KeyboardEvent } from 'react';
 import { PositionTimeline, ProjectTimeline } from './Background';
 
 const tabs = [
-  { id: 'positions', label: 'Research and work experience', Panel: PositionTimeline },
+  { id: 'positions', label: 'Experience timeline', Panel: PositionTimeline },
   { id: 'projects', label: 'Project timeline', Panel: ProjectTimeline },
 ];
 

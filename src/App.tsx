@@ -39,9 +39,10 @@ export default function App() {
   // The navigation link of the section under the middle of the screen is marked as current.
   const [activeSection, setActiveSection] = useState<string>();
   useEffect(() => {
-    const targets = sections.map(([href]) => document.querySelector<HTMLElement>(href)).filter((el): el is HTMLElement => !!el);
+    // Track the full Background chapter and both the Art introduction and gallery.
+    const targets = sections.flatMap(([href]) => Array.from(document.querySelectorAll<HTMLElement>(href === '#background' ? '#experience' : href === '#creative' ? '#creative, .side-quests, .image-archive' : href)));
     const observer = new IntersectionObserver(entries => entries.forEach(entry => {
-      if (entry.isIntersecting) setActiveSection(`#${entry.target.id}`);
+      if (entry.isIntersecting) setActiveSection(entry.target.id === 'experience' ? '#background' : entry.target.matches('.side-quests, .image-archive') ? '#creative' : `#${entry.target.id}`);
     }), { rootMargin: '-45% 0px -50% 0px' });
     targets.forEach(target => observer.observe(target));
     return () => observer.disconnect();

@@ -129,9 +129,10 @@ export default function useGsapMotion() {
     // Shooting star: a glowing head with a fading tail travels down each ledger as it scrolls past
     // (--line, 0 to 1). Each year it passes lights up, solid gold, with a short flash.
     gsap.utils.toArray<HTMLElement>('.ledger').forEach(line => {
-      const years = gsap.utils.toArray<HTMLElement>(line.querySelectorAll('.ledger-year'));
       const light = (progress: number) => {
         const head = progress * line.offsetHeight;
+        // Filters recreate year rows, so always light the currently mounted years.
+        const years = line.querySelectorAll<HTMLElement>('.ledger-year');
         years.forEach(year => {
           const lit = year.offsetTop + 24 <= head;
           if (lit === (year.dataset.lit === 'true')) return;
@@ -141,7 +142,7 @@ export default function useGsapMotion() {
       };
       gsap.fromTo(line, { '--line': 0 }, {
         '--line': 1, ease: 'none',
-        scrollTrigger: { trigger: line, start: 'top 75%', end: 'bottom 65%', scrub: .6, onUpdate: self => light(self.progress) },
+        scrollTrigger: { trigger: line, start: 'top 75%', end: 'bottom 65%', scrub: .6, onUpdate: self => light(self.progress), onRefresh: self => light(self.progress) },
       });
     });
 

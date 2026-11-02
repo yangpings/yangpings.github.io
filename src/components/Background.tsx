@@ -50,7 +50,7 @@ export function ProjectTimeline() {
 
 export function PositionTimeline() {
   const positions = experience.filter(item => item.title !== 'Undergraduate Honors Thesis');
-  return <section className="ledger-section" aria-labelledby="positions-timeline-title"><header className="ledger-head"><h3 id="positions-timeline-title">Research and work experience</h3></header><Ledger items={positions} label="Positions and experience timeline"/></section>;
+  return <section className="ledger-section" aria-labelledby="positions-timeline-title"><header className="ledger-head"><h3 id="positions-timeline-title">Experience timeline</h3></header><Ledger items={positions} label="Experience timeline"/></section>;
 }
 
 // Education as two diploma rows: the school set large, the degree and its details beside it.

@@ -199,10 +199,10 @@ test('project and position timelines stay separate and retain full descriptions'
   const background = page.locator('#background');
   await expect(background.locator('.education-overview')).toContainText('2024-2026');
   const projects = page.getByRole('list', {name: 'Project timeline', exact: true});
-  const positions = page.getByRole('list', {name: 'Positions and experience timeline', exact: true});
+  const positions = page.getByRole('list', {name: 'Experience timeline', exact: true});
   await page.getByRole('tab', { name: 'Project timeline' }).click();
   await expect(projects.locator('article')).toHaveCount(6);
-  await page.getByRole('tab', { name: 'Research and work experience' }).click();
+  await page.getByRole('tab', { name: 'Experience timeline' }).click();
   await expect(positions.locator('article')).toHaveCount(11);
   // Ledger: a pinned year beside its entries, and filters for each kind of work.
   await expect(positions.locator('article[data-category="research"]')).toHaveCount(4);
@@ -211,14 +211,14 @@ test('project and position timelines stay separate and retain full descriptions'
   const numeral = await firstYear.locator('.ledger-numeral').boundingBox();
   const entry = await firstYear.locator('article').first().boundingBox();
   expect(entry!.x).toBeGreaterThan(numeral!.x + numeral!.width);
-  await page.getByRole('group', { name: 'Filter positions and experience timeline' }).getByRole('button', { name: /^Research/ }).click();
+  await page.getByRole('group', { name: 'Filter experience timeline' }).getByRole('button', { name: /^Research/ }).click();
   await expect(positions.locator('article')).toHaveCount(4);
-  await page.getByRole('group', { name: 'Filter positions and experience timeline' }).getByRole('button', { name: /^All/ }).click();
+  await page.getByRole('group', { name: 'Filter experience timeline' }).getByRole('button', { name: /^All/ }).click();
   await expect(positions.locator('article')).toHaveCount(11);
   await page.getByRole('tab', { name: 'Project timeline' }).click();
   await expect(projects).toContainText('July 2026');
   await expect(projects).toContainText('Sweat amino-acid biomarkers');
-  await page.getByRole('tab', { name: 'Research and work experience' }).click();
+  await page.getByRole('tab', { name: 'Experience timeline' }).click();
   await expect(positions).toContainText('Lead Data Scientist');
   await expect(positions).toContainText('Clinical Design & Analysis Assistant');
   await expect(positions).toContainText('Data Analysis Assistant');
@@ -245,8 +245,8 @@ test('project and position timelines stay separate and retain full descriptions'
   await expect(projectDetails).toContainText('RETFound');
   await projectDetails.locator('summary').click();
   await expect(page.locator('#experience').getByRole('list', {name:'Project timeline', exact:true})).toBeVisible();
-  await page.getByRole('tab', { name: 'Research and work experience' }).click();
-  await expect(page.locator('#experience').getByRole('list', {name:'Positions and experience timeline', exact:true})).toBeVisible();
+  await page.getByRole('tab', { name: 'Experience timeline' }).click();
+  await expect(page.locator('#experience').getByRole('list', {name:'Experience timeline', exact:true})).toBeVisible();
   await page.setViewportSize({width:390,height:844});
   expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
 });
