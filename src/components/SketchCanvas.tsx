@@ -1,4 +1,4 @@
-﻿import { useRef, useState, type PointerEvent, type ReactNode } from 'react';
+import { useRef, useState, type PointerEvent, type ReactNode } from 'react';
 
 // The Art studio as a sketchbook: spiral-bound pages on blank, dotted or lined paper. Draw with a
 // grainy pencil, a crisp ink pen or a translucent marker; the eraser rubs marks away and shows the
@@ -152,7 +152,7 @@ export default function SketchCanvas({ complete }: { complete: () => void }) {
       <button className="studio-save" disabled={!page.strokes.length} onClick={save}>Save my sketch</button>
     </div>
     <p className="studio-status" role="status">{page.strokes.length ? `${page.strokes.length} ${page.strokes.length === 1 ? 'stroke' : 'strokes'} on page ${index + 1}` : `Page ${index + 1} is blank. Make your first mark.`}</p>
-    <small id="sketchbook-help">Draw with a mouse, pen or touch. On the page: arrows move, Shift + arrows draw, Space dabs, Ctrl+Z undoes. Undo also restores a cleared page.</small>
+    <small id="sketchbook-help">Draw with a mouse, pen or touch.</small>
   </div>;
 }
 

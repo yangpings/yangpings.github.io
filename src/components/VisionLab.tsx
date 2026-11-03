@@ -6,9 +6,9 @@ import { useState, type PointerEvent } from 'react';
 // The chart shows AUROC for Alzheimer's disease from Eric's UK Biobank study.
 type View = 'full' | 'central' | 'vessels';
 const views: { id: View; label: string; auroc: number; note: string }[] = [
-  { id: 'full', label: 'Full fundus', auroc: .671, note: 'The whole image holds anatomy, but also camera, lighting and quality cues. A score alone cannot say which signal the model used.' },
-  { id: 'central', label: 'Central retina', auroc: .658, note: 'Cropped to the centre around the macula, the score barely moves: most of what the model used survives the crop.' },
-  { id: 'vessels', label: 'Vessel-enhanced', auroc: .608, note: 'Keeping mostly the vessel tree costs the most. Vessels carry some signal, but not all of it.' },
+  { id: 'full', label: 'Full fundus', auroc: .671, note: 'The whole image holds anatomy, camera, lighting and quality cues. A score alone cannot say which signal the model used.' },
+  { id: 'central', label: 'Central retina', auroc: .658, note: 'Cropped to the center around the macula, and the score barely moves.' },
+  { id: 'vessels', label: 'Vessel-enhanced', auroc: .608, note: 'Keeping mostly the vessel tree costs the most.' },
 ];
 const benchmarks = [
   { label: 'Demographics only', auroc: .710 },
@@ -89,7 +89,7 @@ export default function VisionLab({ complete }: { complete: () => void }) {
         </div>
         <label className="vision-heat">Attention overlay <output>{heat}%</output>
           <input type="range" min="0" max="100" value={heat} aria-label="Attention overlay strength" onChange={e => setHeat(Number(e.target.value))}/></label>
-        <small>The attention overlay is an illustration of where image models often focus, not output from the study's model.</small>
+        <small>The attention overlay is an illustration of where image models often focus.</small>
 
         <div className="vision-chart" role="img" aria-label={`AUROC for Alzheimer's disease. ${[...views, ...benchmarks].map(b => `${b.label} ${b.auroc.toFixed(3)}`).join(', ')}. Chance is 0.5.`}>
           <span className="vision-chart-title">AUROC for Alzheimer's disease</span>
