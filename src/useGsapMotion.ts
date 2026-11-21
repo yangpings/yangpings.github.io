@@ -6,7 +6,7 @@ import { useGSAP } from '@gsap/react';
 gsap.registerPlugin(useGSAP, ScrollTrigger, SplitText);
 
 // Blocks that rise into place. #world and #projects keep their own reveal (useSectionMotion).
-const blocks = ['#about > div', '#about > section', '#creative > div', '.image-archive > *', '#roadmap > *', '#contact > div']
+const blocks = ['#about > div', '#about > section', '#creative > div', '.image-archive > *', '#roadmap > *', '#blog > *', '#contact > div']
   .map(selector => `${selector}:not(.vanta-backdrop)`).join(', ');
 const heroBits = '.rolling-roles';
 

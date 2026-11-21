@@ -89,10 +89,10 @@ export const entries: Entry[] = [
   {
     id: 'cohortdiff', category: 'OPEN SOURCE / CLINICAL DATA', title: 'cohort-diff: Are "the same" MIMIC cohorts really the same?',
     subtitle: 'Cohort definitions · Tested SQL · Command-line tool',
-    status: 'Coming soon',
-    description: 'A pip-installable CLI that implements published cohort definitions (sepsis, AKI, readmission) as tested SQL and shows how much they disagree and how much results change.',
-    details: ['A pip-installable CLI that implements published cohort definitions (sepsis, AKI, readmission) as tested SQL and shows how much they disagree and how much results change.', 'This is forthcoming work; there are no results yet.'],
-    tags: ['Clinical cohorts', 'SQL', 'CLI'],
+    description: 'A pip-installable CLI (v0.3.0 on PyPI) that runs 18 definitions of AKI, diabetes and 30-day readmission, 10 of them from published papers, side by side on MIMIC-IV, and measures how much the cohorts and the results built on them disagree.',
+    details: ['Each definition is a versioned SQL file run on DuckDB, checked against an independent pandas oracle and Hypothesis property tests. Overlap and the ratio of mortality odds ratios come with patient-level bootstrap CIs.', 'On the MIMIC-IV demo, AKI definitions with similar prevalence (19–25%) share only 31–56% of their admissions. Anchoring the same KDIGO rule to the ICU stay changes the mortality association (ratio of ORs 0.51 [0.36, 0.71]).', 'An ICD-10-only diabetes definition misses almost half of coded admissions, because most were coded in ICD-9 before October 2015.', 'An LLM extension graded 684 cohort-SQL drafts from Claude Haiku, Sonnet and Opus against the same oracle tests: 41–46% were correct from a paper’s methods text, and 70–85% from the full specification.'],
+    tags: ['Clinical cohorts', 'SQL', 'DuckDB', 'CLI', 'LLM evaluation'],
+    links: [{ label: 'cohort-diff on GitHub', href: 'https://github.com/yangpings/cohort-diff' }, { label: 'cohort-diff on PyPI', href: 'https://pypi.org/project/cohort-diff/' }],
   },
   {
     id: 'art', category: 'ART STUDIO', title: 'Another way of seeing.',

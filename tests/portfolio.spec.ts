@@ -254,7 +254,7 @@ test('project and position timelines stay separate and retain full descriptions'
 test('page follows the chapter order of the split-stage layout', async ({ page }) => {
   await page.goto('/');
   const order = await page.locator('main [data-chapter]').evaluateAll(chapters => chapters.map(chapter => chapter.id || chapter.className.split(' ')[0]));
-  expect(order).toEqual(['hero', 'about', 'world', 'projects', 'skills', 'experience', 'creative', 'side-quests', 'image-archive', 'roadmap', 'contact']);
+  expect(order).toEqual(['hero', 'about', 'world', 'projects', 'skills', 'experience', 'creative', 'side-quests', 'image-archive', 'roadmap', 'blog', 'contact']);
   // The research posters live with their projects now: in the preview beside the list and in each case study.
   await expect(page.locator('.project-preview img')).toHaveCount(0);
   await page.locator('#research .research-card').nth(1).hover();
@@ -287,8 +287,10 @@ test('roadmap climb shows the current level and opens planned work per stop', as
   await expect(roadmap.getByRole('heading', { name: 'Roadmap', exact: true })).toBeVisible();
   const stops = roadmap.getByRole('list', { name: 'Roadmap levels' }).getByRole('button');
   await expect(stops).toHaveCount(7);
-  await expect(roadmap.getByRole('button', { name: 'Level 1: Engineering foundations' })).toHaveAttribute('aria-pressed', 'true');
+  await expect(roadmap.getByRole('button', { name: 'Level 2: Deep learning internals' })).toHaveAttribute('aria-pressed', 'true');
   const log = roadmap.locator('#roadmap-log');
+  await expect(log).toContainText('clinical-tokenizer-tax');
+  await roadmap.getByRole('button', { name: 'Level 1: Engineering foundations' }).click();
   await expect(log).toContainText('cohort-diff');
   await roadmap.getByRole('button', { name: 'Level 3: LLM systems & evaluation' }).click();
   await expect(log).toContainText('clinical-agent-redteam');
@@ -420,4 +422,14 @@ test('popups keep their content while closing, then clear it and return focus', 
   await expect(dialog.locator('.project-sheet')).toHaveCount(1);
   await page.keyboard.press('Escape');
   await expect(dialog).toHaveJSProperty('open', false);
+});
+
+test('blog section is in the navigation and says coming soon until the first post is published', async ({ page }) => {
+  await page.goto('/');
+  await page.getByRole('link', { name: 'Blog', exact: true }).click();
+  const blog = page.locator('#blog');
+  await expect(blog.getByRole('heading', { name: 'Blog', exact: true })).toBeVisible();
+  await expect(blog).toContainText('Coming soon');
+  await page.setViewportSize({ width: 390, height: 844 });
+  expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
 });

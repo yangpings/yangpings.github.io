@@ -15,9 +15,12 @@ export default function Roadmap() {
   const currentIndex = Math.max(0, roadmap.findIndex(level => level.status === 'Now'));
   const [selected, setSelected] = useState(currentIndex);
   const level = roadmap[selected];
+  // The safety track is part of each level's plan, not a separate section: its projects and paper join the level's own.
+  const builds = [...level.builds, ...(level.safety?.builds ?? [])];
+  const papers = [level.paper, ...(level.safety ? [level.safety.paper] : [])];
   return <section id="roadmap" className="roadmap-section stair-roadmap" aria-labelledby="roadmap-title" data-chapter="Roadmap">
     <div className="section-bar"><div><h2 id="roadmap-title" className="code-title">Roadmap</h2></div><a href={links.github} target="_blank" rel="noreferrer" className="text-link"><Icon name="github"/>Follow along on GitHub</a></div>
-    <p className="section-intro roadmap-intro">I'm building open-source medical AI in public, in seven stages: from trustworthy EHR data pipelines (Level 1) to safety research on frontier models (Level 7). Each stage ships repos with tested code, results with confidence intervals, and a paper. Pick a step to see what's in it.</p>
+    <p className="section-intro roadmap-intro">I'm building open-source medical AI in public in seven stages: trustworthy EHR data pipelines (Level 1) to safety research on frontier models (Level 7). Each stage ships repos with tested code, results with confidence intervals, and a paper. Every stage also includes AI safety work in health to study how frontier models fail and ways to overcome them.</p>
 
     <ol className="roadmap-stops stairs" aria-label="Roadmap levels">{roadmap.map((item, i) => <li key={item.level} style={{ '--step': i } as React.CSSProperties}>
       {i === currentIndex && <svg className="stair-player" viewBox="-14 -34 28 38" aria-hidden="true"><WorldPlayer position={{ x: 0, y: 0 }} paused decorative/></svg>}
@@ -38,9 +41,11 @@ export default function Roadmap() {
       </div>
       <div className="plan-detail">
         <h4>What it builds</h4>
-        <ul className="plan-builds">{level.builds.map(build => <li key={build.name}><b>{build.name}{build.state && <small className="plan-build-state">{build.state}</small>}</b><span>{build.summary}</span></li>)}</ul>
-        <h4>Paper from this work</h4>
-        <p className="roadmap-paper">{level.paper}</p>
+        <ul className="plan-builds">{builds.map(build => <li key={build.name}><b>{build.name}{build.state && <small className="plan-build-state">{build.state}</small>}</b><span>{build.summary}</span></li>)}</ul>
+        <h4>{papers.length > 1 ? 'Papers from this work' : 'Paper from this work'}</h4>
+        {papers.length > 1
+          ? <ul className="roadmap-paper roadmap-papers">{papers.map(paper => <li key={paper}>{paper}</li>)}</ul>
+          : <p className="roadmap-paper">{papers[0]}</p>}
         <div className="roadmap-log-nav"><button type="button" onClick={() => setSelected(selected - 1)} disabled={selected === 0}>← Down a level</button><button type="button" onClick={() => setSelected(selected + 1)} disabled={selected === roadmap.length - 1}>Up a level →</button></div>
       </div>
     </article>

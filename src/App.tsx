@@ -12,6 +12,7 @@ import { artworks, preview, visualArchive } from './media';
 import Background from './components/Background';
 import ExperienceTabs from './components/ExperienceTabs';
 import Roadmap from './components/Roadmap';
+import Blog from './components/Blog';
 import HeroDrift from './components/HeroDrift';
 import VantaBackdrop from './components/VantaBackdrop';
 import useGsapMotion from './useGsapMotion';
@@ -28,7 +29,7 @@ import { applyMotionPaused, storedMotionPaused } from './motionPause';
 const heroNet = { color: 0xff7868, points: 11, maxDistance: 21, spacing: 17, showDots: true };
 const contactGlobe = { color: 0x280d15, color2: 0xfff1db, backgroundColor: 0xff7868, size: .9, points: 9, maxDistance: 19, spacing: 16 };
 
-const sections = [['#about', 'About'], ['#world', 'World.exe'], ['#research', 'Research'], ['#skills', 'Skills'], ['#background', 'Background'], ['#creative', 'Art'], ['#roadmap', 'Roadmap'], ['#contact', 'Contact']];
+const sections = [['#about', 'About'], ['#world', 'World.exe'], ['#research', 'Research'], ['#skills', 'Skills'], ['#background', 'Background'], ['#creative', 'Art'], ['#roadmap', 'Roadmap'], ['#blog', 'Blog'], ['#contact', 'Contact']];
 
 export default function App() {
   const projectsRef = useSectionMotion('projects');
@@ -116,6 +117,7 @@ export default function App() {
         </DragRow>
       </section>
       <div className="field-plum roadmap-field"><Roadmap/></div>
+      <div className="field-gold blog-field"><Blog/></div>
       <Band paused={motionPaused} reverse items={['Illustration', 'Original characters', 'Singing', 'Drums', 'Rhythm games', 'Travel']}/>
       <section id="contact" className="contact-section field-coral" aria-labelledby="contact-title" data-chapter="Contact"><VantaBackdrop effect="globe" options={contactGlobe}/>
         <div className="contact-sentence"><h2 id="contact-title" className="code-title">Contact</h2><p className="contact-lead">Research collaborations, machine learning opportunities, or anything.</p></div>

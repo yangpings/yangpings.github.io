@@ -353,7 +353,7 @@ h3 { font-weight: 600; }
 .rhythm-channel-link{display:inline-flex;align-items:center;margin:14px 0;font-size:13px}
 .side-quest-item{display:flex;align-items:center;gap:13px;padding:20px 0;border-bottom:1px solid var(--line)}.side-quest-item>span{font-size:25px;color:#ffd078;width:28px;flex-shrink:0}.side-quest-item>div{font-size:14px}.side-quest-item small{display:block;margin-top:6px}.side-quests .rhythm-channel-link{display:flex;width:fit-content}
 @keyframes project-arrive{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:translateY(0)}}
-@media(prefers-reduced-motion:no-preference){:is(#projects,#world) [data-reveal=pending]{opacity:0}:is(#projects,#world) [data-reveal=visible]{animation:project-arrive 500ms ease-out var(--reveal-delay,0ms) both}:is(#projects,#world) [data-reveal]:focus-within{opacity:1;animation:none}#projects .research-card{transition:translate .22s ease,border-color .22s ease,box-shadow .22s ease}#projects .research-card:hover,#projects .research-card:focus-within{translate:0 -5px;border-color:#ffad83;box-shadow:0 8px 0 #ff78681c}#projects .research-icon{transition:rotate .22s ease,color .22s ease}#projects .research-card:hover .research-icon{rotate:-7deg}#projects .card-link span{transition:translate .2s ease}#projects .card-link:hover span,#projects .card-link:focus-visible span{translate:3px -3px}#projects .media-card{transition:translate .22s ease,box-shadow .22s ease}#projects .media-card:hover,#projects .media-card:focus-visible{translate:0 -4px;box-shadow:0 8px 0 #ff786822}}
+@media(prefers-reduced-motion:no-preference){:is(#projects,#world) [data-reveal=pending]{opacity:0}:is(#projects,#world) [data-reveal=visible]{animation:project-arrive 500ms ease-out var(--reveal-delay,0ms) both}:is(#projects,#world) [data-reveal=pending]:focus-within{opacity:1}:is(#projects,#world) [data-reveal=done]{opacity:1;animation:none}#projects .research-card{transition:translate .22s ease,border-color .22s ease,box-shadow .22s ease}#projects .research-card:hover,#projects .research-card:focus-within{translate:0 -5px;border-color:#ffad83;box-shadow:0 8px 0 #ff78681c}#projects .research-icon{transition:rotate .22s ease,color .22s ease}#projects .research-card:hover .research-icon{rotate:-7deg}#projects .card-link span{transition:translate .2s ease}#projects .card-link:hover span,#projects .card-link:focus-visible span{translate:3px -3px}#projects .media-card{transition:translate .22s ease,box-shadow .22s ease}#projects .media-card:hover,#projects .media-card:focus-visible{translate:0 -4px;box-shadow:0 8px 0 #ff786822}}
 @media(prefers-reduced-motion:reduce){:is(#projects,#world) [data-reveal]{opacity:1;transform:none;translate:none}}
 @media(prefers-reduced-motion:no-preference){#world .room-hit>span:first-child{transition:translate .2s ease,scale .2s ease,background .2s ease,box-shadow .2s ease}#world .room-hit:hover>span:first-child,#world .room-hit:focus-visible>span:first-child{translate:0 -3px;scale:1.12;box-shadow:0 4px 12px #ffd07855}#world .plant-hit{transition:scale .2s ease,opacity .2s ease}#world .plant-hit:hover,#world .plant-hit:focus-visible{scale:1.15}#world .mobile-room-directory button{transition:translate .2s ease,border-color .2s ease}#world .mobile-room-directory button:hover{translate:0 -3px}}
 .portrait-play{display:block;width:100%;padding:0;background:transparent;text-align:left}.portrait-play:focus-visible{outline-offset:5px}.portrait-card{transform-origin:50% 80%}
@@ -1266,6 +1266,8 @@ body, button, input, select, textarea { font-optical-sizing: none; font-variatio
 .plan-builds b { font-size: 19px; font-weight: 700; letter-spacing: -.01em; color: var(--ink); }
 .plan-builds span { font-size: 16px; line-height: 1.6; color: var(--ink); opacity: .85; }
 .stair-plan .roadmap-paper { margin: 0 0 28px; font-size: 16px; line-height: 1.6; color: var(--ink); }
+.stair-plan .roadmap-papers { list-style: none; padding: 0; display: grid; gap: 12px; }
+.stair-plan .roadmap-papers li { font-size: 16px; line-height: 1.6; color: var(--ink); }
 .stair-plan .roadmap-log-nav { display: flex; gap: 8px; margin: 0; padding: 0; border: 0; }
 .stair-plan .roadmap-log-nav button { min-height: 44px; padding: 0 18px; border: 0; border-radius: 999px; background: #ffffff12; color: var(--ink); font-size: 15px; font-weight: 600; cursor: pointer;
   transition: background-color .2s var(--ease-out); }
@@ -2161,18 +2163,18 @@ footer .footer-row li:hover, footer .footer-row a:hover { translate: none; }
 .is-project .sheet-side > :nth-child(4) { --rise: 400ms; }
 .is-project .sheet-main > * { --rise: 320ms; }
 
-/* World.exe lab: a game's iris wipe. A circle in the level's colour blooms from its spot on the map
-   and settles to dark while the card flies out of the same spot; closing sucks both back in. */
+/* World.exe lab: the card flies out of the level's spot on the map while the dark backdrop fades in;
+   closing sends it back. No coloured flash. */
 .entry-dialog.is-room { opacity: 0; scale: .08; translate: calc(var(--origin-x, 50vw) - 50vw) calc(var(--origin-y, 50vh) - 50vh);
   transition: translate 340ms var(--ease-move), scale 340ms var(--ease-move), opacity 90ms linear 250ms, overlay 340ms allow-discrete, display 340ms allow-discrete; }
 .entry-dialog.is-room[open] { opacity: 1; scale: none; translate: none;
   transition: translate 540ms var(--ease-out), scale 540ms cubic-bezier(.34, 1.2, .64, 1), opacity 120ms ease, overlay 540ms allow-discrete, display 540ms allow-discrete; }
 @starting-style { .entry-dialog.is-room[open] { opacity: 0; scale: .08; translate: calc(var(--origin-x, 50vw) - 50vw) calc(var(--origin-y, 50vh) - 50vh); } }
-.entry-dialog.is-room::backdrop { opacity: 1; background: var(--portal, #12060bcc); clip-path: circle(0 at var(--origin-x, 50vw) var(--origin-y, 50vh));
-  transition: clip-path 340ms var(--ease-move), background-color 340ms ease, overlay 340ms allow-discrete, display 340ms allow-discrete; }
-.entry-dialog.is-room[open]::backdrop { opacity: 1; background: #12060bcc; clip-path: circle(150vmax at var(--origin-x, 50vw) var(--origin-y, 50vh));
-  transition: clip-path 640ms var(--ease-drawer), background-color 560ms ease 120ms, overlay 640ms allow-discrete, display 640ms allow-discrete; }
-@starting-style { .entry-dialog.is-room[open]::backdrop { background: var(--portal, #12060bcc); clip-path: circle(0 at var(--origin-x, 50vw) var(--origin-y, 50vh)); } }
+.entry-dialog.is-room::backdrop { opacity: 0; background: #12060bcc; clip-path: none;
+  transition: opacity 300ms ease, overlay 340ms allow-discrete, display 340ms allow-discrete; }
+.entry-dialog.is-room[open]::backdrop { opacity: 1; background: #12060bcc; clip-path: none;
+  transition: opacity 300ms ease, overlay 540ms allow-discrete, display 540ms allow-discrete; }
+@starting-style { .entry-dialog.is-room[open]::backdrop { opacity: 0; } }
 .entry-dialog.is-room :is(.room-sheet-head > *, .room-sheet-body) { opacity: 0; transition: opacity 90ms ease; }
 .entry-dialog.is-room[open] :is(.room-sheet-head > *, .room-sheet-body) { opacity: 1; translate: none;
   transition: opacity 300ms ease var(--rise, 240ms), translate 500ms var(--ease-out) var(--rise, 240ms); }
@@ -2196,3 +2198,16 @@ footer .footer-row li:hover, footer .footer-row a:hover { translate: none; }
     .entry-dialog.is-room[open]::backdrop { opacity: 0; clip-path: none; background: #12060bcc; }
   }
 }
+
+/* ---------- Blog (Medium posts) ---------- */
+.blog-posts { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 320px), 1fr)); gap: 20px; }
+.blog-card { display: grid; gap: 10px; height: 100%; padding: 24px; border: 1px solid color-mix(in srgb, var(--ground) 30%, transparent); border-radius: 10px; color: var(--ground); text-decoration: none; transition: background .2s ease, transform .2s var(--ease-out, ease); }
+.blog-card:hover { background: color-mix(in srgb, var(--ground) 8%, transparent); transform: translateY(-2px); }
+.blog-card time { font-size: 14px; opacity: .75; }
+.blog-card h3 { margin: 0; font-size: 21px; line-height: 1.3; }
+.blog-card p { margin: 0; font-size: 16px; line-height: 1.6; }
+.blog-tags { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 6px; }
+.blog-tags li { font-size: 13px; padding: 3px 9px; border-radius: 999px; background: color-mix(in srgb, var(--ground) 12%, transparent); }
+.blog-read { margin-top: auto; font-size: 15px; font-weight: 600; }
+.blog-empty-lead { margin: 0; font-size: 19px; font-weight: 600; }
+@media (prefers-reduced-motion: reduce) { .blog-card { transition: none; } .blog-card:hover { transform: none; } }
