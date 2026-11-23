@@ -2,7 +2,7 @@ import { useEffect, useRef } from 'react';
 
 const targets = {
   projects: '.research-section > .section-bar, .research-card, .section-timeline > header, .timeline-year, .research-media > h2, .research-media .media-card',
-  world: '.section-bar, .section-intro, .world-shell, .world-caption',
+  world: '.section-bar, .section-intro, .dial-shell, .world-caption',
 };
 
 export default function useSectionMotion(kind: keyof typeof targets) {

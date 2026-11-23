@@ -8,12 +8,21 @@ gsap.registerPlugin(ScrollTrigger);
 
 const HEADER_OFFSET = -96;
 
+// Scroll the page to a position: through Lenis when it is running (so the glide stays smooth and in
+// step with it), natively otherwise (reduced motion).
+let active: Lenis | null = null;
+export function smoothScrollTo(top: number, immediate = false) {
+  if (active) active.scrollTo(top, { immediate });
+  else window.scrollTo({ top, behavior: immediate ? 'auto' : 'smooth' });
+}
+
 // Lenis smooth scrolling, driven by GSAP's ticker so ScrollTrigger animations stay in step.
 // Not created at all for reduced motion, so those visitors keep native scrolling. Dialogs keep native scrolling.
 export default function useSmoothScroll() {
   useEffect(() => {
     if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
     const lenis = new Lenis({ prevent: node => !!node.closest('dialog') });
+    active = lenis;
     lenis.on('scroll', ScrollTrigger.update);
     const tick = (time: number) => lenis.raf(time * 1000);
     gsap.ticker.add(tick);
@@ -65,7 +74,7 @@ export default function useSmoothScroll() {
       document.removeEventListener('click', glide);
       window.removeEventListener('scroll', yieldToOtherScroll);
       gsap.ticker.remove(tick);
-      lenis.destroy();
+      lenis.destroy(); active = null;
     };
   }, []);
 }

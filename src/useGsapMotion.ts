@@ -55,7 +55,7 @@ export default function useGsapMotion() {
     // above it, and the chapter under the middle of the screen below it. On every scroll frame it
     // looks at what is really there (never at positions measured earlier, which go stale as images
     // load): the chapter at the centre of the screen names it, and whatever sits behind the rail
-    // itself (a field or a band) picks its colour, burgundy over coral and gold, gold over the dark.
+    // itself (a field or a band) picks its colour, burgundy over coral, gold and white, gold over the dark.
     const rail = document.querySelector<HTMLElement>('.chapter-rail');
     const railPercent = rail?.querySelector<HTMLElement>('.rail-percent');
     const railLabel = rail?.querySelector<HTMLElement>('.rail-label');
@@ -66,7 +66,7 @@ export default function useGsapMotion() {
       // screen at the rail's own height.
       const box = rail.getBoundingClientRect();
       const behind = document.elementFromPoint(innerWidth / 2, box.top + box.height / 2);
-      rail.dataset.tone = behind?.closest('.field-gold, .field-coral, .band') ? 'dark' : 'light';
+      rail.dataset.tone = behind?.closest('.field-gold, .field-coral, .field-white, .band') ? 'dark' : 'light';
       // The chapter whose live box holds the middle of the screen, or the last one that started above it.
       const middle = innerHeight / 2;
       let chapter: string | undefined;
@@ -84,7 +84,7 @@ export default function useGsapMotion() {
     // in one chapter then barely moves the reading, instead of jumping with the page's new length.
     // The reading point is the top of the screen, so a tab's length below it cannot move the reading.
     const railFill = rail?.querySelector<HTMLElement>('.rail-fill');
-    const sections = gsap.utils.toArray<HTMLElement>('main > [data-chapter], main > .split-stage, main > .field-gold, main > .field-plum');
+    const sections = gsap.utils.toArray<HTMLElement>('main > [data-chapter], main > .split-stage, main > .field-gold, main > .field-white, main > .field-plum');
     const readProgress = () => {
       if (!railPercent || !railFill || !sections.length) return;
       const max = Math.max(1, document.documentElement.scrollHeight - innerHeight);

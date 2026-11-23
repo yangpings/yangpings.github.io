@@ -28,9 +28,9 @@ export function placeProjectOrigin(dialog: HTMLElement, name: string) {
   dialog.dataset.ghost = '';
 }
 
-// A World.exe lab opens from the level on the map, in that level's colour.
+// A World.exe lab opens from the level at the front of the dial.
 export function placeRoomOrigin(dialog: HTMLElement, color?: string) {
-  const marker = document.querySelector<HTMLElement>('.level-hit[data-here="true"], .level-hit.nearby');
+  const marker = document.querySelector<HTMLElement>('.dial-item[data-here="true"]');
   const rect = marker?.getBoundingClientRect();
   const onScreen = rect && rect.bottom > 0 && rect.top < innerHeight;
   dialog.style.setProperty('--origin-x', onScreen ? `${rect.left + rect.width / 2}px` : '50vw');

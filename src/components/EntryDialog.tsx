@@ -32,7 +32,7 @@ function RoomSheet({ entry, completed, onComplete, onClose }: { entry: Entry; co
   const done = completed.has(entry.id);
   return <article className="room-sheet" style={{ '--room': room?.color ?? '#ffd078' } as React.CSSProperties}>
     <div className="dialog-top room-sheet-bar">
-      <span className="room-sheet-crumb">{number ? "Eric's island" : "Eric's island · Secret area"}</span>
+      <span className="room-sheet-crumb">{number ? 'World.exe' : 'World.exe · Secret area'}</span>
       <button autoFocus className="close-button room-close" onClick={onClose} aria-label="Close details">Close</button>
     </div>
     <header className="room-sheet-head">
