@@ -10,10 +10,10 @@ for (const viewport of [{width:320,height:740},{width:390,height:844},{width:768
     expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
     for (const name of rooms) {
       await openRoom(page, name);
-      const dialog = page.getByRole('dialog');
+      const dialog = page.locator('.dial-panel');
       expect(await dialog.evaluate(el => el.scrollWidth <= el.clientWidth)).toBe(true);
       await dialog.evaluate(el => { el.scrollTop = el.scrollHeight; });
-      const close = dialog.getByRole('button',{name:'Close details'});
+      const close = page.getByRole('button',{name:'Close details'});
       // Check actual hit testing; visibility alone does not detect a scrolled-away close button.
       expect(await close.evaluate(el => { const r = el.getBoundingClientRect(); return document.elementFromPoint(r.x+r.width/2,r.y+r.height/2) === el; })).toBe(true);
       await close.tap();
@@ -24,24 +24,27 @@ for (const viewport of [{width:320,height:740},{width:390,height:844},{width:768
   });
 }
 
-test('touch movement stops on release and cancellation', async ({ browser }) => {
+test('a vertical swipe on the wheel turns it without scrolling the page; beside it, the page scrolls', async ({ browser }) => {
   const context = await browser.newContext({viewport:{width:390,height:844},hasTouch:true,isMobile:true});
   const page = await context.newPage(); await page.goto('/');
-  const player = page.getByTestId('player');
-  const right = page.getByRole('button',{name:'Move right',exact:true});
-  await right.scrollIntoViewIfNeeded();
-  const bounds = (await right.boundingBox())!;
+  const top = await page.locator('.dial-sticky').evaluate(el => el.getBoundingClientRect().top + scrollY - 72);
+  await page.evaluate(y => window.scrollTo(0, y), top);
+  await page.waitForTimeout(800);
+  await expect(page.locator('.dial-item[aria-label="Explore Home"]')).toHaveAttribute('data-here', 'true');
+  const y0 = await page.evaluate(() => scrollY);
+  const front = await page.locator('.dial-item.is-front').boundingBox();
+  const x = Math.round(front!.x + front!.width / 2), y = Math.round(front!.y + front!.height / 2);
   const session = await context.newCDPSession(page);
-  const touchPoints = [{x:bounds.x+bounds.width/2,y:bounds.y+bounds.height/2}];
-  await session.send('Input.dispatchTouchEvent',{type:'touchStart',touchPoints});
-  await expect.poll(async()=>Number(await player.getAttribute('data-x'))).toBeGreaterThan(110);
-  await session.send('Input.dispatchTouchEvent',{type:'touchEnd',touchPoints:[]});
-  await expect(player).toHaveAttribute('data-moving','false');
-  const stopped = await player.getAttribute('data-x');
-  await page.waitForTimeout(150); expect(await player.getAttribute('data-x')).toBe(stopped);
-  await session.send('Input.dispatchTouchEvent',{type:'touchStart',touchPoints});
-  await expect(player).toHaveAttribute('data-moving','true');
-  await session.send('Input.dispatchTouchEvent',{type:'touchCancel',touchPoints:[]});
-  await expect(player).toHaveAttribute('data-moving','false');
+  const swipe = async (sx: number, from: number, to: number) => {
+    await session.send('Input.dispatchTouchEvent', { type: 'touchStart', touchPoints: [{ x: sx, y: from }] });
+    for (let yy = from; yy >= to; yy -= 20) await session.send('Input.dispatchTouchEvent', { type: 'touchMove', touchPoints: [{ x: sx, y: yy }] });
+    await session.send('Input.dispatchTouchEvent', { type: 'touchEnd', touchPoints: [] });
+  };
+  await swipe(x, y + 60, y - 60);
+  await expect(page.locator('.dial-item[aria-label="Explore Home"]')).not.toHaveAttribute('data-here', 'true', { timeout: 5000 });
+  await expect(page.locator('.dial-panel')).toHaveCount(0);
+  expect(await page.evaluate(() => scrollY)).toBe(y0);
+  await swipe(20, 700, 300);
+  await expect.poll(() => page.evaluate(() => scrollY)).toBeGreaterThan(y0);
   await context.close();
 });

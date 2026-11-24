@@ -4,11 +4,12 @@ import { openRoom } from './helpers';
 test('sketchbook draws with custom colours, undoes, erases, turns pages and saves', async ({ page }) => {
   await page.goto('/');
   await openRoom(page, 'Art studio');
-  const dialog = page.getByRole('dialog');
+  const dialog = page.locator('.dial-panel');
   const canvas = dialog.getByRole('application', { name: 'Drawing canvas' });
   await dialog.getByRole('radio', { name: 'Ink pen' }).click();
   await dialog.getByLabel('Brush color', { exact: true }).fill('#345abc');
   await dialog.getByLabel('Brush size', { exact: true }).fill('20');
+  await canvas.scrollIntoViewIfNeeded();
   const bounds = (await canvas.boundingBox())!;
   await page.mouse.move(bounds.x + 50, bounds.y + 60);
   await page.mouse.down();

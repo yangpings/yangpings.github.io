@@ -3,11 +3,10 @@ test('DFJK judges each lane on time, builds a combo, and can be stopped', async 
   await page.clock.install();
   await page.clock.pauseAt(new Date(Date.now() + 1000));
   await page.goto('/');
-  // The page clock is frozen, so let the character walk to the Arcade before entering it.
-  const arcade = page.getByRole('button', { name: 'Explore Arcade', exact: true });
-  await arcade.click();
-  await page.clock.runFor(5000);
-  await arcade.click();
+  // The page clock is frozen, so let the dial finish turning to the Arcade before entering it.
+  await page.locator('.dial-item[aria-label="Explore Arcade"]').dispatchEvent('click');
+  await page.clock.runFor(3000);
+  if (!(await page.locator('.dial-panel').isVisible())) await page.locator('.dial-item[aria-label="Explore Arcade"]').click();
   await page.getByRole('button', { name: 'Start rhythm session' }).click();
   await expect(page.getByRole('group', { name: 'Rhythm game controls' })).toBeFocused();
   const status = page.locator('.rhythm [role=status]');

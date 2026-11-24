@@ -133,13 +133,18 @@ export default function ModelSandbox({ complete }: { complete: () => void }) {
         <div><span>Training loss</span><strong>{(last?.loss ?? lossOf(net, train, features)).toFixed(3)}</strong></div>
         <div><span>Train accuracy</span><strong>{Math.round((last?.train ?? accuracyOf(net, train, features)) * 100)}%</strong></div>
         <div><span>Held-out accuracy / {test.length} points</span><strong>{Math.round(testAcc * 100)}%</strong></div>
-        <svg className="nn-curves" viewBox="0 0 300 72" role="img" aria-label="Loss and accuracy over training">
-          <polyline points={curve('loss', 1)} className="c-loss"/><polyline points={curve('train', 1)} className="c-train"/><polyline points={curve('test', 1)} className="c-test"/>
-        </svg>
+        <div className="nn-chart">
+          <svg className="nn-curves" viewBox="0 0 300 72" preserveAspectRatio="none" role="img" aria-label="Loss and accuracy over training">
+            {[.25, .5, .75].map(k => <line key={k} className="nn-grid-line" x1="0" x2="300" y1={70 - k * 64} y2={70 - k * 64}/>)}
+            <polyline points={curve('loss', 1)} className="c-loss"/><polyline points={curve('train', 1)} className="c-train"/><polyline points={curve('test', 1)} className="c-test"/>
+          </svg>
+          <span className="nn-chart-axis" aria-hidden="true"><b>100%</b><b>0</b></span>
+          {net.history.length < 2 && <span className="nn-chart-empty">Train the network and its loss and accuracy are drawn here, epoch by epoch.</span>}
+        </div>
         <div className="nn-legend"><i className="c-loss"/>Loss <i className="c-train"/>Train <i className="c-test"/>Held-out</div>
       </div>
       <p role="status" className="activity-feedback playground-status">After {net.steps} {net.steps === 1 ? 'epoch' : 'epochs'}, the network classifies {Math.round(testAcc * 100)}% of {test.length} held-out points correctly. {extra.length ? `${extra.length} custom points added. ` : ''}{running ? 'Training live.' : 'Paused.'}</p>
-      <p className="sandbox-explanation">{net.steps === 0 ? 'Press Start live training and watch the boundary form. Then try the Spiral, add noise, or shrink the network until it can no longer fit.'
+      <p className="sandbox-explanation">{net.steps === 0 ? 'Press Train and watch the boundary form. Then try the Spiral, add noise, or shrink the network until it can no longer fit.'
         : last && last.train - last.test > .12 ? 'Training accuracy is well above held-out accuracy: the network is memorising noise. Try regularisation or a smaller network.'
         : testAcc < .7 ? 'Not separating yet. A deeper or wider network, curved features, or a higher learning rate can help.'
         : 'It fits. Now try to break it: add points that contradict the pattern, or raise the noise.'}</p>

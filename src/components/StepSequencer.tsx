@@ -1,17 +1,17 @@
 import { useEffect, useRef, useState } from 'react';
-import { useSound } from './SoundCorners';
+import { useDrums, type Voice } from '../drumSynth';
 
 // A 16-step drum sequencer: rows of instruments, columns of sixteenth notes. Toggle cells, press
 // play, and the pattern loops with a playhead sweeping across. Tempo and a swing feel are
 // adjustable; a few starter grooves load with one click.
 const rows = [
-  { label: 'Crash', kind: 'cymbal', frequency: 440 },
-  { label: 'Hi-hat', kind: 'hat', frequency: 440 },
-  { label: 'Snare', kind: 'snare', frequency: 440 },
-  { label: 'High tom', kind: 'tom', frequency: 190 },
-  { label: 'Floor tom', kind: 'tom', frequency: 110 },
-  { label: 'Kick', kind: 'kick', frequency: 70 },
-];
+  { label: 'Crash', voice: 'crash' },
+  { label: 'Hi-hat', voice: 'hat' },
+  { label: 'Snare', voice: 'snare' },
+  { label: 'High tom', voice: 'tom', pitch: 196 },
+  { label: 'Floor tom', voice: 'tom', pitch: 104 },
+  { label: 'Kick', voice: 'kick' },
+] as { label: string; voice: Voice; pitch?: number }[];
 const STEPS = 16;
 const grid = (on: Record<number, number[]>) => rows.map((_, r) => Array.from({ length: STEPS }, (_, s) => (on[r] ?? []).includes(s)));
 const presets: Record<string, boolean[][]> = {
@@ -22,7 +22,7 @@ const presets: Record<string, boolean[][]> = {
 };
 
 export default function StepSequencer({ complete }: { complete: () => void }) {
-  const { sound, error } = useSound();
+  const { play: sound, error } = useDrums();
   const [cells, setCells] = useState(presets['Rock']);
   const [playing, setPlaying] = useState(false);
   const [step, setStep] = useState(-1);
@@ -37,7 +37,7 @@ export default function StepSequencer({ complete }: { complete: () => void }) {
     const tick = () => {
       s = (s + 1) % STEPS; setStep(s);
       const { cells: c, tempo: t, swing: sw } = live.current;
-      c.forEach((row, r) => { if (row[s]) void live.current.sound(rows[r].kind, rows[r].frequency); });
+      c.forEach((row, r) => { if (row[s]) live.current.sound(rows[r].voice, rows[r].pitch); });
       if (s === STEPS - 1 && ++loops.current === 2) live.current.complete();
       const sixteenth = 60000 / t / 4;
       // Swing: lengthen the on-beat sixteenth and shorten the off-beat one.

@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import StepSequencer from './StepSequencer';
+import DrumKit from './DrumKit';
 
 export function useSound() {
   const audio = useRef<AudioContext | null>(null);
@@ -30,14 +31,6 @@ export function useSound() {
     } catch { setError('Sound is unavailable in this browser.'); }
   }
   return { sound, error };
-}
-
-export function DrumKit({ complete }: { complete: () => void }) {
-  const { sound, error } = useSound();
-  const [hit, setHit] = useState(''); const played = useRef(new Set<string>());
-  const pieces = [{ label: 'Crash', key: 'y', kind: 'cymbal', frequency: 440 }, { label: 'Hi-hat', key: 'h', kind: 'hat', frequency: 440 }, { label: 'Ride', key: 'u', kind: 'cymbal', frequency: 660 }, { label: 'Mid tom', key: 'g', kind: 'tom', frequency: 150 }, { label: 'High tom', key: 't', kind: 'tom', frequency: 190 }, { label: 'Snare', key: 'f', kind: 'snare', frequency: 440 }, { label: 'Kick', key: ' ', kind: 'kick', frequency: 70 }, { label: 'Floor tom', key: 'j', kind: 'tom', frequency: 110 }];
-  function play(piece: typeof pieces[number]) { void sound(piece.kind, piece.frequency); setHit(piece.label); played.current.add(piece.label); if (played.current.size >= 4) complete(); }
-  return <><p>A right-handed kit. Tap a piece or use its key.</p><div className="drum-kit" tabIndex={0} role="group" aria-label="Playable drum kit" onKeyDown={e => { if (e.target !== e.currentTarget || e.repeat) return; const piece = pieces.find(p => p.key === e.key.toLowerCase()); if (piece) { e.preventDefault(); play(piece); } }}>{pieces.map(piece => <button key={piece.label} className={`drum-${piece.kind} piece-${piece.label.toLowerCase().replaceAll(' ', '-')} ${hit === piece.label ? 'struck' : ''}`} onClick={() => play(piece)}>{piece.label}<small>{piece.key === ' ' ? 'Space' : piece.key.toUpperCase()}</small></button>)}</div><p role="status" className="activity-feedback">{error || (hit ? `${hit}. Keep the groove going.` : 'Tap the kit or focus its frame and use Y H T G U F Space J. Buttons also work with Tab and Enter.')}</p></>;
 }
 
 export function Singing({ complete }: { complete: () => void }) {
@@ -95,5 +88,5 @@ export function Listening({ complete }: { complete: () => void }) {
 
 export default function SoundCorners({ onComplete }: { onComplete: (id: string) => void }) {
   const [corner, setCorner] = useState('Drums');
-  return <><div className="corner-picker" aria-label="Music corners">{['Drums', 'Singing', 'Listening'].map(label => <button key={label} aria-pressed={corner === label} onClick={() => setCorner(label)}>{label}</button>)}</div><div key={corner}>{corner === 'Drums' ? <><StepSequencer complete={() => onComplete('drums')}/><details className="music-break"><summary>Play the kit by hand</summary><DrumKit complete={() => onComplete('drums')}/></details></> : corner === 'Singing' ? <Singing complete={() => onComplete('singing')}/> : <Listening complete={() => onComplete('listening')}/>}</div></>;
+  return <><div className="corner-picker" aria-label="Music corners">{['Drums', 'Singing', 'Listening'].map(label => <button key={label} aria-pressed={corner === label} onClick={() => setCorner(label)}>{label}</button>)}</div><div key={corner}>{corner === 'Drums' ? <><DrumKit complete={() => onComplete('drums')}/><h4 className="kit-section-title">Program a beat</h4><StepSequencer complete={() => onComplete('drums')}/></> : corner === 'Singing' ? <Singing complete={() => onComplete('singing')}/> : <Listening complete={() => onComplete('listening')}/>}</div></>;
 }

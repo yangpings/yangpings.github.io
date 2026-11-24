@@ -73,6 +73,7 @@ test('microphone tracks stop when leaving the singing corner', async ({ page }) 
 });
 
 test('little world has playable music, rhythm, art, and travel corners', async ({ page }) => {
+  test.setTimeout(60000); // it plays a full rhythm session (about 20 s) as well as visiting four levels
   await page.goto('/');
   await expect(page.locator('#world-title')).toHaveText('World.exe');
   await openRoom(page, 'Music room');
@@ -93,7 +94,7 @@ test('little world has playable music, rhythm, art, and travel corners', async (
   await page.getByRole('button', { name: 'Close details' }).click();
   await openRoom(page, 'Arcade');
   await page.getByRole('button', { name: 'Start rhythm session' }).click();
-  await expect(page.locator('.rhythm-note').first()).toBeVisible({ timeout: 4000 });
+  await expect(page.locator('.rg-stage.is-playing')).toBeVisible({ timeout: 4000 });
   const rhythm = page.locator('.rhythm [role=status]');
   await page.getByRole('button', { name: 'Restart session' }).click();
   await expect(rhythm).toContainText('0 points');
@@ -108,7 +109,7 @@ test('little world has playable music, rhythm, art, and travel corners', async (
   await page.getByRole('button', { name: 'Close details' }).click();
   await openRoom(page, 'Travel / Conferences');
   await page.getByRole('button', { name: 'Tokyo', exact: true }).click();
-  await expect(page.getByRole('dialog').first().locator('iframe')).toHaveAttribute('title', 'Map of Tokyo');
+  await expect(page.locator('.dial-panel iframe')).toHaveAttribute('title', 'Map of Tokyo');
 });
 
 test('professional content opens directly and restores focus', async ({ page }) => {
@@ -143,18 +144,15 @@ test('project cards open narrative panels while world rooms retain activities', 
   await expect(page.getByRole('button', { name: 'Train', exact: true })).toBeVisible();
 });
 
-test('all rooms, secret, and existing CV are reachable', async ({ page, request }) => {
+test('all rooms and the existing CV are reachable, and every explored room fills a dot', async ({ page, request }) => {
   await page.goto('/');
   for (const label of ['AI / Research lab', 'Vision lab', 'Art studio', 'Music room', 'Library / CV', 'Home', 'Arcade', 'Travel / Conferences']) {
     await openRoom(page, label);
-    await expect(page.getByRole('dialog')).toBeVisible();
+    await expect(page.locator('.dial-panel')).toBeVisible();
     await page.getByRole('button', {name: 'Close details'}).click();
   }
   await expect(page.getByText('8 / 8 rooms explored')).toBeVisible();
-  await page.getByRole('button', { name: 'Inspect the suspicious plant' }).click();
-  await expect(page.getByRole('dialog')).toContainText('You found the office plant');
-  await page.keyboard.press('Escape');
-  await expect(page.locator('footer')).toContainText('You found the hidden plant.');
+  await expect(page.locator('.dial-dots li.is-done')).toHaveCount(8);
   const cv = await page.getByRole('navigation').getByRole('link', { name: 'CV' }).getAttribute('href');
   expect((await request.get(cv!)).status()).toBe(200);
 });
@@ -182,10 +180,12 @@ test('portrait, artwork, posters, and nested image previews are available', asyn
   await page.getByRole('button', { name: 'Enlarge Retinal imaging research poster' }).last().click();
   await expect(page.getByRole('dialog', { name: 'Retinal imaging research poster', exact: true })).toBeVisible();
   await page.keyboard.press('Escape');
-  await expect(page.getByRole('dialog')).toBeVisible();
+  await expect(page.locator('.dial-panel')).toBeVisible();
   await page.keyboard.press('Escape');
+  await expect(page.locator('.dial-panel')).toHaveCount(0);
   // Scroll through the page to load every lazy preview and check for broken images.
-  for (const img of await page.locator('main img').all()) {
+  // Dial levels round the back of the ring are hidden by design; check every picture that is on show.
+  for (const img of await page.locator('main img').filter({ visible: true }).all()) {
     await img.scrollIntoViewIfNeeded();
     await expect.poll(() => img.evaluate((el: HTMLImageElement) => el.complete && el.naturalWidth > 0)).toBe(true);
   }
@@ -264,19 +264,17 @@ test('page follows the chapter order of the split-stage layout', async ({ page }
 
 test('art studio cycles through every artwork with matching previews and links', async ({ page }) => {
   await page.goto('/');
-  const studio = page.getByRole('button', { name: 'Explore Art studio', exact: true });
   const pieces = [
     ['pro', '128093526'], ['miku2', '116375366'],
     ['minami', '118904947'], ['earth', '118752021'], ['pro', '128093526'],
   ];
   for (const [file, id] of pieces) {
-    await studio.click();
+    await openRoom(page, 'Art studio');
     const dialog = page.getByRole('dialog').first();
-    await expect(dialog.locator('.dialog-art')).toHaveAttribute('src', new RegExp(`${file}\\.webp$`));
+    await expect(dialog.locator('.dialog-art')).toHaveAttribute('src', new RegExp(`${file}\.webp$`));
     await expect(dialog.getByRole('link', {name:'View this artwork on Pixiv'})).toHaveAttribute('href', `https://www.pixiv.net/artworks/${id}`);
     await page.keyboard.press('Escape');
-    await expect(page.locator('.art-preview img')).toHaveAttribute('src', new RegExp(`${file}\\.webp$`));
-    await expect(page.locator('.world-art image')).toHaveAttribute('href', new RegExp(`${file}\\.webp$`));
+    await expect(page.locator('.art-preview img')).toHaveAttribute('src', new RegExp(`${file}\.webp$`));
   }
 });
 
@@ -312,52 +310,57 @@ test('footer lists the technologies behind the website', async ({ page }) => {
   expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
 });
 
-test('the overworld map walks level to level and opens the level you stand on', async ({ page }) => {
+test('the dial turns with the keyboard and opens the level at the front', async ({ page }) => {
   await page.goto('/');
-  const world = page.getByRole('group', { name: /Interactive world/ });
-  const player = page.getByTestId('player');
-  await world.focus();
-  const startX = Number(await player.getAttribute('data-x'));
-  await page.keyboard.press('d');
-  await page.keyboard.down('d'); await page.waitForTimeout(250); await page.keyboard.up('d');
-  await expect.poll(async () => Number(await player.getAttribute('data-x'))).toBeGreaterThan(startX + 100);
-  await expect(page.locator('.world-place [aria-live]')).toContainText('Library', { timeout: 4000 });
+  const home = page.locator('.dial-item[aria-label="Explore Home"]');
+  await expect(home).toHaveAttribute('data-here', 'true');
+  await home.focus();
+  await page.keyboard.press('ArrowRight');
+  const library = page.locator('.dial-item[aria-label="Explore Library / CV"]');
+  await expect(library).toHaveAttribute('data-here', 'true', { timeout: 5000 });
+  await expect(library).toBeFocused();
+  await expect(page.locator('.dial-caption')).toHaveText('Library');
   await page.keyboard.press('e');
-  await expect(page.getByRole('dialog').first().getByRole('heading', { name: 'Library' })).toBeVisible();
+  await expect(page.locator('.dial-panel .library')).toBeVisible();
+  await expect(page.getByRole('dialog')).toHaveCount(0);
   await page.keyboard.press('Escape');
-  await expect(world).toBeFocused();
+  await expect(page.locator('.dial-panel')).toHaveCount(0);
+  await expect(library).toBeFocused();
+  await page.keyboard.press('ArrowLeft');
+  await expect(home).toHaveAttribute('data-here', 'true', { timeout: 5000 });
 });
 
-test('on-screen controls walk to the next level and open it', async ({ page }) => {
+test('scrolling over the wheel turns it without scrolling the page, and a side level turns to the front when clicked', async ({ page }) => {
+  await page.goto('/');
+  const top = await page.locator('.dial-sticky').evaluate(el => el.getBoundingClientRect().top + scrollY - 80);
+  await page.evaluate(y => window.scrollTo(0, y), top);
+  await page.waitForTimeout(800);
+  const y0 = await page.evaluate(() => scrollY);
+  const front = await page.locator('.dial-item.is-front').boundingBox();
+  await page.mouse.move(front!.x + front!.width / 2, front!.y + front!.height / 2);
+  for (let i = 0; i < 3; i++) { await page.mouse.wheel(0, 100); await page.waitForTimeout(300); }
+  await expect(page.locator('.dial-caption')).toHaveText('Vision lab', { timeout: 5000 });
+  for (let i = 0; i < 12; i++) { await page.mouse.wheel(0, 100); await page.waitForTimeout(80); }
+  await expect(page.locator('.dial-caption')).toHaveText('Travel', { timeout: 5000 });
+  // Even past the last level, the page itself has not moved.
+  expect(await page.evaluate(() => scrollY)).toBe(y0);
+  await expect(page.getByRole('dialog')).toHaveCount(0);
+  // Scrolling over the white space beside the wheel scrolls the page and leaves the wheel alone.
+  await page.mouse.move(200, 700);
+  await page.mouse.wheel(0, 300);
+  await expect.poll(() => page.evaluate(() => scrollY)).toBeGreaterThan(y0);
+  await expect(page.locator('.dial-caption')).toHaveText('Travel');
+  await page.evaluate(y => window.scrollTo(0, y), y0);
+  await page.locator('.dial-again').click();
+  await expect(page.locator('.dial-caption')).toHaveText('Home', { timeout: 5000 });
+  await page.waitForTimeout(800);
+  await page.locator('.dial-item[aria-label="Explore Library / CV"]').click();
+  await expect(page.locator('.dial-item[aria-label="Explore Library / CV"]')).toHaveAttribute('data-here', 'true', { timeout: 5000 });
+  // It opens beside the wheel once it arrives, not in a popup, and its name moves up to head it.
+  await expect(page.locator('.dial-panel')).toBeVisible();
+  await expect(page.getByRole('dialog')).toHaveCount(0);
   await page.setViewportSize({ width: 390, height: 844 });
-  await page.goto('/');
-  const player = page.getByTestId('player');
-  const startX = Number(await player.getAttribute('data-x'));
-  const right = page.getByRole('button', { name: 'Move right', exact: true });
-  await right.scrollIntoViewIfNeeded();
-  const bounds = (await right.boundingBox())!;
-  await page.mouse.move(bounds.x + bounds.width / 2, bounds.y + bounds.height / 2);
-  await page.mouse.down(); await page.waitForTimeout(300); await page.mouse.up();
-  await expect.poll(async () => Number(await player.getAttribute('data-x')), { timeout: 4000 }).toBeGreaterThan(startX + 100);
-  await expect(page.locator('.world-place [aria-live]')).toContainText('Library', { timeout: 4000 });
-  await page.getByRole('button', { name: /^Enter / }).click();
-  await expect(page.getByRole('dialog').first().getByRole('heading', { name: 'Library' })).toBeVisible();
-});
-
-test('walking back from the start stays on the map, and Escape releases the controls', async ({ page }) => {
-  await page.goto('/');
-  const world = page.getByRole('group', { name: /Interactive world/ });
-  const player = page.getByTestId('player');
-  await world.focus();
-  const startX = Number(await player.getAttribute('data-x'));
-  await page.keyboard.down('a'); await page.waitForTimeout(600); await page.keyboard.up('a');
-  expect(Number(await player.getAttribute('data-x'))).toBe(startX);
-  await page.keyboard.press('e');
-  await expect(page.getByRole('dialog').first().getByRole('heading', { name: 'Home, sweet San Francisco' })).toBeVisible();
-  await page.keyboard.press('Escape');
-  await expect(world).toBeFocused();
-  await page.keyboard.press('Escape');
-  await expect(world).not.toBeFocused();
+  expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
 });
 
 test('projects section switches between research and open source by mouse and keyboard', async ({ page }) => {

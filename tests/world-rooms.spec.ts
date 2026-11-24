@@ -3,7 +3,7 @@ import { openRoom } from './helpers';
 
 test('world rooms: sketchbook, vision lab, fiction shelf, city maps and the music room', async ({ page }) => {
   await page.goto('/');
-  const dialog = page.getByRole('dialog').first();
+  const dialog = page.locator('.dial-panel');
   const close = async () => page.getByRole('button', { name: 'Close details' }).click();
   await openRoom(page, 'Art studio');
   await expect(dialog.getByRole('application', { name: 'Drawing canvas' })).toBeVisible();
@@ -19,10 +19,10 @@ test('world rooms: sketchbook, vision lab, fiction shelf, city maps and the musi
   await dialog.getByRole('listitem', { name: /Harry Potter/ }).click();
   await expect(dialog.getByRole('heading', { name: /Philosopher's Stone/ })).toBeVisible();
   await expect(dialog.locator('.library [role=status]')).toContainText('1 of 8 books opened');
-  await dialog.getByRole('button', { name: '+ Wand', exact: true }).click();
+  await dialog.getByRole('button', { name: 'Wand', exact: true }).click();
   await expect(dialog.locator('.library [role=status]')).toContainText('Wand');
   await dialog.getByRole('listitem', { name: /The Lord of the Rings/ }).click();
-  await dialog.getByRole('button', { name: '+ Lembas bread', exact: true }).click();
+  await dialog.getByRole('button', { name: 'Lembas bread', exact: true }).click();
   await expect(dialog.locator('.library [role=status]')).toContainText('Lembas bread');
   await close();
   await openRoom(page, 'Home');
@@ -38,9 +38,10 @@ test('world rooms: sketchbook, vision lab, fiction shelf, city maps and the musi
   await openRoom(page, 'Music room');
   await dialog.getByRole('gridcell', { name: 'High tom, step 3', exact: true }).click();
   await expect(dialog.getByRole('gridcell', { name: 'High tom, step 3', exact: true })).toHaveAttribute('aria-pressed', 'true');
-  await dialog.locator('summary', { hasText: 'Play the kit by hand' }).click();
-  await dialog.getByRole('button', { name: 'Ride U', exact: true }).click();
-  await expect(dialog.locator('.drum-kit + [role=status]')).toContainText('Ride');
+  await dialog.getByRole('button', { name: 'Ride', exact: true }).click();
+  await expect(dialog.locator('.kit [role=status]')).toContainText('Ride');
+  await dialog.getByRole('button', { name: 'Snare', exact: true }).press('f');
+  await expect(dialog.locator('.kit [role=status]')).toContainText('Snare · 2 hits');
   await page.setViewportSize({ width: 390, height: 844 });
   expect(await dialog.evaluate(el => el.scrollWidth <= el.clientWidth)).toBe(true);
 });

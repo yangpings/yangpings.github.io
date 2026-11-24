@@ -1558,13 +1558,13 @@ a.diploma-school:focus-visible { outline: 2px solid var(--gold); outline-offset:
 .room-sheet-body :is(.eyebrow, .sandbox-controls h4, .sandbox-controls h5, .playground-status span) { text-transform: none; letter-spacing: 0; font-size: 14px; font-weight: 700; color: var(--room); }
 
 /* Every button: rounded and filled. Main actions in the level's colour, the rest a soft tint. */
-.room-sheet-body button { border-radius: 999px; border: 0; font-weight: 700; transition: background-color .2s ease, color .2s ease, scale .15s ease, translate .15s ease; }
-.room-sheet-body button:active:not(:disabled) { scale: .96; }
-.room-sheet-body button:not(.studio-color *):not([class*=lane]):not(.drum-kit button):not(.mini-keyboard button):not(.memory-pads button):not(.rhythm-buttons button) {
+.room-sheet-body button:not(.rx) { border-radius: 999px; border: 0; font-weight: 700; transition: background-color .2s ease, color .2s ease, scale .15s ease, translate .15s ease; }
+.room-sheet-body button:active:not(:disabled):not(.rx) { scale: .96; }
+.room-sheet-body button:not(.studio-color *):not([class*=lane]):not(.drum-kit button):not(.mini-keyboard button):not(.memory-pads button):not(.rhythm-buttons button):not(.rx) {
   min-height: 44px; padding: 0 20px; background: #ffffff12; color: var(--ink); }
-.room-sheet-body :is(button[aria-pressed=true], .sandbox-train button:first-child, [class*=start], .studio-save, .memory-sequence + button):not(.drum-kit button) { background: var(--room) !important; color: var(--ground) !important; }
+.room-sheet-body :is(button[aria-pressed=true], .sandbox-train button:first-child, [class*=start], .studio-save, .memory-sequence + button):not(.drum-kit button):not(.rx) { background: var(--room) !important; color: var(--ground) !important; }
 .room-sheet-body button[aria-label^="Start"], .room-sheet-body button:is([data-primary]) { background: var(--room) !important; color: var(--ground) !important; }
-@media (hover: hover) and (pointer: fine) { .room-sheet-body button:not([aria-pressed=true]):not(:disabled):hover { translate: 0 -2px; } }
+@media (hover: hover) and (pointer: fine) { .room-sheet-body button:not([aria-pressed=true]):not(:disabled):not(.rx):hover { translate: 0 -2px; } }
 .room-sheet-body button:disabled { opacity: .4; }
 
 /* Lists of choices as a grid of tiles rather than full-width bars. */
@@ -2434,11 +2434,11 @@ footer .footer-row li:hover, footer .footer-row a:hover { translate: none; }
   --rose: #8a3445; --muted: #6b3a44; }
 .dial-panel:focus-visible { outline: none; }
 .dial-panel .room-sheet-body .room-activity { padding: 0; background: none; border-radius: 0; }
-.dial-panel .room-sheet-body button:not(.studio-color *):not([class*=lane]):not(.drum-kit button):not(.mini-keyboard button):not(.memory-pads button):not(.rhythm-buttons button):not([aria-pressed=true]):not([aria-checked=true]):not(.sandbox-train):not(.studio-save) {
+.dial-panel .room-sheet-body button:not(.studio-color *):not([class*=lane]):not(.drum-kit button):not(.mini-keyboard button):not(.memory-pads button):not(.rhythm-buttons button):not([aria-pressed=true]):not([aria-checked=true]):not(.sandbox-train):not(.studio-save):not(.rx) {
   background: var(--tint); color: var(--ink); }
 .dial-panel .room-sheet-body :is(.nn-top .dataset-picker, .nn-run) button:not([aria-checked=true]):not(.sandbox-train) { background: transparent !important; color: var(--ink) !important; }
 @media (hover: hover) and (pointer: fine) {
-  .dial-panel .room-sheet-body button:not([aria-pressed=true]):not([aria-checked=true]):not(:disabled):hover,
+  .dial-panel .room-sheet-body button:not([aria-pressed=true]):not([aria-checked=true]):not(:disabled):not(.rx):hover,
   .dial-panel .room-sheet-body :is(.nn-top .dataset-picker, .nn-run) button:not([aria-checked=true]):not(.sandbox-train):hover { background: var(--tint-2) !important; }
 }
 .dial-panel :is(.activity-heading, .activity-feedback, .nn-settings label, .nn-settings output) { color: var(--ink); }
