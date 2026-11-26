@@ -14,7 +14,7 @@ export default function Skills() {
   return <section id="skills" className="skills-section" aria-labelledby="skills-title" data-chapter="Skills">
     <VantaBackdrop effect="waves" options={waves}/>
     <h2 id="skills-title" className="code-title">Skills</h2>
-    <p className="skills-intro">I train, evaluate, and ship models end to end, from LLM pretraining and post-training to medical imaging and multimodal systems, with AI safety as the through-line.</p>
+    
     <div className="skills-specimen">
       {groups.map(group => <div key={group.id} className={`skills-group is-${group.id}`}>
         <h3>{group.label}</h3>
